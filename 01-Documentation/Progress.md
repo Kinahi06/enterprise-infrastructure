@@ -8,7 +8,7 @@
 - [x] Installed VirtIO Drivers
 - [x] Learned Resource Monitor
 - [x] Investigated Windows Folder Structure
-- [ ] Windows Services
+- [x] Windows Services
 - [ ] PowerShell Objects
 - [ ] Event Viewer
 
@@ -43,9 +43,13 @@
 - [ ] Ansible
 - [ ] Monitoring
 
-# Current Progress
+### - Event Viewer 
+- [x] Ubuntu Server Deployment
+- [ ] Linux Server Provisioning
 
-03.08.2026
+## Current Progress
+
+08.08.2026
 
 ## Completed
 
@@ -54,7 +58,11 @@
 - Service analysis with PowerShell
 - Windows Registry navigation
 - Service configuration analysis
+- Ubuntu Server 24.04 LTS deployment
+- Basic Linux network verification
+- DNS connectivity verification
+- Initial APT package inspection
 
 ## Current Focus
 
-Windows Services
+Linux Server Provisioning

@@ -325,3 +325,137 @@ Goals:
 - How does SCM determine which service DLL to load?
 - Why are multiple services grouped into the same `svchost.exe` process?
 - What exactly happens internally when `Set-Service` changes the startup type?
+
+# Lesson 3 — Ubuntu Server Deployment
+
+Date:
+2026-08-08
+
+Duration:
+~2 Hours
+
+---
+
+## Objectives
+
+- Deploy Ubuntu Server 24.04 LTS ARM64 virtual machine
+- Configure virtual machine resources in UTM
+- Install OpenSSH Server
+- Verify network connectivity
+- Verify DNS resolution
+- Check available system updates
+
+---
+
+## What I Learned
+
+- Ubuntu Server can be deployed efficiently on ARM64 hardware using UTM.
+- Thin Provisioning allows a virtual disk to grow dynamically without allocating its full configured capacity immediately.
+- OpenSSH Server provides remote command-line access to a Linux server.
+- Server validation should be performed before making unnecessary configuration changes.
+- `apt update` refreshes package metadata but does not install updates.
+- `apt list --upgradable` shows packages that have newer versions available.
+
+---
+
+## Linux Tools Explored
+
+- ping
+- apt
+- OpenSSH
+
+---
+
+## Network Verification
+
+IPv4:
+192.168.64.3
+
+Connectivity:
+Successful
+
+DNS Resolution:
+Successful
+
+Tests performed:
+
+- Ping to 8.8.8.8
+- Ping to google.com
+
+---
+
+## Incidents
+
+### Incident #0004
+
+Problem:
+
+Incorrect `ping` command syntax caused an invalid argument error.
+
+Cause:
+
+Command syntax was entered incorrectly.
+
+Resolution:
+
+Corrected the command and repeated the connectivity test.
+
+Lesson Learned:
+
+Always verify command syntax before assuming that the system or network is failing.
+
+---
+
+### Incident #0005
+
+Problem:
+
+DNS lookup failed during a connectivity test.
+
+Cause:
+
+The domain was entered as `google,com` instead of `google.com`.
+
+Resolution:
+
+Corrected the domain name and repeated the test successfully.
+
+Lesson Learned:
+
+Differentiate user input errors from actual DNS or network failures.
+
+---
+
+## Engineering Notes
+
+The Ubuntu Server was deployed successfully as the first Linux system in the infrastructure laboratory.
+
+A 64 GB dynamically allocated virtual disk was selected to allow future expansion without consuming the full disk capacity immediately.
+
+The server was intentionally kept minimal during installation. Optional server applications were not installed because no specific server role has been assigned yet.
+
+Available system updates were reviewed before applying any changes.
+
+---
+
+## Commands Learned
+
+ping
+
+apt update
+
+apt list --upgradable
+
+---
+
+## Next Lesson
+
+Linux Server Provisioning
+
+Goals:
+
+- Apply system updates
+- Verify disk and memory usage
+- Verify SSH access
+- Inspect running services
+- Begin basic Linux system administration

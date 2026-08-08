@@ -34,3 +34,19 @@
 - Disabled unnecessary Xbox services
 - Investigated the LanmanServer service configuration
 - Identified the Registry location where Windows stores service configuration
+---
+
+## 2026-08-08
+
+### Added
+
+- Ubuntu Server 24.04 LTS ARM64 virtual machine
+- OpenSSH Server
+- Linux infrastructure laboratory environment
+
+### Completed
+
+- Deployed the first Ubuntu Server
+- Verified IPv4 network connectivity
+- Verified DNS name resolution
+- Reviewed available system package updates

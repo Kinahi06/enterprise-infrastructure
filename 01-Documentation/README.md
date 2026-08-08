@@ -16,23 +16,23 @@ Personal laboratory for learning Infrastructure Engineering.
 ## Current Progress
 
 Lessons Completed:
-1
+3
 
 Scripts Written:
 0
 
 Incidents Solved:
-3
+5
 
 Commands Learned:
-11
+14
 
 Hours Invested:
-6
+~8
 
 ---
 
 ## Current Module
 
-Windows Services
-03.08.2026
+Linux Server Provisioning
+08.08.2026
