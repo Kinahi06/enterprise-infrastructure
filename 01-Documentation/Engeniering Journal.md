@@ -459,3 +459,298 @@ Goals:
 - Verify SSH access
 - Inspect running services
 - Begin basic Linux system administration
+
+---
+
+# Lesson 4 — Ubuntu Server Baseline and SSH
+
+Date:
+2026-08-10
+
+Environment:
+Ubuntu Server 24.04.4 LTS ARM64 running in UTM on Apple Virtualization
+
+---
+
+## Objectives
+
+- Inspect a new Ubuntu Server before assigning it a role
+- Understand the VM's CPU architecture, network, memory and disk layout
+- Review and install system updates safely
+- Verify the server after a reboot
+- Understand systemd service and socket states
+- Prepare and verify the first SSH connection
+
+---
+
+## Baseline Discovered
+
+- Hostname: `linux01`
+- Operating system: Ubuntu Server 24.04.4 LTS
+- Architecture: ARM64
+- Virtualization platform: Apple Virtualization in UTM
+- IPv4 address: `192.168.64.3/24`
+- RAM: approximately 3.8 GiB
+- Swap: approximately 3.8 GiB
+- Virtual disk: 64 GiB
+- Root logical volume: approximately 30.5 GiB
+- Free space in the LVM volume group: approximately 30.47 GiB
+- Running kernel after maintenance: `6.8.0-137-generic`
+- Failed systemd units after maintenance: 0
+- ED25519 host-key fingerprint: `SHA256:Ur/zU2dPPTwqhV2XNXfbre0sfzBo17iWMzLuxIOT4kY`
+- Lab client-key fingerprint: `SHA256:5eqebJS9oZJ9gGGDIoKdGAtH31D5yhBPcaC5o+diegs`
+
+The unused LVM space is not an error. It is capacity that can later be assigned to the root filesystem or to a separate logical volume after the server role and storage requirements are known.
+
+---
+
+## What I Learned
+
+### System inspection
+
+- `hostnamectl` identifies the OS, kernel, architecture, hostname and virtualization platform.
+- `ip -br address` provides a compact view of network interfaces and addresses.
+- `uptime` shows time since boot, logged-in users and load averages.
+- `free -h` shows RAM and swap usage; the `available` value is more useful than `free` when judging memory pressure.
+- `df -h` reports usage of mounted filesystems.
+- `lsblk` shows the relationship between disks, partitions, LVM and mount points.
+- `pvs`, `vgs` and `lvs` show the three LVM layers: physical volume, volume group and logical volume.
+- `systemctl --failed` provides a quick system health check, but zero failed units does not prove that every application works.
+
+### Package maintenance
+
+- `sudo apt update` refreshes package metadata and does not install upgrades.
+- `apt list --upgradable` shows which packages have newer versions available.
+- `sudo apt upgrade` calculates a plan before applying it, allowing upgraded, installed, removed and held packages to be reviewed.
+- Updates were appropriate for this new lab because no application compatibility requirements had been defined and the VM could be recovered if necessary.
+- `/var/log/apt/history.log` records package operations, including commands, packages, dates and whether an unattended upgrade performed the work.
+- A reboot should be based on evidence, not habit. After maintenance, the active kernel, uptime and failed units were checked.
+
+### Terminal and command-line work
+
+- Linux command options begin with `-` or `--`; one wrong character can change or invalidate the command.
+- `-h` commonly requests human-readable sizes, while `-o` in `lsblk` selects output columns.
+- Long output can be opened in `less`; `Space` moves forward, `b` moves back and `q` exits.
+- The Up Arrow recalls command history so a typo can be corrected without retyping the entire command.
+- `Tab` completion helps avoid mistakes in commands and file paths.
+- `No such file or directory` means the program ran but the specified path was not found. The path itself should be checked character by character.
+
+### systemd and SSH
+
+- `systemctl status` shows whether a unit is loaded, active and enabled, along with recent logs.
+- `loaded` means systemd knows the unit definition.
+- `active` describes the unit's current runtime state.
+- `enabled` describes whether the unit is configured to participate automatically in startup or activation.
+- A service can be inactive while its socket is active. With socket activation, systemd listens on the network and starts the service when a connection arrives.
+- `ssh.service` was inactive, but `ssh.socket` was enabled and active (listening).
+- The SSH socket listened on TCP port 22 for both IPv4 (`0.0.0.0:22`) and IPv6 (`[::]:22`).
+- After the first client connected, socket activation changed `ssh.service` to `active (running)`.
+- An SSH host-key fingerprint must be compared during the first connection instead of accepting it blindly.
+- `w` distinguishes active login sessions, their source, login time, idle time, CPU use and current command.
+- Multiple sessions can belong to the same account; `2 users` in the `w` header means two sessions in this case, not two different usernames.
+- A server host key proves the server's identity, while a client key proves the user's identity.
+- The private client key remains on the administrator's device; only the `.pub` key is installed on servers.
+- `~/.ssh/authorized_keys` lists the public keys allowed to authenticate as that Linux account.
+- SSH requires restrictive permissions: `700` for `~/.ssh` and `600` for `authorized_keys`.
+
+---
+
+## Errors Investigated
+
+### Incorrect option separator
+
+Examples encountered:
+
+- `free =h` instead of `free -h`
+- `lsblk -0` instead of `lsblk -o`
+
+Lesson:
+
+Read an error message before retrying. Determine whether the problem is the command name, an option or an argument.
+
+### Mistyped systemd command
+
+`systemctl` was initially mistyped. After correcting the command, the unit status could be inspected normally.
+
+Lesson:
+
+Command names are exact. Use shell history and edit the incorrect character instead of starting over.
+
+### Mistyped SSH host-key path
+
+Entered path component:
+
+```text
+shh_host_ed25519_key.pub
+```
+
+Correct path component:
+
+```text
+ssh_host_ed25519_key.pub
+```
+
+Result:
+
+`ssh-keygen` started successfully, but returned `No such file or directory` because the requested path did not exist.
+
+Lesson:
+
+Separate command-execution errors from file-path errors. Use history and tab completion to reduce typing mistakes.
+
+### SSH password rejected for the wrong account
+
+Problem:
+
+SSH reached the password prompt but repeatedly returned `Permission denied`.
+
+Evidence:
+
+- The server answered on TCP port 22, so networking and the SSH listener were working.
+- The host-key fingerprint matched, so the intended server had been reached.
+- `whoami` on the server returned `linux01`.
+- `sudo -k` followed by `sudo -v` accepted the local password.
+- The SSH command incorrectly requested the account `linuxx01` with an extra `x`.
+- The SSH journal recorded `Invalid user`, `user unknown` and `Failed password for invalid user` for the incorrect account.
+
+Resolution:
+
+Connected using the correct account:
+
+```bash
+ssh linux01@192.168.64.3
+```
+
+Lesson:
+
+SSH authenticates the password for the username written before `@`. A correct password for one account will be rejected when a different account is requested. Verify identity and credentials before rebooting a healthy server.
+
+Verification:
+
+After the corrected login, `systemctl status ssh` showed:
+
+- `Active: active (running)`
+- `TriggeredBy: ssh.socket`
+- `Accepted password for linux01`
+- `session opened for user linux01`
+
+These messages confirmed both socket activation and successful authentication.
+
+### Invalid content in `authorized_keys`
+
+Problem:
+
+The shell command used to copy the public key was entered as text inside `nano`. The first save also failed because the server's `~/.ssh` directory did not yet exist. A later file contained one line, but `ssh-keygen` reported that it was not a public key.
+
+Investigation:
+
+- `ls -ld ~/.ssh` verified the directory and its `700` permissions.
+- `ls -la ~/.ssh` showed that `authorized_keys` initially had a size of 0 bytes.
+- `wc -l` confirmed the number of lines but did not validate their contents.
+- `ssh-keygen -lf ~/.ssh/authorized_keys` detected malformed key data.
+
+Resolution:
+
+The correct public key was transmitted from macOS through the existing SSH connection and written to `authorized_keys`. The file was then set to mode `600`.
+
+Verification:
+
+- `wc -l` reported one key line.
+- `ssh-keygen -lf` displayed the expected ED25519 fingerprint and comment.
+- A new connection restricted to public-key authentication succeeded without requesting the Ubuntu account password.
+
+Lesson:
+
+An editor records text but does not execute shell commands. File existence and line count do not prove that the file contains valid data; use a format-aware validation tool when one is available.
+
+---
+
+## Commands Practised
+
+```bash
+hostnamectl
+ip -br address
+uptime
+uname -r
+free -h
+df -h
+lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS
+sudo pvs
+sudo vgs
+sudo lvs
+systemctl --failed
+apt list --upgradable
+sudo apt upgrade
+less /var/log/apt/history.log
+systemctl status
+systemctl status ssh
+systemctl status ssh.socket
+ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+ssh linux01@192.168.64.3
+whoami
+hostname
+echo $SSH_CONNECTION
+w
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+ls -ld ~/.ssh
+ls -la ~/.ssh
+echo $?
+nano ~/.ssh/authorized_keys
+wc -l ~/.ssh/authorized_keys
+ssh-keygen -lf ~/.ssh/authorized_keys
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_enterprise_lab -C "kinahi06@enterprise-lab"
+pbcopy < ~/.ssh/id_ed25519_enterprise_lab.pub
+cat ~/.ssh/id_ed25519_enterprise_lab.pub | ssh linux01@192.168.64.3 'cat > ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys'
+ssh -o IdentitiesOnly=yes -o PreferredAuthentications=publickey -i ~/.ssh/id_ed25519_enterprise_lab linux01@192.168.64.3
+exit
+```
+
+---
+
+## Maintenance Verification
+
+After the upgrade and reboot:
+
+- The server had recently booted.
+- Kernel `6.8.0-137-generic` was running.
+- Load was near zero.
+- No failed systemd units were reported.
+- `ssh.socket` was active and listening on port 22.
+- The ED25519 public host key was found and its fingerprint was displayed successfully.
+- The fingerprint presented to macOS matched the fingerprint read locally on the server.
+- The server key was added to the macOS `known_hosts` file.
+- The first SSH login from macOS succeeded as user `linux01`.
+- `$SSH_CONNECTION` identified client `192.168.64.1`, server `192.168.64.3` and destination port `22`.
+- `ssh.service` was observed running after activation by the client connection.
+- `w` showed one remote session from `192.168.64.1` and one local `tty1` console session, both owned by `linux01`.
+- A lab-specific ED25519 client key was created on macOS.
+- The public key was installed in `/home/linux01/.ssh/authorized_keys`.
+- Public-key-only SSH authentication succeeded using the intended private key.
+
+The first verified remote administration session from macOS to `linux01` is working.
+
+---
+
+## Lesson 4 Closeout
+
+Status at the end of 2026-08-10:
+
+- Ubuntu package maintenance is complete and no immediate updates are pending.
+- Kernel `6.8.0-137-generic` is active.
+- No failed systemd units were observed after maintenance.
+- SSH host identity was verified before trust was accepted.
+- Password authentication and public-key authentication both succeeded for `linux01`.
+- Public-key-only testing proved that success was not caused by password fallback.
+- The UTM console remains available as a recovery path.
+- Password authentication has not been disabled.
+- No passwords, passphrases or private keys were written to project documentation.
+
+Next lesson:
+
+1. Inspect or create the macOS SSH client configuration.
+2. Add a short alias for the lab server without overwriting existing settings.
+3. Test the alias and review effective SSH client behavior.
+4. Inspect firewall and server SSH settings before considering hardening.
+5. Define a workload for `linux01` before installing additional software.

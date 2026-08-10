@@ -1,68 +1,78 @@
 # Progress Timeline
 
-## 2026
+Last updated: 2026-08-10
 
-### August
+## August 2026
 
-- [x] Built first Windows Infrastructure Lab
-- [x] Installed VirtIO Drivers
-- [x] Learned Resource Monitor
-- [x] Investigated Windows Folder Structure
-- [x] Windows Services
-- [ ] PowerShell Objects
-- [ ] Event Viewer
+- [x] Build first Windows infrastructure laboratory
+- [x] Install VirtIO drivers and diagnose virtual hardware
+- [x] Learn Windows Resource Monitor and folder structure
+- [x] Investigate Windows Services and Registry configuration
+- [x] Deploy Ubuntu Server 24.04 LTS ARM64
+- [x] Verify Linux IPv4 connectivity and DNS resolution
+- [x] Complete initial Linux server provisioning baseline
+- [x] Apply updates and verify the server after reboot
+- [x] Inspect disks, filesystems and LVM
+- [x] Verify OpenSSH socket activation
+- [x] Establish verified SSH access from macOS
+- [x] Configure and test ED25519 public-key authentication
+- [ ] Create a reusable macOS SSH client profile
+- [ ] Review Ubuntu firewall state and SSH hardening
+- [ ] Assign the first application or infrastructure role to `linux01`
+- [ ] Learn PowerShell objects
+- [ ] Investigate Windows Event Viewer
 
----
+## Future Modules
 
 ### September
 
 - [ ] Active Directory
-- [ ] DNS
-- [ ] DHCP
-- [ ] File Server
-
----
+- [ ] DNS server
+- [ ] DHCP server
+- [ ] File server
 
 ### October
 
 - [ ] Group Policy
-- [ ] PowerShell Automation
+- [ ] PowerShell automation
 - [ ] IIS
-
----
 
 ### November
 
-- [ ] Linux
 - [ ] Docker
-
----
+- [ ] Linux service deployment
 
 ### December
 
 - [ ] Ansible
 - [ ] Monitoring
+- [ ] Backup and recovery testing
 
-### - Event Viewer 
-- [x] Ubuntu Server Deployment
-- [ ] Linux Server Provisioning
+## Completed Skills and Laboratories
 
-## Current Progress
-
-08.08.2026
-
-## Completed
-
-- Windows Service architecture
-- Service Control Manager (SCM)
-- Service analysis with PowerShell
-- Windows Registry navigation
-- Service configuration analysis
-- Ubuntu Server 24.04 LTS deployment
-- Basic Linux network verification
-- DNS connectivity verification
-- Initial APT package inspection
+- Windows Service Control Manager and service analysis
+- Windows Registry navigation and service configuration
+- Ubuntu deployment in UTM on Apple Silicon
+- Linux post-installation baseline inspection
+- APT package metadata, upgrade history and maintenance verification
+- Linux memory, filesystem, disk and LVM interpretation
+- systemd units, service state and socket activation
+- Terminal history, pager navigation and command-error classification
+- SSH host identity and ED25519 fingerprint comparison
+- Password-authentication failure diagnosis using `whoami`, `sudo` and SSH logs
+- Remote-session inspection using `$SSH_CONNECTION` and `w`
+- Dedicated client-key creation and private/public key separation
+- SSH `authorized_keys` ownership, permissions and content validation
+- Public-key-only SSH login verification
 
 ## Current Focus
 
-Linux Server Provisioning
+Remote Linux administration over SSH.
+
+## Next Session
+
+1. Inspect or create `~/.ssh/config` on macOS.
+2. Add a readable host alias for `linux01`.
+3. Test the alias while retaining console recovery access.
+4. Review firewall and effective SSH settings without changing them blindly.
+5. Define the first workload for `linux01` before installing additional software.
