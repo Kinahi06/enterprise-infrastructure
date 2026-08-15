@@ -754,3 +754,313 @@ Next lesson:
 3. Test the alias and review effective SSH client behavior.
 4. Inspect firewall and server SSH settings before considering hardening.
 5. Define a workload for `linux01` before installing additional software.
+
+---
+
+# Lesson 5 — LVM-Backed Samba File Server
+
+Date:
+2026-08-14 to 2026-08-15
+
+Environment:
+Ubuntu Server 24.04.4 LTS ARM64 in UTM, administered from macOS over SSH
+
+Status:
+File service operational; firewall and final hardening continue next session
+
+---
+
+## Objectives
+
+- Convert `linux01` from an unassigned training node into a useful server
+- Create dedicated storage without consuming the root filesystem
+- Make the storage mount persistent
+- Model access through a Unix group instead of broad permissions
+- Publish an authenticated SMB share
+- Prove read and write access from a real macOS client
+- Preserve SSH and UTM-console recovery paths before firewall changes
+
+---
+
+## Maintenance and SSH Client Preparation
+
+- Created `~/.ssh/config` on macOS with alias `linux01-lab`.
+- Configured the alias to use host `192.168.64.3`, user `linux01`, the dedicated laboratory key and `IdentitiesOnly yes`.
+- Verified the effective client configuration with `ssh -G`.
+- Successfully connected using `ssh linux01-lab`.
+- Reviewed pending upgrades before applying them.
+- Observed Ubuntu phased updates: five Kerberos packages were deferred while `linux-firmware` was eligible.
+- Applied the available upgrade.
+- Confirmed that the running kernel was current, no services required restart, no failed units were present and no reboot-request file existed.
+
+---
+
+## Baseline Before the File-Server Role
+
+- UFW state: inactive
+- Existing externally listening service: SSH on TCP 22
+- LVM volume group: `ubuntu-vg`, approximately 60.95 GiB
+- Existing root logical volume: approximately 30.47 GiB
+- Initial free volume-group capacity: approximately 30.47 GiB
+- No Samba ports were present before installation
+
+The workload was defined before allocating storage: an authenticated internal file share for macOS and later Windows clients.
+
+---
+
+## Dedicated LVM Storage
+
+Created a 10 GiB logical volume:
+
+```bash
+sudo lvcreate -L 10G -n files ubuntu-vg
+```
+
+Formatted it as ext4 and assigned a readable filesystem label:
+
+```bash
+sudo mkfs.ext4 -L files /dev/ubuntu-vg/files
+lsblk -f
+```
+
+Verified results:
+
+- Logical volume: `/dev/ubuntu-vg/files`
+- Size reported by LVM: 10.00 GiB
+- Filesystem: ext4
+- Label: `files`
+- Mount point: initially empty
+- Remaining free capacity in `ubuntu-vg`: approximately 20.47 GiB
+
+The separate volume prevents file-share data from silently consuming all free space on the root filesystem and gives the workload an independent capacity boundary.
+
+---
+
+## Persistent Mount
+
+Created the service-data mount point:
+
+```bash
+sudo mkdir -p /srv/samba
+```
+
+Backed up `/etc/fstab`, then added an entry using the filesystem UUID rather than a device name:
+
+```text
+UUID=132114e7-fce2-43c5-8c87-3f88a07a0274 /srv/samba ext4 defaults 0 2
+```
+
+Applied the systemd configuration refresh and validated the mount:
+
+```bash
+sudo systemctl daemon-reload
+sudo mount -a
+findmnt /srv/samba
+df -h /srv/samba
+```
+
+Persistence was tested without rebooting:
+
+1. Unmounted `/srv/samba`.
+2. Confirmed that `findmnt` returned no mount.
+3. Ran `mount -a`.
+4. Confirmed that the `files` logical volume returned at `/srv/samba`.
+
+The mounted filesystem reported approximately 9.8 GiB total and 9.3 GiB available.
+
+---
+
+## Unix Group and Filesystem Permissions
+
+Created a role group and added the laboratory user:
+
+```bash
+sudo groupadd fileshare
+sudo usermod -aG fileshare linux01
+```
+
+Created the shared directory and assigned restrictive group permissions:
+
+```bash
+sudo mkdir -p /srv/samba/company
+sudo chown root:fileshare /srv/samba/company
+sudo chmod 2770 /srv/samba/company
+```
+
+Interpretation of `2770`:
+
+- Owner: read, write and enter
+- Group: read, write and enter
+- Others: no access
+- Leading `2`: setgid inheritance for new directory contents
+
+The original SSH session did not immediately contain the new supplementary group because process credentials are established at login. After reconnecting, `id` showed `fileshare`, and user `linux01` created a file without `sudo`. The new file inherited group `fileshare`.
+
+---
+
+## Samba Deployment
+
+Installed Samba 4.19 and verified:
+
+- `smbd.service` was enabled and active
+- TCP 445 and TCP 139 were listening on IPv4 and IPv6
+- The server role reported by `testparm` was `ROLE_STANDALONE`
+
+Backed up the original configuration and added the authenticated share:
+
+```ini
+[company]
+    comment = Enterprise Lab company files
+    path = /srv/samba/company
+    browseable = yes
+    read only = no
+    guest ok = no
+    valid users = @fileshare
+    force group = fileshare
+    create mask = 0660
+    force create mode = 0660
+    directory mask = 2770
+    force directory mode = 2770
+```
+
+`testparm -s` returned `Loaded services file OK` and displayed the effective `company` share.
+
+Added existing Linux user `linux01` to Samba's account database with `smbpasswd`, reloaded the configuration and confirmed that `smbd` remained active. The Samba password itself was not recorded.
+
+---
+
+## macOS Client Acceptance Test
+
+The macOS client listed available resources with:
+
+```bash
+smbutil view //linux01@192.168.64.3
+```
+
+The response included:
+
+- `company` — the intended disk share
+- `print$` — an unused default printer-driver share to remove later
+- `IPC$` — Samba's normal inter-process control share
+
+Connected in Finder using:
+
+```text
+smb://192.168.64.3/company
+```
+
+The file created locally on Ubuntu appeared in Finder. macOS then created:
+
+```text
+/Volumes/company/mac-test/hello-from-mac.txt
+```
+
+The server immediately showed the same objects under:
+
+```text
+/srv/samba/company/mac-test/hello-from-mac.txt
+```
+
+The content matched on both systems. The Samba-created directory inherited `fileshare` and setgid permissions; the Samba-created file received mode `0660` as configured.
+
+This proved the complete path:
+
+```text
+macOS client -> TCP 445 -> smbd -> smb.conf -> Linux identity and group -> ext4 LVM storage
+```
+
+---
+
+## Errors Investigated
+
+### Invalid `ss` option
+
+`ss -tulkpn` included unsupported option `-k`. Reading the command's help revealed the valid flags, and `ss -tulpn` produced the intended listening-socket report.
+
+### Command and path spelling
+
+Examples included `fgs` instead of `vgs`, `findtmnt` instead of `findmnt`, `geyent` instead of `getent`, and `sbm.conf` instead of `smb.conf`.
+
+Lesson:
+
+Classify the message before reacting. `command not found` points to a command-name problem; `No such file or directory` points to a path problem.
+
+### File versus directory in a backup path
+
+`/etc/fstab/backup-files` failed because `/etc/fstab` is a file, not a directory. The corrected sibling filename was `/etc/fstab.backup-files`.
+
+### Wrong operating-system path
+
+`/Volumes/company` exists on macOS after Finder mounts the SMB share. It does not exist inside the Ubuntu SSH session, where the corresponding path is `/srv/samba/company`.
+
+### Silent success
+
+Several successful administrative commands produced no output, including `groupadd`, `usermod`, `chmod`, `chown`, `mount -a` and Samba's configuration reload. Follow-up inspection commands supplied the evidence instead of treating silence as uncertainty.
+
+---
+
+## Commands Practised
+
+```bash
+ssh -G linux01-lab
+ssh linux01-lab
+apt list --upgradable
+sudo apt upgrade --dry-run
+sudo apt upgrade
+systemctl --failed
+sudo ss -tulpn
+sudo vgs
+sudo lvs
+sudo lvcreate -L 10G -n files ubuntu-vg
+sudo mkfs.ext4 -L files /dev/ubuntu-vg/files
+lsblk -f
+sudo mkdir -p /srv/samba
+sudo cp -a /etc/fstab /etc/fstab.backup-files
+sudo nano /etc/fstab
+sudo systemctl daemon-reload
+sudo mount -a
+sudo umount /srv/samba
+findmnt /srv/samba
+df -h /srv/samba
+sudo groupadd fileshare
+sudo usermod -aG fileshare linux01
+sudo chown root:fileshare /srv/samba/company
+sudo chmod 2770 /srv/samba/company
+getent group fileshare
+id
+ls -ld /srv/samba/company
+sudo apt install samba
+smbd --version
+systemctl status smbd --no-pager
+sudo testparm -s
+sudo smbpasswd -a linux01
+sudo pdbedit -L
+sudo smbcontrol smbd reload-config
+smbutil view //linux01@192.168.64.3
+```
+
+---
+
+## Security State at Session End
+
+- Guest access to `company` is disabled.
+- Only members of `fileshare` are accepted by the share.
+- Files created through Samba are restricted to owner and group.
+- The UTM console remains available as a recovery path.
+- UFW is still inactive.
+- Firewall commands were planned but not yet executed.
+- TCP 139 remains listening until the firewall and Samba configuration are hardened.
+- The unused `print$` share remains in the default configuration.
+- No passwords, passphrases, private keys or recovery secrets were recorded.
+
+---
+
+## Next Session
+
+1. Stage and inspect UFW rules.
+2. Permit TCP 22 and TCP 445 only from `192.168.64.0/24`.
+3. Enable UFW while keeping the current SSH session and UTM console open.
+4. Test a second SSH connection and repeat the SMB client test.
+5. Remove unused printer-sharing configuration.
+6. Perform a controlled reboot and repeat storage, service and client acceptance tests.
+7. Plan a Windows SMB client test and a backup/restore exercise.

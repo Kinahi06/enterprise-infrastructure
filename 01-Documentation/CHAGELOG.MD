@@ -1,5 +1,42 @@
 # Changelog
 
+## 2026-08-14 to 2026-08-15 — First Linux Server Role: Samba File Server
+
+### Added
+
+- Reusable macOS SSH client alias `linux01-lab`
+- 10 GiB LVM logical volume named `files`
+- ext4 filesystem labelled `files`
+- Persistent mount at `/srv/samba` through `/etc/fstab`
+- Unix group `fileshare` and setgid-controlled `company` directory
+- Samba 4.19 standalone file-server role
+- Authenticated SMB share named `company`
+- Dedicated Samba credentials for the existing Linux account `linux01`
+
+### Completed
+
+- Applied the available `linux-firmware` upgrade and respected Ubuntu phased updates
+- Verified that no reboot or service restart was required after maintenance
+- Created, formatted, mounted and remounted the service-data logical volume
+- Proved that `mount -a` restores the mount from `/etc/fstab`
+- Verified Linux group inheritance and write access without `sudo`
+- Validated `smb.conf` with `testparm`
+- Verified `smbd` on TCP ports 139 and 445
+- Connected from macOS and performed a two-way SMB file test
+
+### Pending
+
+- Stage, review and enable UFW rules for SSH and SMB from `192.168.64.0/24`
+- Remove unused Samba printer shares
+- Perform controlled reboot and post-reboot acceptance tests
+- Test access from Windows
+
+### Security
+
+- Guest access to `company` is disabled
+- Access is restricted to members of `fileshare`
+- No passwords, key passphrases, private keys or recovery secrets were documented
+
 ## 2026-08-10 — Ubuntu Baseline and Verified SSH Administration
 
 ### Added

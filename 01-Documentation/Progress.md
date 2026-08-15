@@ -1,6 +1,6 @@
 # Progress Timeline
 
-Last updated: 2026-08-10
+Last updated: 2026-08-15
 
 ## August 2026
 
@@ -16,9 +16,17 @@ Last updated: 2026-08-10
 - [x] Verify OpenSSH socket activation
 - [x] Establish verified SSH access from macOS
 - [x] Configure and test ED25519 public-key authentication
-- [ ] Create a reusable macOS SSH client profile
+- [x] Create a reusable macOS SSH client profile
+- [x] Assign the first infrastructure role to `linux01`
+- [x] Create a dedicated LVM volume and persistent service-data mount
+- [x] Configure group-controlled Linux file permissions
+- [x] Deploy an authenticated Samba share
+- [x] Verify SMB read/write access from macOS
 - [ ] Review Ubuntu firewall state and SSH hardening
-- [ ] Assign the first application or infrastructure role to `linux01`
+- [ ] Enable subnet-restricted UFW rules with a tested SSH recovery path
+- [ ] Remove unused Samba printer-sharing configuration
+- [ ] Verify Samba and storage after reboot
+- [ ] Test the SMB share from Windows
 - [ ] Learn PowerShell objects
 - [ ] Investigate Windows Event Viewer
 
@@ -29,7 +37,7 @@ Last updated: 2026-08-10
 - [ ] Active Directory
 - [ ] DNS server
 - [ ] DHCP server
-- [ ] File server
+- [x] File server
 
 ### October
 
@@ -64,15 +72,20 @@ Last updated: 2026-08-10
 - Dedicated client-key creation and private/public key separation
 - SSH `authorized_keys` ownership, permissions and content validation
 - Public-key-only SSH login verification
+- Persistent LVM-backed service storage
+- `/etc/fstab` backup, validation and remount testing
+- Unix group ownership and setgid directory inheritance
+- Samba installation, configuration validation and account creation
+- Authenticated SMB share discovery and macOS read/write verification
 
 ## Current Focus
 
-Remote Linux administration over SSH.
+Building and securing the first Linux file-server role.
 
 ## Next Session
 
-1. Inspect or create `~/.ssh/config` on macOS.
-2. Add a readable host alias for `linux01`.
-3. Test the alias while retaining console recovery access.
-4. Review firewall and effective SSH settings without changing them blindly.
-5. Define the first workload for `linux01` before installing additional software.
+1. Review the staged UFW policy before enabling it.
+2. Permit SSH and SMB only from `192.168.64.0/24`.
+3. Verify a second SSH connection and SMB access after UFW is enabled.
+4. Remove unused printer-sharing configuration and validate Samba again.
+5. Reboot and verify the LVM mount, services, ports and client access.

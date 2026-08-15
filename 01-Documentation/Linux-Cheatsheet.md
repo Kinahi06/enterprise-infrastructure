@@ -603,6 +603,273 @@ A prompt for the key passphrase is local key protection. It is different from a 
 
 ---
 
+# LVM Service Storage
+
+## Inspect Capacity Before Allocating
+
+```bash
+sudo vgs
+sudo lvs
+```
+
+Safety: READ
+
+- `VFree` is capacity not yet assigned to a logical volume.
+- Define the workload, required size, mount point and recovery method before allocation.
+
+## Create a Logical Volume
+
+```bash
+sudo lvcreate -L 10G -n files ubuntu-vg
+```
+
+Safety: CHANGE
+
+- `-L 10G` selects the size.
+- `-n files` names the logical volume.
+- `ubuntu-vg` is the target volume group.
+
+Verify with `sudo lvs` and `sudo vgs`.
+
+## Create a Filesystem
+
+```bash
+sudo mkfs.ext4 -L files /dev/ubuntu-vg/files
+```
+
+Safety: DESTRUCTIVE IF THE TARGET IS WRONG
+
+`mkfs` creates a new filesystem and destroys existing filesystem content on the selected target. Confirm the exact new logical volume with `lvs` and `lsblk` first.
+
+```bash
+lsblk -f
+```
+
+Verify the expected filesystem type, label and UUID before mounting.
+
+---
+
+# Persistent Mounts
+
+## Create the Service Mount Point
+
+```bash
+sudo mkdir -p /srv/samba
+```
+
+`/srv` is intended for site-specific data provided by services. `/mnt` is more commonly used for temporary manual mounts.
+
+## Back Up and Edit `fstab`
+
+```bash
+sudo cp -a /etc/fstab /etc/fstab.backup-files
+sudo nano /etc/fstab
+```
+
+Example:
+
+```text
+UUID=FILESYSTEM_UUID /srv/samba ext4 defaults 0 2
+```
+
+Fields:
+
+1. Stable filesystem identifier
+2. Mount point
+3. Filesystem type
+4. Mount options
+5. Legacy `dump` setting
+6. Filesystem-check order; root is normally `1`, data filesystems normally `2`
+
+## Validate Before Reboot
+
+```bash
+sudo systemctl daemon-reload
+sudo mount -a
+findmnt /srv/samba
+df -h /srv/samba
+```
+
+Safety: CHANGE, THEN READ
+
+Do not reboot after an `fstab` error. Correct it while console or SSH recovery access is still available.
+
+A controlled persistence test for an empty, unused new filesystem:
+
+```bash
+sudo umount /srv/samba
+findmnt /srv/samba
+sudo mount -a
+findmnt /srv/samba
+```
+
+No output from the first `findmnt` is expected after a successful unmount.
+
+---
+
+# Group-Controlled Service Data
+
+## Create a Service Group
+
+```bash
+sudo groupadd fileshare
+sudo usermod -aG fileshare USERNAME
+```
+
+Safety: CHANGE
+
+`-aG` appends a supplementary group. Omitting `-a` can replace the user's existing supplementary groups.
+
+Reconnect after changing group membership. Existing processes retain the groups assigned when their session started.
+
+## Create a Setgid Shared Directory
+
+```bash
+sudo mkdir -p /srv/samba/company
+sudo chown root:fileshare /srv/samba/company
+sudo chmod 2770 /srv/samba/company
+```
+
+- Owner and group receive full directory access.
+- Others receive no access.
+- Leading `2` sets setgid so new contents inherit the directory group.
+
+Verify:
+
+```bash
+getent group fileshare
+id USERNAME
+ls -ld /srv/samba/company
+```
+
+Expected directory mode:
+
+```text
+drwxrws---
+```
+
+---
+
+# Samba File Server
+
+## Concepts
+
+- SMB is the network file-sharing protocol.
+- Samba is the Linux/Unix implementation.
+- A share name such as `[company]` maps network clients to a real Linux path.
+- Effective access requires both Samba authorization and Linux filesystem permission.
+
+## Install and Inspect
+
+```bash
+sudo apt install samba
+smbd --version
+systemctl status smbd --no-pager
+sudo ss -tlpn
+```
+
+Modern direct SMB uses TCP 445. TCP 139 and UDP 137–138 are associated with legacy NetBIOS functions.
+
+## Back Up and Validate Configuration
+
+```bash
+sudo cp -a /etc/samba/smb.conf /etc/samba/smb.conf.backup-original
+sudo nano /etc/samba/smb.conf
+sudo testparm -s
+```
+
+Do not reload an invalid configuration. Look for:
+
+```text
+Loaded services file OK.
+```
+
+Authenticated group-controlled share:
+
+```ini
+[company]
+    path = /srv/samba/company
+    browseable = yes
+    read only = no
+    guest ok = no
+    valid users = @fileshare
+    force group = fileshare
+    create mask = 0660
+    force create mode = 0660
+    directory mask = 2770
+    force directory mode = 2770
+```
+
+`@fileshare` means the Unix group named `fileshare`.
+
+## Create a Samba Account
+
+```bash
+sudo smbpasswd -a USERNAME
+sudo pdbedit -L
+```
+
+The Linux account must already exist. Samba credentials are stored separately. Never place the password directly in a command, repository or chat.
+
+## Reload and Verify
+
+```bash
+sudo smbcontrol smbd reload-config
+systemctl is-active smbd
+```
+
+No output from the reload normally indicates success. `is-active` should return `active`.
+
+## macOS Client Test
+
+```bash
+smbutil view //USERNAME@SERVER_IP
+```
+
+Finder connection:
+
+```text
+smb://SERVER_IP/company
+```
+
+After mounting, macOS normally exposes the share at:
+
+```text
+/Volumes/company
+```
+
+Remember that `/Volumes/company` is a macOS path. The corresponding Ubuntu path in this lab is `/srv/samba/company`.
+
+---
+
+# UFW for Remote File Servers
+
+## Safe Deployment Order
+
+1. Keep the current SSH session open.
+2. Keep console recovery available.
+3. Add the SSH allow rule before enabling UFW.
+4. Add only the service ports that are required.
+5. Inspect staged rules.
+6. Enable UFW.
+7. Test a second SSH session before closing the first.
+
+Example policy for this laboratory:
+
+```bash
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow from 192.168.64.0/24 to any port 22 proto tcp comment 'SSH lab'
+sudo ufw allow from 192.168.64.0/24 to any port 445 proto tcp comment 'SMB lab'
+sudo ufw show added
+```
+
+Safety: CHANGE, NOT YET ENABLED
+
+Review the addresses and ports before running `sudo ufw enable`. Direct SMB access by IP does not require opening legacy NetBIOS ports.
+
+---
+
 # Troubleshooting Order
 
 1. Define exactly what is failing.

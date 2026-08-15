@@ -1,6 +1,6 @@
 # Skill Matrix
 
-Last updated: 2026-08-10
+Last updated: 2026-08-15
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
@@ -9,13 +9,14 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Skill | Level | Target |
 |-------|------:|-------:|
 | Windows Administration | 2/10 | 9/10 |
-| Linux Administration | 3/10 | 9/10 |
+| Linux Administration | 4/10 | 9/10 |
+| Samba File Services | 3/10 | 8/10 |
 | Active Directory | 0/10 | 9/10 |
 | Group Policy | 0/10 | 8/10 |
 | Windows Services | 2/10 | 9/10 |
 | Registry | 1/10 | 8/10 |
 | Event Viewer | 1/10 | 8/10 |
-| OpenSSH Administration | 3/10 | 8/10 |
+| OpenSSH Administration | 4/10 | 8/10 |
 
 ## Networking
 
@@ -34,7 +35,7 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Skill | Level | Target |
 |-------|------:|-------:|
 | PowerShell | 2/10 | 10/10 |
-| Bash and shell usage | 2/10 | 8/10 |
+| Bash and shell usage | 3/10 | 8/10 |
 | Git | 2/10 | 9/10 |
 | GitHub | 2/10 | 9/10 |
 | Ansible | 0/10 | 8/10 |
@@ -74,8 +75,15 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Read SSH authentication evidence | ✅ |
 | Configure `authorized_keys` permissions | ✅ |
 | Verify public-key-only login | ✅ |
-| Configure a client alias in `~/.ssh/config` | ⏳ |
-| Inspect firewall rules | ⏳ |
+| Configure a client alias in `~/.ssh/config` | ✅ |
+| Create and format an LVM logical volume | ✅ |
+| Configure a persistent UUID mount in `/etc/fstab` | ✅ |
+| Configure group ownership and setgid inheritance | ✅ |
+| Install and validate a Samba file server | ✅ |
+| Create an authenticated SMB share | ✅ |
+| Verify SMB access from macOS | ✅ |
+| Inspect firewall state | ✅ |
+| Enable subnet-restricted firewall rules | ⏳ |
 | Harden SSH with a tested recovery path | ⏳ |
 
 ## Windows Services Checklist
@@ -110,12 +118,13 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 
 ## Current Focus
 
-- Remote Linux administration
-- SSH client configuration and authentication
-- Networking and infrastructure fundamentals
+- Linux storage and service deployment
+- Samba file sharing and access control
+- Remote administration over verified SSH
 
 ## Next Focus
 
-- Firewall inspection
-- Linux server-role selection
-- SSH configuration review and controlled hardening
+- Subnet-restricted UFW policy
+- Samba configuration hardening
+- Reboot and recovery verification
+- Windows SMB client testing

@@ -300,6 +300,54 @@ This provides better application-level evidence than `ping` alone.
 
 ---
 
+# SMB File Shares
+
+## Test the SMB Port
+
+```powershell
+Test-NetConnection 192.168.64.3 -Port 445
+```
+
+Safety: READ
+
+`TcpTestSucceeded : True` proves that the Windows client can reach the server's SMB listener. It does not prove that credentials or share permissions are correct.
+
+## Open a Share in Explorer
+
+Enter in the Explorer address bar:
+
+```text
+\\192.168.64.3\company
+```
+
+Authenticate with the Samba username and password when prompted.
+
+## Map a Temporary Drive
+
+```cmd
+net use Z: \\192.168.64.3\company /user:linux01 *
+```
+
+Safety: CHANGE
+
+The final `*` requests the password interactively so it does not appear in command history.
+
+Inspect mapped drives:
+
+```cmd
+net use
+```
+
+Disconnect:
+
+```cmd
+net use Z: /delete
+```
+
+This Windows client test is planned for the next file-server validation session.
+
+---
+
 # Event Logs
 
 ## Read Recent System Events

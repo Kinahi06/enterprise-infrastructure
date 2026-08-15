@@ -1,6 +1,6 @@
 # Infrastructure Plan
 
-Last updated: 2026-08-10
+Last updated: 2026-08-15
 
 ## 1. Project Overview
 
@@ -27,7 +27,7 @@ This department list is preliminary and will be revised when the fictional compa
 | Asset | Platform | Address | Resources | Current role | Status |
 |-------|----------|---------|-----------|--------------|--------|
 | Windows 11 Pro VM | UTM, ARM64 | Dynamic | Document later | Windows administration workstation | Deployed |
-| `linux01` | Ubuntu Server 24.04.4 LTS ARM64 | `192.168.64.3/24` | ~4 GiB RAM, 64 GiB virtual disk | Unassigned Linux administration node | Deployed |
+| `linux01` | Ubuntu Server 24.04.4 LTS ARM64 | `192.168.64.3/24` | ~4 GiB RAM, 64 GiB virtual disk | Authenticated Samba file server | Operational, hardening pending |
 
 ### `linux01` Storage
 
@@ -36,9 +36,12 @@ This department list is preliminary and will be revised when the fictional compa
 - `/boot`: 2 GiB
 - LVM physical volume: approximately 60.9 GiB
 - Root logical volume: approximately 30.5 GiB
-- Unallocated volume-group capacity: approximately 30.47 GiB
+- Service-data logical volume `files`: 10 GiB
+- Service-data filesystem: ext4, label `files`
+- Persistent service-data mount: `/srv/samba`
+- Remaining unallocated volume-group capacity: approximately 20.47 GiB
 
-The free LVM capacity is intentionally retained until a workload defines whether it should extend `/` or become a separate logical volume.
+The `files` logical volume is mounted by filesystem UUID through `/etc/fstab`. Persistence was tested by unmounting it and restoring it with `mount -a`. Remaining LVM capacity is retained for future growth or another workload.
 
 ### `linux01` Access
 
@@ -48,6 +51,8 @@ The free LVM capacity is intentionally retained until a workload defines whether
 - Password authentication currently retained for recovery and training
 - Dedicated lab client public key installed for user `linux01`
 - Public-key-only authentication successfully tested from macOS
+- macOS client alias `linux01-lab` configured and tested
+- Samba account created for existing Linux user `linux01`
 
 ## 4. Current Network
 
@@ -56,8 +61,11 @@ Observed virtual-network endpoints:
 - macOS/virtual-network side: `192.168.64.1`
 - `linux01`: `192.168.64.3`
 - SSH destination port: TCP 22
+- SMB destination port: TCP 445
 
-The exact UTM network mode, address-allocation method and persistence requirements still need to be documented before relying on fixed addresses.
+Direct SMB access from macOS to `smb://192.168.64.3/company` is verified. The exact UTM network mode, address-allocation method and persistence requirements still need to be documented before relying on fixed addresses.
+
+UFW was inactive during deployment. A least-privilege policy is planned to allow TCP 22 and TCP 445 only from `192.168.64.0/24`; it was not enabled before the session ended.
 
 ## 5. Planned Infrastructure Roles
 
@@ -71,11 +79,11 @@ Potential future roles:
 - Configuration management and automation
 - Backup and recovery
 
-No role is assigned to `linux01` yet. The first workload will be selected before role-specific packages or storage changes are made.
+The first role assigned to `linux01` is an authenticated standalone Samba file server. It is not an Active Directory domain controller.
 
 ## 6. Shared Resources — Planned
 
-- Department file shares
+- `company` authenticated file share at `/srv/samba/company`
 - Administrative tools and scripts
 - Centralized logs
 - Monitoring dashboards
@@ -94,9 +102,10 @@ No role is assigned to `linux01` yet. The first workload will be selected before
 
 ## 8. Next Milestones
 
-1. Create a macOS SSH client alias for `linux01`.
-2. Document the effective UTM network mode and IP-allocation strategy.
-3. Inspect Ubuntu firewall and effective SSH settings.
-4. Select the first server workload and document its requirements.
-5. Decide how LVM capacity will support that workload.
-6. Create a recovery and snapshot procedure before disruptive configuration changes.
+1. Review and enable subnet-restricted UFW rules while keeping UTM console recovery.
+2. Verify new SSH and SMB connections after firewall activation.
+3. Remove unused Samba printer shares and validate the resulting configuration.
+4. Perform a controlled reboot and verify `/srv/samba`, `smbd` and client access.
+5. Test the `company` share from Windows.
+6. Document the effective UTM network mode and IP-allocation strategy.
+7. Define backup and restore tests for the file-server data.

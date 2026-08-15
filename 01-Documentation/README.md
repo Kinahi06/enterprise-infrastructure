@@ -2,7 +2,7 @@
 
 Personal laboratory for learning infrastructure engineering through deployment, inspection, troubleshooting and documentation.
 
-Last updated: 2026-08-10
+Last updated: 2026-08-15
 
 ## Goals
 
@@ -18,37 +18,39 @@ Last updated: 2026-08-10
 | Metric | Value |
 |--------|------:|
 | Lessons completed | 4 |
+| Current lesson | 5 — file-server hardening in progress |
 | Incidents documented | 7 |
 | Scripts written | 0 |
-| Commands practised | 40+ |
-| Time invested | ~12 hours |
+| Commands practised | 70+ |
+| Time invested | ~16+ hours |
 
 ## Current Systems
 
 | System | Platform | Status | Current purpose |
 |--------|----------|--------|-----------------|
 | Windows 11 Pro ARM64 VM | UTM | Running | Windows administration laboratory |
-| `linux01` | Ubuntu Server 24.04.4 LTS ARM64 | Running | Linux administration and SSH laboratory |
+| `linux01` | Ubuntu Server 24.04.4 LTS ARM64 | Running | Authenticated Samba file server laboratory |
 
 ## Current Module
 
-Remote Linux administration over SSH.
+Linux file-server deployment over verified SSH administration.
 
 Completed in the current module:
 
-- Ubuntu baseline and resource inspection
-- APT upgrade and post-maintenance verification
-- Disk, filesystem and LVM analysis
-- systemd service and socket activation analysis
-- Verified SSH host identity
-- Password and ED25519 public-key authentication
-- SSH authentication-log troubleshooting
+- Reusable macOS SSH alias `linux01-lab`
+- Dedicated 10 GiB LVM logical volume for service data
+- Persistent ext4 mount at `/srv/samba`
+- Group-based Linux permissions with setgid inheritance
+- Samba 4.19 standalone file server
+- Authenticated `company` share
+- Successful macOS SMB read/write test
 
 Next:
 
-- Create a macOS SSH client profile for `linux01`
-- Decide the first server role before installing role-specific software
-- Review firewall state and SSH hardening with a recovery plan
+- Review and enable subnet-restricted UFW rules without losing SSH
+- Remove unused printer-sharing configuration
+- Verify SSH, storage and Samba after a controlled reboot
+- Test the share from the Windows laboratory
 
 ## Documentation
 
