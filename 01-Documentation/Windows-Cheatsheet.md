@@ -1,6 +1,8 @@
-# Windows Administration Cheat Sheet
+# Windows Administration Runbook
 
-Quick reference for the Infrastructure Engineering Lab.
+Long-form operational reference for the Infrastructure Engineering Lab.
+Portfolio readers can return to the [documentation index](./README.md); this
+file is intended for command lookup during hands-on work.
 
 Use commands to answer a specific question. Do not run the entire list blindly.
 

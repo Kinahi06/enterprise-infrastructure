@@ -1,151 +1,95 @@
 # Infrastructure Plan
 
-Last updated: 2026-08-18
+Last updated: 2026-08-19
 
-## 1. Project Overview
+## Scope
 
-The project models a small enterprise infrastructure and provides repeatable laboratories for Windows, Linux, networking, security, troubleshooting and automation.
+This project models a small enterprise environment for practical Windows,
+Linux, networking, security, troubleshooting and automation exercises. New
+services are added only after defining their users, data, dependencies,
+verification and recovery path.
 
-The design will be implemented in stages. A service will not be installed until its users, dependencies, data, availability requirements and recovery method are understood.
+## Current Inventory
 
-## 2. Proposed Departments
+| Asset | Platform | Role | Tailnet identity | State |
+|---|---|---|---|---|
+| `macbook-admin` | macOS host | Administration and SMB client | `100.118.247.65` | Operational |
+| `nova-ws01` | Windows 11 Pro ARM64 in UTM | Windows administration and SMB client | `100.73.143.51` | Operational |
+| `linux01-server` | Ubuntu Server 24.04.4 LTS ARM64 in UTM | SSH and Samba server | `100.125.27.99` | Operational |
 
-- Management
-- Administration
-- Accounting
-- Human Resources
-- Sales
-- Operations
-- Call Center
-- DevOps and IT
-- General Staff
+MagicDNS names are used in normal commands. Exact Tailscale IPv4 addresses are
+recorded because the current firewall policy identifies individual clients.
 
-This department list is preliminary and will be revised when the fictional company requirements are defined.
+## Service Architecture
 
-## 3. Current Laboratory Inventory
+`linux01-server` provides an authenticated standalone Samba share named
+`company`; it is not a domain controller.
 
-| Asset | Platform | Address | Resources | Current role | Status |
-|-------|----------|---------|-----------|--------------|--------|
-| `nova-ws01` | Windows 11 Pro, UTM ARM64 | Tailscale `100.73.143.51` | Document later | Windows SMB client and administration workstation | Operational |
-| `linux01-server` | Ubuntu Server 24.04.4 LTS ARM64 | Tailscale `100.125.27.99` | ~4 GiB RAM, 64 GiB virtual disk | Authenticated Samba file server | Operational |
-| `macbook-admin` | macOS host | Tailscale `100.118.247.65` | Physical host | Administrative workstation and SMB client | Operational |
+| Layer | Configuration |
+|---|---|
+| Remote access | OpenSSH socket on TCP 22; ED25519 client-key login tested |
+| Overlay | Tailscale on Ubuntu, macOS and Windows with MagicDNS |
+| Firewall | UFW default-deny incoming; exact rules on `tailscale0` |
+| Identity | Linux/Samba user `linux01`; Unix group `fileshare` |
+| File service | Samba 4.19, guest access disabled, printing disabled |
+| Data | `/srv/samba/company` on a dedicated ext4 LVM volume |
 
-### `linux01` Storage
+### Storage Layout
 
-- Virtual disk: 64 GiB
-- EFI partition: 1 GiB
-- `/boot`: 2 GiB
-- LVM physical volume: approximately 60.9 GiB
-- Root logical volume: approximately 30.5 GiB
-- Service-data logical volume `files`: 10 GiB
-- Service-data filesystem: ext4, label `files`
-- Persistent service-data mount: `/srv/samba`
-- Remaining unallocated volume-group capacity: approximately 20.47 GiB
+| Component | Size or value |
+|---|---|
+| Virtual disk | 64 GiB |
+| EFI / boot | 1 GiB / 2 GiB |
+| Root logical volume | ~30.5 GiB |
+| `files` logical volume | 10 GiB, ext4, label `files` |
+| Persistent mount | `/srv/samba` through filesystem UUID in `/etc/fstab` |
+| Unallocated VG capacity | ~20.47 GiB |
 
-The `files` logical volume is mounted by filesystem UUID through `/etc/fstab`. Persistence was tested by unmounting it and restoring it with `mount -a`. Remaining LVM capacity is retained for future growth or another workload.
+The separate service volume prevents share data from silently consuming the
+root filesystem and leaves capacity for controlled growth.
 
-### `linux01` Access
+## Access Policy
 
-- Local recovery access through the UTM console
-- OpenSSH socket listening on TCP port 22
-- Verified server ED25519 host key
-- Password authentication currently retained for recovery and training
-- Dedicated lab client public key installed for user `linux01`
-- Public-key-only authentication successfully tested from macOS
-- macOS client alias `linux01-lab` configured and tested
-- Samba account created for existing Linux user `linux01`
+The completed Ubuntu inbound policy contains only:
 
-## 4. Current Network
+| Client | Interface | Port | Purpose |
+|---|---|---:|---|
+| `macbook-admin` | `tailscale0` | TCP 22 | SSH administration |
+| `macbook-admin` | `tailscale0` | TCP 445 | SMB access |
+| `nova-ws01` | `tailscale0` | TCP 445 | SMB access |
 
-The original UTM NAT subnet was useful while all systems shared one local
-network, but addresses and subnets changed when the VM network mode or upstream
-network changed. Tailscale now provides a stable encrypted management overlay
-independent of home, workplace or mobile-host addressing.
+TCP 139 and all other unsolicited inbound traffic remain blocked. Local UTM
+addresses are recovery or diagnostic paths, not stable management identities.
 
-Current tailnet endpoints:
+Some tests use a Tailscale DERP relay. Application access and encryption are
+verified; direct-path optimization is tracked as a performance task rather
+than an availability failure.
 
-- `macbook-admin`: `100.118.247.65`
-- `linux01-server`: `100.125.27.99`
-- `nova-ws01`: `100.73.143.51`
+## Automation
 
-MagicDNS names are preferred in normal commands. Tailscale IPv4 addresses are
-recorded because the current UFW design uses exact source-address rules.
+Four idempotent tools implement the manual overlay procedure:
 
-Legacy observed virtual-network endpoints:
+- Ubuntu, macOS and Windows bootstrap scripts;
+- an Ubuntu helper for exact UFW client authorization.
 
-- macOS/virtual-network side: `192.168.64.1`
-- `linux01`: `192.168.64.3`
-- SSH destination port: TCP 22
-- SMB destination port: TCP 445
+Interactive mode uses browser authentication and a final default-No approval
+gate. Parameter and check-only modes support repeatable validation and future
+configuration management. See the [automation guide](../02-Automation/README.md).
 
-Direct SMB access from macOS to `smb://192.168.64.3/company` was verified during
-the local-network phase. It is no longer the normal administration path.
+## Engineering Rules
 
-UFW is active with default-deny incoming and allow outgoing policies. The final
-incoming policy contains exactly three rules:
+1. Record the baseline and expected result before a change.
+2. Make the smallest change that satisfies the requirement.
+3. Keep console or second-session recovery access during remote-access work.
+4. Validate the application, not only the process or open port.
+5. Test persistence after reboot and test restore procedures explicitly.
+6. Never commit passwords, private keys, auth tokens or recovery secrets.
+7. Record incident evidence, cause, resolution and verification.
 
-- TCP 22 on `tailscale0` from `100.118.247.65` for Mac SSH administration
-- TCP 445 on `tailscale0` from `100.118.247.65` for Mac SMB access
-- TCP 445 on `tailscale0` from `100.73.143.51` for Windows SMB access
+## Roadmap
 
-TCP 139 remains blocked. Windows currently reaches the server through a DERP
-relay rather than a direct peer-to-peer path. Functionality and encryption are
-verified; direct-path optimization remains a separate performance task.
-
-## 5. Planned Infrastructure Roles
-
-Potential future roles:
-
-- Identity and directory services
-- DNS and DHCP
-- File and print services
-- Linux web or application service
-- Monitoring and centralized logging
-- Configuration management and automation
-- Backup and recovery
-
-The first role assigned to `linux01` is an authenticated standalone Samba file server. It is not an Active Directory domain controller.
-
-## 6. Shared Resources
-
-- `company` authenticated file share at `/srv/samba/company`
-- Administrative tools and scripts
-- Centralized logs
-- Monitoring dashboards
-- Configuration repository
-- Backup storage
-
-## 7. Engineering Rules
-
-1. Inspect and document the baseline before changing a system.
-2. Define the expected result and verification method before a change.
-3. Make the smallest appropriate change.
-4. Keep local console or other recovery access while changing remote access.
-5. Never commit passwords, passphrases, tokens or private keys.
-6. Test backups and recovery instead of assuming they work.
-7. Record incidents, evidence, resolution and verification.
-
-## 8. Automation Design
-
-Stage-one bootstrap scripts are stored in the public GitHub repository because
-a new machine cannot access a private tailnet share before enrollment. After
-joining, a server-side helper grants only the required service on `tailscale0`.
-
-Implemented components:
-
-- Ubuntu Tailscale bootstrap in Bash
-- macOS Tailscale bootstrap in Bash
-- Windows Tailscale bootstrap in PowerShell
-- Idempotent Ubuntu UFW authorization helper
-- Check-only validation modes and deployment logs
-
-Authentication is interactive by default. Optional auth-key files must be kept
-outside Git, protected by filesystem permissions and removed after enrollment.
-
-## 9. Next Milestones
-
-1. Test the bootstrap scripts against fresh VM snapshots.
-2. Define and test backup and restore for service data and configuration.
-3. Investigate DERP relay use and direct-path requirements in UTM.
-4. Review effective SSH server settings and plan controlled hardening.
-5. Add monitoring for storage capacity, Samba state and authentication failures.
+1. Test first-time bootstrap on clean VM snapshots.
+2. Back up and restore Samba data, configuration and required account state.
+3. Add service, storage and authentication monitoring.
+4. Review effective SSH settings and harden them with a recovery plan.
+5. Add identity, DNS/DHCP and configuration-management laboratories.
