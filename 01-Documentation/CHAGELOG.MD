@@ -1,5 +1,46 @@
 # Changelog
 
+## 2026-08-18 to 2026-08-19 — Tailscale Overlay Network and Bootstrap Automation
+
+### Added
+
+- Tailscale nodes `macbook-admin`, `linux01-server` and `nova-ws01`
+- Stable MagicDNS access independent of changing UTM or upstream subnets
+- Exact UFW rules on `tailscale0` for Mac SSH/SMB and Windows SMB
+- Ubuntu, macOS and Windows Tailscale bootstrap scripts
+- Idempotent Ubuntu UFW client-authorization helper
+- Check-only modes, installer checksum validation and local deployment logs
+- Interactive setup questions, validation and final `[y/N]` confirmation
+
+### Completed
+
+- Verified SSH from macOS to Ubuntu over Tailscale
+- Verified authenticated SMB read/write from macOS and Windows
+- Diagnosed Windows elevated-session SMB authentication instead of enabling guest access
+- Removed obsolete local-subnet UFW rules without interrupting remote access
+- Rebooted Ubuntu and verified Tailscale, SSH, Samba and LVM persistence
+- Identified Windows traffic using a DERP relay while application tests still passed
+- Passed the macOS bootstrap's local check-only validation; offline-peer detection also failed safely
+- Verified Linux and macOS wizard cancellation without changing either system
+- Passed Ubuntu bootstrap and exact UFW client-rule checks without changes
+- Passed Windows PowerShell parsing and bootstrap check-only validation
+- Verified Windows wizard cancellation before applying the confirmed configuration
+- Applied the Windows wizard successfully and revalidated MagicDNS, Tailscale ping and TCP 445
+
+### Security
+
+- Incoming services are limited by interface, exact Tailscale source and port
+- Browser authentication is the automation default
+- Optional auth keys are read from protected files and never embedded in source
+- One-time browser-authentication URLs are displayed only on screen and excluded from logs
+- Published scripts contain no passwords, private keys, tokens or recovery secrets
+
+### Pending
+
+- Test every bootstrap against a fresh VM snapshot
+- Investigate a direct Windows-to-Ubuntu Tailscale path
+- Design and test file-server backup and restore
+
 ## 2026-08-14 to 2026-08-15 — First Linux Server Role: Samba File Server
 
 ### Added
@@ -23,18 +64,25 @@
 - Validated `smb.conf` with `testparm`
 - Verified `smbd` on TCP ports 139 and 445
 - Connected from macOS and performed a two-way SMB file test
+- Enabled UFW with default-deny incoming policy
+- Restricted SSH and SMB to `192.168.64.0/24`
+- Verified new SSH and SMB connections after firewall activation
+- Confirmed TCP 139 is blocked while TCP 22 and 445 remain reachable
+- Disabled Samba printer loading, spoolss and guest usershares
+- Disabled the explicit `printers` and `print$` resources
+- Rebooted and verified SSH, UFW, Samba, the LVM mount and stored data
 
 ### Pending
 
-- Stage, review and enable UFW rules for SSH and SMB from `192.168.64.0/24`
-- Remove unused Samba printer shares
-- Perform controlled reboot and post-reboot acceptance tests
 - Test access from Windows
+- Design and test backup and restore
 
 ### Security
 
 - Guest access to `company` is disabled
 - Access is restricted to members of `fileshare`
+- UFW permits only TCP 22 and TCP 445 from the laboratory subnet
+- Legacy TCP 139 is blocked by the firewall
 - No passwords, key passphrases, private keys or recovery secrets were documented
 
 ## 2026-08-10 — Ubuntu Baseline and Verified SSH Administration

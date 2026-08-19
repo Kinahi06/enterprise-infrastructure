@@ -1,6 +1,6 @@
 # Infrastructure Plan
 
-Last updated: 2026-08-15
+Last updated: 2026-08-18
 
 ## 1. Project Overview
 
@@ -26,8 +26,9 @@ This department list is preliminary and will be revised when the fictional compa
 
 | Asset | Platform | Address | Resources | Current role | Status |
 |-------|----------|---------|-----------|--------------|--------|
-| Windows 11 Pro VM | UTM, ARM64 | Dynamic | Document later | Windows administration workstation | Deployed |
-| `linux01` | Ubuntu Server 24.04.4 LTS ARM64 | `192.168.64.3/24` | ~4 GiB RAM, 64 GiB virtual disk | Authenticated Samba file server | Operational, hardening pending |
+| `nova-ws01` | Windows 11 Pro, UTM ARM64 | Tailscale `100.73.143.51` | Document later | Windows SMB client and administration workstation | Operational |
+| `linux01-server` | Ubuntu Server 24.04.4 LTS ARM64 | Tailscale `100.125.27.99` | ~4 GiB RAM, 64 GiB virtual disk | Authenticated Samba file server | Operational |
+| `macbook-admin` | macOS host | Tailscale `100.118.247.65` | Physical host | Administrative workstation and SMB client | Operational |
 
 ### `linux01` Storage
 
@@ -56,16 +57,40 @@ The `files` logical volume is mounted by filesystem UUID through `/etc/fstab`. P
 
 ## 4. Current Network
 
-Observed virtual-network endpoints:
+The original UTM NAT subnet was useful while all systems shared one local
+network, but addresses and subnets changed when the VM network mode or upstream
+network changed. Tailscale now provides a stable encrypted management overlay
+independent of home, workplace or mobile-host addressing.
+
+Current tailnet endpoints:
+
+- `macbook-admin`: `100.118.247.65`
+- `linux01-server`: `100.125.27.99`
+- `nova-ws01`: `100.73.143.51`
+
+MagicDNS names are preferred in normal commands. Tailscale IPv4 addresses are
+recorded because the current UFW design uses exact source-address rules.
+
+Legacy observed virtual-network endpoints:
 
 - macOS/virtual-network side: `192.168.64.1`
 - `linux01`: `192.168.64.3`
 - SSH destination port: TCP 22
 - SMB destination port: TCP 445
 
-Direct SMB access from macOS to `smb://192.168.64.3/company` is verified. The exact UTM network mode, address-allocation method and persistence requirements still need to be documented before relying on fixed addresses.
+Direct SMB access from macOS to `smb://192.168.64.3/company` was verified during
+the local-network phase. It is no longer the normal administration path.
 
-UFW was inactive during deployment. A least-privilege policy is planned to allow TCP 22 and TCP 445 only from `192.168.64.0/24`; it was not enabled before the session ended.
+UFW is active with default-deny incoming and allow outgoing policies. The final
+incoming policy contains exactly three rules:
+
+- TCP 22 on `tailscale0` from `100.118.247.65` for Mac SSH administration
+- TCP 445 on `tailscale0` from `100.118.247.65` for Mac SMB access
+- TCP 445 on `tailscale0` from `100.73.143.51` for Windows SMB access
+
+TCP 139 remains blocked. Windows currently reaches the server through a DERP
+relay rather than a direct peer-to-peer path. Functionality and encryption are
+verified; direct-path optimization remains a separate performance task.
 
 ## 5. Planned Infrastructure Roles
 
@@ -81,7 +106,7 @@ Potential future roles:
 
 The first role assigned to `linux01` is an authenticated standalone Samba file server. It is not an Active Directory domain controller.
 
-## 6. Shared Resources — Planned
+## 6. Shared Resources
 
 - `company` authenticated file share at `/srv/samba/company`
 - Administrative tools and scripts
@@ -100,12 +125,27 @@ The first role assigned to `linux01` is an authenticated standalone Samba file s
 6. Test backups and recovery instead of assuming they work.
 7. Record incidents, evidence, resolution and verification.
 
-## 8. Next Milestones
+## 8. Automation Design
 
-1. Review and enable subnet-restricted UFW rules while keeping UTM console recovery.
-2. Verify new SSH and SMB connections after firewall activation.
-3. Remove unused Samba printer shares and validate the resulting configuration.
-4. Perform a controlled reboot and verify `/srv/samba`, `smbd` and client access.
-5. Test the `company` share from Windows.
-6. Document the effective UTM network mode and IP-allocation strategy.
-7. Define backup and restore tests for the file-server data.
+Stage-one bootstrap scripts are stored in the public GitHub repository because
+a new machine cannot access a private tailnet share before enrollment. After
+joining, a server-side helper grants only the required service on `tailscale0`.
+
+Implemented components:
+
+- Ubuntu Tailscale bootstrap in Bash
+- macOS Tailscale bootstrap in Bash
+- Windows Tailscale bootstrap in PowerShell
+- Idempotent Ubuntu UFW authorization helper
+- Check-only validation modes and deployment logs
+
+Authentication is interactive by default. Optional auth-key files must be kept
+outside Git, protected by filesystem permissions and removed after enrollment.
+
+## 9. Next Milestones
+
+1. Test the bootstrap scripts against fresh VM snapshots.
+2. Define and test backup and restore for service data and configuration.
+3. Investigate DERP relay use and direct-path requirements in UTM.
+4. Review effective SSH server settings and plan controlled hardening.
+5. Add monitoring for storage capacity, Samba state and authentication failures.

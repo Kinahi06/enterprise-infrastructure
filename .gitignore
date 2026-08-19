@@ -1,0 +1,12 @@
+.DS_Store
+**/.DS_Store
+
+# Local credentials and certificate material must never enter Git.
+*.key
+*.pem
+*.p12
+*.pfx
+tailscale-auth.*
+
+# Local automation output.
+*.log

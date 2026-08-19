@@ -344,7 +344,76 @@ Disconnect:
 net use Z: /delete
 ```
 
-This Windows client test is planned for the next file-server validation session.
+If an elevated PowerShell session has no SMB credentials, Windows may report
+that organizational policy blocks unauthenticated guest access. Do not weaken
+guest policy. Create an authenticated connection instead:
+
+```cmd
+net use \\SERVER_NAME\company /user:linux01 * /persistent:no
+```
+
+The final `*` asks for the password interactively. Confirm the connection with
+`net use`, repeat the original file operation, and disconnect when finished.
+
+---
+
+# Tailscale Overlay Administration
+
+## Inspect the Node and Peers
+
+```powershell
+tailscale version
+tailscale status
+tailscale ip -4
+```
+
+Safety: READ
+
+The node name is used by MagicDNS. The `100.x.y.z` address is its tailnet IPv4
+address and is independent of the current Wi-Fi, Ethernet or UTM subnet.
+
+## Test Overlay and Service Connectivity
+
+```powershell
+tailscale ping linux01-server
+Test-NetConnection -ComputerName linux01-server -Port 445 -InformationLevel Detailed
+```
+
+Safety: READ
+
+Interpret separately:
+
+- `tailscale ping` verifies the overlay path;
+- `TcpTestSucceeded : True` verifies that TCP 445 is reachable;
+- opening and writing to the share verifies SMB authentication and permissions.
+
+`via DERP(...)` is a working encrypted relay path, not a failed test. A direct
+path is normally faster and can be investigated later as a NAT-traversal issue.
+
+## Run Tailscale Without an Interactive Login Session
+
+From elevated PowerShell:
+
+```powershell
+tailscale up --unattended=true
+```
+
+Safety: CHANGE
+
+This is useful for a server or laboratory VM that must remain reachable after
+the desktop user signs out. It does not mean guest SMB access should be enabled.
+
+## Test SMB Through MagicDNS
+
+```powershell
+Test-NetConnection linux01-server -Port 445
+net use \\linux01-server\company /user:linux01 * /persistent:no
+Set-Content '\\linux01-server\company\windows-test.txt' 'Created from Windows over SMB'
+Get-Content '\\linux01-server\company\windows-test.txt'
+```
+
+Safety: READ for the port/content checks; CHANGE for `net use` and
+`Set-Content`.
 
 ---
 

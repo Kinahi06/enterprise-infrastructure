@@ -766,7 +766,7 @@ Environment:
 Ubuntu Server 24.04.4 LTS ARM64 in UTM, administered from macOS over SSH
 
 Status:
-File service operational; firewall and final hardening continue next session
+Completed and verified after controlled reboot
 
 ---
 
@@ -1037,30 +1037,368 @@ sudo smbpasswd -a linux01
 sudo pdbedit -L
 sudo smbcontrol smbd reload-config
 smbutil view //linux01@192.168.64.3
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow from 192.168.64.0/24 to any port 22 proto tcp comment 'SSH lab'
+sudo ufw allow from 192.168.64.0/24 to any port 445 proto tcp comment 'SMB lab'
+sudo ufw show added
+sudo ufw enable
+sudo ufw status verbose
 ```
 
 ---
 
-## Security State at Session End
+## Firewall and Samba Hardening
+
+UFW was configured in a recovery-safe order:
+
+1. Kept the existing SSH session and UTM console available.
+2. Set the default incoming policy to deny.
+3. Allowed outgoing traffic.
+4. Added TCP 22 and TCP 445 rules restricted to `192.168.64.0/24`.
+5. Inspected the staged policy before enabling it.
+6. Enabled UFW.
+7. Tested a new SSH connection and a new SMB connection.
+
+macOS port tests confirmed:
+
+- TCP 22 reachable
+- TCP 445 reachable
+- TCP 139 blocked by timeout
+
+Samba printing and unnecessary guest-usershare capability were disabled:
+
+~~~ini
+[global]
+    load printers = no
+    disable spoolss = yes
+    usershare allow guests = no
+
+[printers]
+    available = no
+
+[print$]
+    available = no
+~~~
+
+`testparm -s` accepted the configuration. After reload, macOS continued to access `company`, while the unused printer resource was no longer available.
+
+---
+
+## Controlled Reboot Acceptance Test
+
+Before reboot, `smbd`, UFW and `ssh.socket` were confirmed enabled. The server was then rebooted deliberately to test persistence rather than to fix a fault.
+
+After reboot:
+
+- SSH access through `linux01-lab` returned.
+- The server retained address `192.168.64.3`.
+- No failed systemd units were reported.
+- The ext4 `files` logical volume mounted automatically at `/srv/samba`.
+- Samba returned to the active state.
+- UFW returned with the intended subnet-restricted rules.
+- The macOS client listed and opened `company`.
+- Files created before reboot remained readable.
+
+This completed the acceptance criteria for the first laboratory server role.
+
+---
+
+## Security State at Completion
 
 - Guest access to `company` is disabled.
 - Only members of `fileshare` are accepted by the share.
 - Files created through Samba are restricted to owner and group.
 - The UTM console remains available as a recovery path.
-- UFW is still inactive.
-- Firewall commands were planned but not yet executed.
-- TCP 139 remains listening until the firewall and Samba configuration are hardened.
-- The unused `print$` share remains in the default configuration.
+- UFW is active with default-deny incoming policy.
+- TCP 22 and TCP 445 are allowed only from `192.168.64.0/24`.
+- TCP 139 is blocked.
+- Samba printing, spoolss and guest usershares are disabled.
+- Persistence was verified through a controlled reboot.
 - No passwords, passphrases, private keys or recovery secrets were recorded.
 
 ---
 
 ## Next Session
 
-1. Stage and inspect UFW rules.
-2. Permit TCP 22 and TCP 445 only from `192.168.64.0/24`.
-3. Enable UFW while keeping the current SSH session and UTM console open.
-4. Test a second SSH connection and repeat the SMB client test.
-5. Remove unused printer-sharing configuration.
-6. Perform a controlled reboot and repeat storage, service and client acceptance tests.
-7. Plan a Windows SMB client test and a backup/restore exercise.
+1. Test the SMB share from Windows.
+2. Compare the Windows and macOS client workflows.
+3. Define backup scope for `/srv/samba`, `smb.conf` and related account data.
+4. Perform a backup-and-restore exercise.
+5. Review effective SSH server settings and plan controlled hardening.
+
+---
+
+# Lesson 6 — Cross-Platform Tailscale Administration
+
+Date:
+2026-08-18
+
+Duration:
+~4 Hours
+
+---
+
+## Objectives
+
+- Make SSH and SMB independent of changing home, work, mobile and UTM subnets
+- Connect Ubuntu, macOS and Windows through an encrypted overlay
+- Preserve the server's default-deny firewall policy
+- Grant each client only the services it needs
+- Verify persistence after reboot
+- Turn the manual procedure into safe, repeatable automation
+
+---
+
+## Final Topology
+
+| Node | Platform | MagicDNS name | Tailscale IPv4 | Required access |
+|------|----------|---------------|----------------|-----------------|
+| Administrator | macOS | `macbook-admin` | `100.118.247.65` | SSH and SMB to Ubuntu |
+| File server | Ubuntu | `linux01-server` | `100.125.27.99` | Provides SSH and SMB |
+| Workstation | Windows | `nova-ws01` | `100.73.143.51` | SMB to Ubuntu |
+
+The local UTM addresses can still exist, but they are no longer used as the
+stable management identity.
+
+---
+
+## Why the Original Network Failed
+
+The original Samba and SSH policy allowed clients from specific local subnets.
+When UTM networking changed between shared, bridged and different upstream
+networks, the Ubuntu and Windows addresses moved into new subnets. Old SSH
+aliases and UFW rules therefore referred to paths that no longer existed.
+
+The important lesson was that a service can be healthy while the network path
+to it is wrong. A timeout did not prove that Samba or SSH had failed.
+
+Tailscale added a separate `tailscale0` interface and stable MagicDNS identity
+to every node. This decoupled administration from the physical network.
+
+---
+
+## Deployment and Verification
+
+On each platform, the node was authenticated to the same tailnet. The following
+evidence was collected:
+
+```text
+tailscale status
+tailscale ip -4
+tailscale ping PEER_NAME
+```
+
+On Ubuntu, `tailscaled`, `ssh.socket` and `smbd` were active. macOS established
+SSH to `linux01-server`, and `$SSH_CONNECTION` showed Tailscale source and
+destination addresses rather than the old UTM subnet.
+
+Windows reached TCP 445 through MagicDNS:
+
+```powershell
+Test-NetConnection -ComputerName linux01-server -Port 445 -InformationLevel Detailed
+```
+
+Both client operating systems opened the authenticated `company` share and
+created files that appeared immediately under `/srv/samba/company` on Ubuntu.
+
+---
+
+## Least-Privilege UFW Policy
+
+The old local-subnet and bridged-address rules were removed only after a second
+Tailscale SSH session proved the replacement path. Rules were deleted from the
+highest UFW number to the lowest because rule numbers shift after deletion.
+
+The completed policy allows:
+
+- Mac TCP 22 on `tailscale0`
+- Mac TCP 445 on `tailscale0`
+- Windows TCP 445 on `tailscale0`
+
+Every other unsolicited incoming connection remains denied. Windows was not
+granted SSH because its current client role does not require it.
+
+---
+
+## Incidents Investigated
+
+### Incident #0008 — Local IP Addresses Changed
+
+Symptom:
+
+SSH and SMB timed out after changing UTM networking.
+
+Cause:
+
+Clients and the server no longer shared the subnets recorded in aliases and UFW
+rules.
+
+Resolution:
+
+Introduced Tailscale as a stable overlay and moved normal administration to
+MagicDNS names.
+
+Lesson:
+
+Separate service health, host firewall policy and network reachability during
+diagnosis.
+
+### Incident #0009 — Windows SMB Write Reported Guest-Policy Blocking
+
+Symptom:
+
+File Explorer could open the authenticated share, but an elevated PowerShell
+session failed to write and reported that unauthenticated guest access was
+blocked.
+
+Cause:
+
+The elevated session did not share the Explorer session's SMB credentials.
+
+Resolution:
+
+Created an authenticated SMB connection for that logon context using `net use`
+with an interactive password prompt. Guest access remained disabled.
+
+Lesson:
+
+Windows SMB connections and credentials belong to a logon context. Do not
+weaken a security policy to hide an authentication problem.
+
+### Incident #0010 — Tailscale Used DERP Relay
+
+Symptom:
+
+Windows `tailscale ping` reported `via DERP(par)` instead of a direct path.
+
+Assessment:
+
+TCP 445 and real SMB reads and writes succeeded. The overlay was healthy, but
+NAT traversal had not produced a direct peer-to-peer route.
+
+Lesson:
+
+DERP is a functional encrypted relay. Treat it as a performance observation,
+not an application outage.
+
+### Incident #0011 — Old Firewall Rules Accumulated
+
+Symptom:
+
+UFW contained rules for several temporary local addresses and subnets.
+
+Cause:
+
+New exceptions had been added during troubleshooting without retiring the old
+ones.
+
+Resolution:
+
+Kept recovery access, verified replacement Tailscale sessions, then deleted old
+rules in descending order. The final policy contains three exact rules.
+
+Lesson:
+
+Firewall maintenance includes removing obsolete access, not only adding new
+exceptions.
+
+---
+
+## Controlled Reboot Acceptance Test
+
+After the Ubuntu reboot:
+
+- `tailscaled`, `ssh.socket` and `smbd` returned active;
+- `/srv/samba` mounted from the LVM logical volume;
+- SSH reconnected through Tailscale;
+- `$SSH_CONNECTION` still showed tailnet addresses;
+- the existing SMB data remained available.
+
+This proved service, network and storage persistence together.
+
+---
+
+## Automation Design
+
+Four scripts were prepared:
+
+- Ubuntu Tailscale bootstrap
+- macOS Tailscale bootstrap
+- Windows Tailscale bootstrap
+- Ubuntu UFW client authorization
+
+The scripts are designed to be idempotent: a second run should inspect and
+reuse correct state rather than install or duplicate it. Each bootstrap has a
+check-only mode and records a local log.
+
+An interactive wizard now collects non-secret deployment choices such as the
+MagicDNS name, acceptance-test peer, service port and requested UFW services.
+It prints a summary and defaults the final confirmation to `No`. Parameter mode
+remains available for future Ansible, CI or remote-execution workflows.
+
+Passwords remain outside the scripts. The operating system handles
+administrator authentication, Tailscale uses its official browser, and Samba
+credentials are managed separately. One-time Tailscale browser-authentication
+URLs are shown only on the terminal and deliberately excluded from log files.
+
+A public GitHub repository is used for stage-one download because a new client
+cannot reach a private tailnet file server before enrollment. Browser login is
+the default. Optional auth keys are read from protected files, never committed
+or written directly into command history.
+
+## Automation Acceptance Test — 2026-08-19
+
+The same automation was then exercised on all three operating systems instead
+of being accepted from static review alone.
+
+- macOS check-only mode identified `macbook-admin`, reached
+  `linux01-server` and passed the TCP 445 application-path test;
+- Ubuntu check-only mode confirmed `tailscaled` as enabled and active, listed
+  all three tailnet nodes and reached `macbook-admin` without changing state;
+- the UFW helper found the existing Mac SSH/SMB and Windows SMB rules and did
+  not create duplicates;
+- Windows PowerShell parsed the script without errors, reached
+  `linux01-server`, and reported `TcpTestSucceeded : True` for port 445;
+- the Windows wizard was first cancelled at its final `[y/N]` gate and reported
+  that no changes were made;
+- a second Windows wizard run was approved, preserved the Windows computer
+  name, applied the Tailscale identity `nova-ws01`, enabled unattended operation
+  and completed its acceptance checks successfully.
+
+The tests also demonstrated an important naming boundary: `linux01-lab` is a
+client-side alias stored in the Mac's SSH configuration, while
+`linux01-server` is the shared MagicDNS identity that Windows and other
+tailnet devices can resolve.
+
+Some peer tests used `DERP(par)` or `DERP(fra)`. This was recorded as a
+performance observation rather than a service failure because traffic remained
+encrypted and the end-to-end SSH/SMB checks succeeded.
+
+---
+
+## Commands Practised
+
+```text
+tailscale version
+tailscale status
+tailscale ip -4
+tailscale ping linux01-server
+systemctl is-enabled tailscaled
+systemctl is-active tailscaled
+sudo ufw status numbered
+sudo ufw allow in on tailscale0 from CLIENT_IP to any port 22 proto tcp
+sudo ufw allow in on tailscale0 from CLIENT_IP to any port 445 proto tcp
+Test-NetConnection -ComputerName linux01-server -Port 445
+net use \\linux01-server\company /user:linux01 * /persistent:no
+```
+
+---
+
+## Next Session
+
+1. Review the automation line by line.
+2. Run every check-only mode against the current systems.
+3. Test a real bootstrap using a fresh VM snapshot.
+4. Commit and publish the verified automation.
+5. Begin file-server backup and restore design.
