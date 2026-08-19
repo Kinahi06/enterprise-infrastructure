@@ -1,116 +1,58 @@
-# Progress Timeline
+# Progress and Roadmap
 
 Last updated: 2026-08-19
 
-## August 2026
+## Delivered Milestones
 
-- [x] Build first Windows infrastructure laboratory
-- [x] Install VirtIO drivers and diagnose virtual hardware
-- [x] Learn Windows Resource Monitor and folder structure
-- [x] Investigate Windows Services and Registry configuration
-- [x] Deploy Ubuntu Server 24.04 LTS ARM64
-- [x] Verify Linux IPv4 connectivity and DNS resolution
-- [x] Complete initial Linux server provisioning baseline
-- [x] Apply updates and verify the server after reboot
-- [x] Inspect disks, filesystems and LVM
-- [x] Verify OpenSSH socket activation
-- [x] Establish verified SSH access from macOS
-- [x] Configure and test ED25519 public-key authentication
-- [x] Create a reusable macOS SSH client profile
-- [x] Assign the first infrastructure role to `linux01`
-- [x] Create a dedicated LVM volume and persistent service-data mount
-- [x] Configure group-controlled Linux file permissions
-- [x] Deploy an authenticated Samba share
-- [x] Verify SMB read/write access from macOS
-- [x] Review Ubuntu firewall state
-- [x] Enable subnet-restricted UFW rules with a tested SSH recovery path
-- [x] Remove unused Samba printer-sharing configuration
-- [x] Verify Samba and storage after reboot
-- [x] Test authenticated SMB read/write access from Windows
-- [x] Deploy Tailscale on Ubuntu, macOS and Windows
-- [x] Replace changing local-subnet access with stable MagicDNS names
-- [x] Verify SSH and SMB across different virtual network segments
-- [x] Restrict UFW to exact Tailscale clients and required services
-- [x] Remove obsolete local-subnet firewall rules without losing access
-- [x] Verify Tailscale, SSH, Samba and storage after a controlled reboot
-- [x] Document DERP relay behaviour separately from service availability
-- [x] Create first idempotent Bash and PowerShell bootstrap scripts
-- [x] Pass macOS, Ubuntu and Windows bootstrap check-only validation
-- [x] Verify existing Mac and Windows UFW authorization through check-only mode
-- [x] Add interactive wizard and final confirmation to all bootstrap workflows
-- [x] Verify Windows wizard cancellation without changing the system
-- [x] Apply the Windows wizard successfully and re-test TCP 445
-- [x] Exclude one-time browser-authentication URLs from automation logs
-- [ ] Review effective SSH server hardening
-- [ ] Test bootstrap automation on fresh VM snapshots
-- [ ] Learn PowerShell objects
-- [ ] Investigate Windows Event Viewer
+| Date | Milestone | Verification |
+|---|---|---|
+| 2026-08-03 | Windows 11 ARM64 lab and VirtIO drivers | Hardware, services and Resource Monitor inspected |
+| 2026-08-08 | Ubuntu Server 24.04 deployment | IPv4, DNS, SSH package and update state verified |
+| 2026-08-10 | Linux baseline and SSH administration | Host key checked; password and public-key login tested |
+| 2026-08-14 | Dedicated LVM service storage | ext4 volume restored by `mount -a` and survived reboot |
+| 2026-08-15 | Authenticated Samba file server | macOS read/write test and least-privilege permissions passed |
+| 2026-08-18 | Cross-platform Tailscale overlay | macOS SSH plus macOS/Windows SMB passed through MagicDNS |
+| 2026-08-19 | Bootstrap automation | Bash/PowerShell check-only, cancellation and confirmed-run tests passed |
 
-## Future Modules
+## Current Capability
 
-### September
+- Administer Ubuntu through verified SSH and systemd tooling.
+- Inspect packages, logs, sockets, filesystems and LVM before changing state.
+- Build persistent LVM-backed service storage.
+- Configure Samba authentication, Unix group permissions and setgid inheritance.
+- Apply UFW default-deny policy without losing the recovery path.
+- Diagnose service, firewall, authentication and network-path failures separately.
+- Operate Tailscale across macOS, Windows and Linux.
+- Write idempotent Bash and PowerShell bootstrap tools with validation modes.
+- Use Git branches, pull requests and runtime evidence to publish changes.
 
-- [ ] Active Directory
-- [ ] DNS server
-- [ ] DHCP server
-- [x] File server
+## Acceptance Evidence
 
-### October
+- Tailscale, SSH, Samba, UFW and `/srv/samba` recover after Ubuntu reboot.
+- Mac can authenticate with a dedicated ED25519 key and reach SMB TCP 445.
+- Windows can authenticate to `company`, create data and reach TCP 445.
+- Exact UFW authorization reruns do not add duplicate rules.
+- Automation never requests or logs passwords, passphrases or raw auth keys.
+- Windows wizard cancellation exits without changes; confirmed execution passes.
 
-- [ ] Group Policy
-- [ ] PowerShell automation
-- [ ] IIS
+## In Progress
 
-### November
+- [ ] Run every bootstrap against a clean VM snapshot.
+- [ ] Define Samba backup scope and recovery objectives.
+- [ ] Perform and document a restore test.
+- [ ] Review effective SSH server configuration before hardening.
+- [ ] Investigate direct Tailscale paths versus DERP relay use.
 
-- [ ] Docker
-- [ ] Linux service deployment
+## Later Modules
 
-### December
+| Area | Planned laboratories |
+|---|---|
+| Microsoft infrastructure | Active Directory, DNS, DHCP, Group Policy, PowerShell objects |
+| Linux services | Web/application service, containers and service hardening |
+| Automation | Ansible, reusable configuration and CI validation |
+| Operations | Monitoring, centralized logging, backup and disaster recovery |
+| Networking | VLANs, routing and deeper DNS/DHCP troubleshooting |
 
-- [ ] Ansible
-- [ ] Monitoring
-- [ ] Backup and recovery testing
-
-## Completed Skills and Laboratories
-
-- Windows Service Control Manager and service analysis
-- Windows Registry navigation and service configuration
-- Ubuntu deployment in UTM on Apple Silicon
-- Linux post-installation baseline inspection
-- APT package metadata, upgrade history and maintenance verification
-- Linux memory, filesystem, disk and LVM interpretation
-- systemd units, service state and socket activation
-- Terminal history, pager navigation and command-error classification
-- SSH host identity and ED25519 fingerprint comparison
-- Password-authentication failure diagnosis using `whoami`, `sudo` and SSH logs
-- Remote-session inspection using `$SSH_CONNECTION` and `w`
-- Dedicated client-key creation and private/public key separation
-- SSH `authorized_keys` ownership, permissions and content validation
-- Public-key-only SSH login verification
-- Persistent LVM-backed service storage
-- `/etc/fstab` backup, validation and remount testing
-- Unix group ownership and setgid directory inheritance
-- Samba installation, configuration validation and account creation
-- Authenticated SMB share discovery and macOS read/write verification
-- Least-privilege UFW activation with remote-access recovery planning
-- Samba printer and guest-usershare hardening
-- Controlled reboot and post-reboot acceptance testing
-- Tailscale installation, MagicDNS naming and cross-platform peer inspection
-- Overlay networking independent of changing home, work and mobile subnets
-- Exact UFW rules bound to `tailscale0`, source address and service port
-- Windows SMB authentication and guest-access error diagnosis
-- Cross-platform SMB read/write validation over Tailscale
-- DERP relay identification without confusing it with a failed connection
-- Idempotent bootstrap design with check-only modes and secret-file handling
-
-## Current Focus
-
-Publish the verified Tailscale automation and begin backup/restore design.
-
-## Next Session
-
-1. Publish the runtime-verified automation and documentation.
-2. Test a first-time installation against a fresh VM snapshot.
-3. Define what file-server data and configuration must be backed up.
-4. Create a backup and perform a restore test.
+Detailed lesson evidence is in the
+[Engineering Journal](./Engineering-Journal.md); practical command references
+are in the Linux and Windows runbooks.
