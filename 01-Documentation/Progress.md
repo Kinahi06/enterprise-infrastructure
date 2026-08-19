@@ -1,6 +1,6 @@
 # Progress Timeline
 
-Last updated: 2026-08-15
+Last updated: 2026-08-19
 
 ## August 2026
 
@@ -22,11 +22,27 @@ Last updated: 2026-08-15
 - [x] Configure group-controlled Linux file permissions
 - [x] Deploy an authenticated Samba share
 - [x] Verify SMB read/write access from macOS
-- [ ] Review Ubuntu firewall state and SSH hardening
-- [ ] Enable subnet-restricted UFW rules with a tested SSH recovery path
-- [ ] Remove unused Samba printer-sharing configuration
-- [ ] Verify Samba and storage after reboot
-- [ ] Test the SMB share from Windows
+- [x] Review Ubuntu firewall state
+- [x] Enable subnet-restricted UFW rules with a tested SSH recovery path
+- [x] Remove unused Samba printer-sharing configuration
+- [x] Verify Samba and storage after reboot
+- [x] Test authenticated SMB read/write access from Windows
+- [x] Deploy Tailscale on Ubuntu, macOS and Windows
+- [x] Replace changing local-subnet access with stable MagicDNS names
+- [x] Verify SSH and SMB across different virtual network segments
+- [x] Restrict UFW to exact Tailscale clients and required services
+- [x] Remove obsolete local-subnet firewall rules without losing access
+- [x] Verify Tailscale, SSH, Samba and storage after a controlled reboot
+- [x] Document DERP relay behaviour separately from service availability
+- [x] Create first idempotent Bash and PowerShell bootstrap scripts
+- [x] Pass macOS, Ubuntu and Windows bootstrap check-only validation
+- [x] Verify existing Mac and Windows UFW authorization through check-only mode
+- [x] Add interactive wizard and final confirmation to all bootstrap workflows
+- [x] Verify Windows wizard cancellation without changing the system
+- [x] Apply the Windows wizard successfully and re-test TCP 445
+- [x] Exclude one-time browser-authentication URLs from automation logs
+- [ ] Review effective SSH server hardening
+- [ ] Test bootstrap automation on fresh VM snapshots
 - [ ] Learn PowerShell objects
 - [ ] Investigate Windows Event Viewer
 
@@ -77,15 +93,24 @@ Last updated: 2026-08-15
 - Unix group ownership and setgid directory inheritance
 - Samba installation, configuration validation and account creation
 - Authenticated SMB share discovery and macOS read/write verification
+- Least-privilege UFW activation with remote-access recovery planning
+- Samba printer and guest-usershare hardening
+- Controlled reboot and post-reboot acceptance testing
+- Tailscale installation, MagicDNS naming and cross-platform peer inspection
+- Overlay networking independent of changing home, work and mobile subnets
+- Exact UFW rules bound to `tailscale0`, source address and service port
+- Windows SMB authentication and guest-access error diagnosis
+- Cross-platform SMB read/write validation over Tailscale
+- DERP relay identification without confusing it with a failed connection
+- Idempotent bootstrap design with check-only modes and secret-file handling
 
 ## Current Focus
 
-Building and securing the first Linux file-server role.
+Publish the verified Tailscale automation and begin backup/restore design.
 
 ## Next Session
 
-1. Review the staged UFW policy before enabling it.
-2. Permit SSH and SMB only from `192.168.64.0/24`.
-3. Verify a second SSH connection and SMB access after UFW is enabled.
-4. Remove unused printer-sharing configuration and validate Samba again.
-5. Reboot and verify the LVM mount, services, ports and client access.
+1. Publish the runtime-verified automation and documentation.
+2. Test a first-time installation against a fresh VM snapshot.
+3. Define what file-server data and configuration must be backed up.
+4. Create a backup and perform a restore test.

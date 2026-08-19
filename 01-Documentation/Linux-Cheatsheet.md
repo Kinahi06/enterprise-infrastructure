@@ -842,6 +842,97 @@ Remember that `/Volumes/company` is a macOS path. The corresponding Ubuntu path 
 
 ---
 
+# Tailscale Overlay Administration
+
+## Inspect the Node
+
+```bash
+tailscale version
+systemctl is-enabled tailscaled
+systemctl is-active tailscaled
+tailscale status
+tailscale ip -4
+```
+
+Safety: READ
+
+- `tailscale status` shows this node and visible peers.
+- `tailscale ip -4` prints the node's stable tailnet IPv4 address.
+- A Tailscale address normally belongs to `100.64.0.0/10`.
+
+## Test a Peer
+
+```bash
+tailscale ping --c 3 --until-direct=false PEER_NAME
+```
+
+Safety: READ
+
+This verifies the tailnet path. Output containing `via DERP(...)` means the
+encrypted connection is using a relay. It is still a working path, but usually
+has higher latency than a direct connection.
+
+Test the actual service separately:
+
+```bash
+ssh USER@PEER_NAME
+nc -vz PEER_NAME 445
+```
+
+`tailscale ping` proves overlay connectivity. It does not prove that SSH, Samba,
+the host firewall or application authentication is correctly configured.
+
+## Join or Rename a Node
+
+Interactive browser enrollment:
+
+```bash
+sudo tailscale up --hostname=NODE_NAME
+```
+
+Rename an already connected node:
+
+```bash
+sudo tailscale set --hostname=NODE_NAME
+```
+
+Safety: CHANGE
+
+Never place an auth key directly in shell history. Use a protected file with
+mode `600` and Tailscale's `--auth-key=file:PATH` form when unattended
+enrollment is genuinely required.
+
+## Exact UFW Rules on the Overlay
+
+```bash
+sudo ufw allow in on tailscale0 from CLIENT_TAILSCALE_IP \
+  to any port 22 proto tcp comment 'SSH CLIENT_NAME via Tailscale'
+
+sudo ufw allow in on tailscale0 from CLIENT_TAILSCALE_IP \
+  to any port 445 proto tcp comment 'SMB CLIENT_NAME via Tailscale'
+```
+
+Safety: CHANGE
+
+These rules combine three restrictions:
+
+- ingress interface: `tailscale0`
+- source: one known tailnet client
+- destination service: TCP 22 or TCP 445
+
+Inspect before deleting anything:
+
+```bash
+sudo ufw status numbered
+sudo ufw show added
+```
+
+Delete numbered rules from highest to lowest so earlier numbers do not shift.
+Keep a second SSH connection or the VM console available while changing remote
+access.
+
+---
+
 # UFW for Remote File Servers
 
 ## Safe Deployment Order
@@ -867,6 +958,82 @@ sudo ufw show added
 Safety: CHANGE, NOT YET ENABLED
 
 Review the addresses and ports before running `sudo ufw enable`. Direct SMB access by IP does not require opening legacy NetBIOS ports.
+
+## Enable and Verify
+
+~~~bash
+sudo ufw enable
+sudo ufw status verbose
+~~~
+
+Safety: CHANGE
+
+Keep the original SSH session open. From a second client terminal, verify a new SSH connection and a new SMB connection before closing the original session.
+
+On macOS:
+
+~~~bash
+nc -G 2 -vz SERVER_IP 22
+nc -G 2 -vz SERVER_IP 445
+nc -G 2 -vz SERVER_IP 139
+~~~
+
+For this lab, ports 22 and 445 should succeed while port 139 should time out.
+
+---
+
+# Samba File-Server Hardening
+
+Disable unused printing and guest usershares:
+
+~~~ini
+[global]
+    load printers = no
+    disable spoolss = yes
+    usershare allow guests = no
+
+[printers]
+    available = no
+
+[print$]
+    available = no
+~~~
+
+Validate before reloading:
+
+~~~bash
+sudo testparm -s
+sudo smbcontrol smbd reload-config
+systemctl is-active smbd
+~~~
+
+Confirm from the client that the intended file share remains available and the unused printer share is absent.
+
+---
+
+# Controlled Reboot Acceptance Test
+
+Before reboot:
+
+~~~bash
+systemctl is-enabled smbd
+systemctl is-enabled ufw
+systemctl is-enabled ssh.socket
+~~~
+
+After reboot:
+
+~~~bash
+uptime
+ip -br address
+systemctl --failed
+findmnt /srv/samba
+df -h /srv/samba
+systemctl is-active smbd
+sudo ufw status verbose
+~~~
+
+Then create new SSH and SMB client connections and read a file created before the reboot. Persistence is proven only when the services, mount and data all return.
 
 ---
 

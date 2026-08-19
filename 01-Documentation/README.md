@@ -2,7 +2,7 @@
 
 Personal laboratory for learning infrastructure engineering through deployment, inspection, troubleshooting and documentation.
 
-Last updated: 2026-08-15
+Last updated: 2026-08-18
 
 ## Goals
 
@@ -17,23 +17,23 @@ Last updated: 2026-08-15
 
 | Metric | Value |
 |--------|------:|
-| Lessons completed | 4 |
-| Current lesson | 5 — file-server hardening in progress |
-| Incidents documented | 7 |
-| Scripts written | 0 |
-| Commands practised | 70+ |
-| Time invested | ~16+ hours |
+| Lessons completed | 6 |
+| Incidents documented | 11 |
+| Scripts written | 4 |
+| Commands practised | 90+ |
+| Time invested | ~20+ hours |
 
 ## Current Systems
 
 | System | Platform | Status | Current purpose |
 |--------|----------|--------|-----------------|
-| Windows 11 Pro ARM64 VM | UTM | Running | Windows administration laboratory |
-| `linux01` | Ubuntu Server 24.04.4 LTS ARM64 | Running | Authenticated Samba file server laboratory |
+| `nova-ws01` | Windows 11 Pro ARM64, UTM | Running | Windows client and administration laboratory |
+| `linux01-server` | Ubuntu Server 24.04.4 LTS ARM64 | Running | Authenticated Samba file server |
+| `macbook-admin` | macOS | Running | Administrative workstation |
 
 ## Current Module
 
-Linux file-server deployment over verified SSH administration.
+Cross-platform remote administration and file services over a Tailscale overlay network.
 
 Completed in the current module:
 
@@ -44,13 +44,20 @@ Completed in the current module:
 - Samba 4.19 standalone file server
 - Authenticated `company` share
 - Successful macOS SMB read/write test
+- Tailscale installed on Ubuntu, macOS and Windows
+- MagicDNS names `linux01-server`, `macbook-admin` and `nova-ws01`
+- SSH administration over the encrypted tailnet
+- Authenticated SMB read/write tests from macOS and Windows
+- UFW default-deny policy with exact client, interface and service rules
+- Unused Samba printing services disabled
+- Successful post-reboot verification of Tailscale, SSH, Samba and LVM storage
+- Idempotent Bash and PowerShell bootstrap automation
 
 Next:
 
-- Review and enable subnet-restricted UFW rules without losing SSH
-- Remove unused printer-sharing configuration
-- Verify SSH, storage and Samba after a controlled reboot
-- Test the share from the Windows laboratory
+- Test automation against fresh VM snapshots
+- Design and perform a backup-and-restore exercise
+- Investigate direct versus DERP-relayed Tailscale paths
 
 ## Documentation
 
@@ -61,6 +68,7 @@ Next:
 - [Linux Administration Cheat Sheet](./Linux-Cheatsheet.md)
 - [Windows Administration Cheat Sheet](./Windows-Cheatsheet.md)
 - [Changelog](./CHAGELOG.MD)
+- [Tailscale Automation](../02-Automation/README.md)
 
 ## Security Rule
 

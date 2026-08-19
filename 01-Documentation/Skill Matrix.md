@@ -1,6 +1,6 @@
 # Skill Matrix
 
-Last updated: 2026-08-15
+Last updated: 2026-08-18
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
@@ -8,7 +8,7 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 
 | Skill | Level | Target |
 |-------|------:|-------:|
-| Windows Administration | 2/10 | 9/10 |
+| Windows Administration | 3/10 | 9/10 |
 | Linux Administration | 4/10 | 9/10 |
 | Samba File Services | 3/10 | 8/10 |
 | Active Directory | 0/10 | 9/10 |
@@ -26,16 +26,16 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | IPv6 | 1/10 | 7/10 |
 | DNS | 3/10 | 9/10 |
 | DHCP | 1/10 | 8/10 |
-| NAT and virtual networking | 3/10 | 8/10 |
+| NAT and virtual networking | 4/10 | 8/10 |
 | VLAN | 0/10 | 8/10 |
-| VPN | 1/10 | 8/10 |
+| VPN and overlay networking | 3/10 | 8/10 |
 
 ## Automation and Source Control
 
 | Skill | Level | Target |
 |-------|------:|-------:|
-| PowerShell | 2/10 | 10/10 |
-| Bash and shell usage | 3/10 | 8/10 |
+| PowerShell | 3/10 | 10/10 |
+| Bash and shell usage | 4/10 | 8/10 |
 | Git | 2/10 | 9/10 |
 | GitHub | 2/10 | 9/10 |
 | Ansible | 0/10 | 8/10 |
@@ -83,7 +83,13 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Create an authenticated SMB share | ✅ |
 | Verify SMB access from macOS | ✅ |
 | Inspect firewall state | ✅ |
-| Enable subnet-restricted firewall rules | ⏳ |
+| Enable subnet-restricted firewall rules | ✅ |
+| Validate services after a controlled reboot | ✅ |
+| Deploy and inspect a Tailscale node | ✅ |
+| Use MagicDNS names across changing subnets | ✅ |
+| Bind exact UFW rules to `tailscale0` | ✅ |
+| Distinguish direct and DERP-relayed paths | ✅ |
+| Validate SSH and SMB over an overlay network | ✅ |
 | Harden SSH with a tested recovery path | ⏳ |
 
 ## Windows Services Checklist
@@ -107,6 +113,11 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Setup-Lab.ps1 | Planned |
 | Disable-Telemetry.ps1 | Planned |
 | Install-Tools.ps1 | Planned |
+| Bootstrap-Tailscale-Linux.sh | Implemented, fresh-VM test pending |
+| Bootstrap-Tailscale-macOS.sh | Local check-only passed, fresh install pending |
+| Bootstrap-Tailscale-Windows.ps1 | Implemented, fresh-VM test pending |
+| Authorize-Tailscale-Client.sh | Implemented, check-only test pending |
+| Interactive cross-platform setup wizard | Implemented, Windows runtime test pending |
 
 ## Certifications — Future
 
@@ -118,13 +129,12 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 
 ## Current Focus
 
-- Linux storage and service deployment
-- Samba file sharing and access control
-- Remote administration over verified SSH
+- Cross-platform bootstrap testing
+- Idempotency and validation-only execution
+- Secure secret handling in automation
 
 ## Next Focus
 
-- Subnet-restricted UFW policy
-- Samba configuration hardening
-- Reboot and recovery verification
-- Windows SMB client testing
+- Tailscale direct-path troubleshooting
+- File-server backup and restore
+- Effective SSH server hardening
