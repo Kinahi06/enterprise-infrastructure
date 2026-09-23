@@ -1402,3 +1402,95 @@ net use \\linux01-server\company /user:linux01 * /persistent:no
 3. Test a real bootstrap using a fresh VM snapshot.
 4. Commit and publish the verified automation.
 5. Begin file-server backup and restore design.
+
+---
+
+# Linux Service Diagnostics Sprint — 2026-09-14 to 2026-09-23
+
+## Objective
+
+Build a repeatable incident workflow for Linux services before moving into
+containers. The sprint used small broken services to practise diagnosis rather
+than memorising isolated commands.
+
+The working path became:
+
+```text
+symptom -> systemd -> journal -> process/identity -> socket/PID -> HTTP
+        -> config/permissions/filesystem -> minimal fix -> verification
+```
+
+## Completed Laboratories
+
+### Session 02 — Service account cannot read application code
+
+The service failed because its configured user could not read the Python file.
+The repair used `root` ownership, the service group and a read-only group mode
+instead of making the code world-writable. Recovery was proven with service
+state, listener state and an HTTP health request.
+
+### Session 03 — Invalid runtime environment value
+
+The application received a port value containing a protocol suffix. The source
+was traced from the unit's `EnvironmentFile` to the environment file itself.
+The application code did not need to change. A restart loaded the corrected
+runtime value.
+
+### Session 04 — Local health works, remote client fails
+
+The process was active and local HTTP worked, but the socket was bound only to
+loopback. Changing the bind address and testing from the original client proved
+the complete path. This reinforced that local `curl` does not prove remote
+reachability.
+
+### Session 05 — Gateway dependency is not started
+
+The gateway stayed active but returned HTTP 503 because its inventory dependency
+was inactive. `After=` provided order but did not pull the dependency into the
+transaction. A systemd drop-in added the required relationship, and both units,
+sockets and HTTP contracts were verified.
+
+### Session 06 — Free bytes, no free inodes
+
+An upload worker reported `Errno 28` even though disk blocks were available.
+`df -i` exposed complete inode exhaustion caused by many stale empty files. The
+selection was bounded and printed before deletion. The worker then created its
+readiness file and the checker passed seven checks.
+
+### Session 07 — Final multi-cause Linux gate
+
+The first failure was an unwritable state directory. Permissions were corrected
+only on the data path, keeping application code non-writable. The next start
+exposed `Address already in use`. The listener PID was mapped to an obsolete
+systemd unit, the unit was stopped through systemd, and the main API became the
+owner of the expected socket.
+
+Final evidence:
+
+- the main service was active and the obsolete service inactive;
+- the listening socket belonged to the main service MainPID;
+- the state artifact existed with least-privilege directory access;
+- HTTP returned the expected status and payload;
+- the current process journal recorded a successful request;
+- the final checker reported 11 passing checks.
+
+## Engineering Lessons
+
+1. `active`, `LISTEN` and `HTTP 200` prove different layers.
+2. Restart is an action, not evidence of recovery.
+3. A service must be tested as its configured `User=`, not as root.
+4. Directory write requires the correct traversal and write permissions.
+5. `chown` changes ownership; `chmod` changes mode bits.
+6. `After=` orders units, while `Requires=` creates a required dependency.
+7. A listener PID should be attributed to a unit before stopping it.
+8. `No space left` requires checking both blocks and inodes.
+9. After each fix, diagnosis restarts because another fault may have been hidden.
+10. The strongest closeout uses independent evidence from every affected layer.
+
+## Assessment and Next Step
+
+The sprint ended at theory 3/5 and practice 3/5 on the course scale: familiar
+Linux service incidents can now be solved independently, while unfamiliar
+permission edge cases and new systemd inspection methods still need occasional
+syntax prompts. This is sufficient to move into networking and retain Linux with
+spaced mixed incidents. The next model is DNS -> TCP -> HTTP.

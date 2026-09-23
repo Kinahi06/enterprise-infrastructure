@@ -1,6 +1,6 @@
 # Progress Timeline
 
-Last updated: 2026-08-19
+Last updated: 2026-09-23
 
 ## August 2026
 
@@ -45,6 +45,21 @@ Last updated: 2026-08-19
 - [ ] Test bootstrap automation on fresh VM snapshots
 - [ ] Learn PowerShell objects
 - [ ] Investigate Windows Event Viewer
+
+## September 2026 — Linux Service Diagnostics Sprint
+
+- [x] Diagnose systemd service failures from status and journal evidence
+- [x] Separate process, socket and HTTP health signals
+- [x] Trace runtime configuration through `EnvironmentFile`
+- [x] Repair least-privilege file and directory access for a service account
+- [x] Diagnose an invalid environment value without editing application code
+- [x] Distinguish `After=` ordering from a required systemd dependency
+- [x] Use a drop-in with `Requires=` and verify the effective unit graph
+- [x] Diagnose local-only bind versus remote client reachability
+- [x] Diagnose inode exhaustion separately from free disk space
+- [x] Resolve a port conflict by mapping listener PID to its systemd unit
+- [x] Complete the final Linux diagnostic gate with 11 checks passing
+- [x] Produce an evidence-first Linux troubleshooting cheat sheet
 
 ## Future Modules
 
@@ -103,14 +118,23 @@ Last updated: 2026-08-19
 - Cross-platform SMB read/write validation over Tailscale
 - DERP relay identification without confusing it with a failed connection
 - Idempotent bootstrap design with check-only modes and secret-file handling
+- systemd lifecycle, MainPID and journal correlation
+- Process, socket and HTTP health as separate evidence layers
+- Service-account permissions and directory traversal/write semantics
+- Runtime environment diagnosis without modifying application code
+- systemd ordering and required dependency relationships
+- Listener PID to systemd unit attribution
+- Disk-block versus inode-exhaustion diagnosis
+- Safe, preview-first stale-file selection
+- Multi-cause incident diagnosis with full post-fix verification
 
 ## Current Focus
 
-Publish the verified Tailscale automation and begin backup/restore design.
+Begin the networking deep dive while retaining Linux through short mixed incidents.
 
 ## Next Session
 
-1. Publish the runtime-verified automation and documentation.
-2. Test a first-time installation against a fresh VM snapshot.
-3. Define what file-server data and configuration must be backed up.
-4. Create a backup and perform a restore test.
+1. Build the DNS -> TCP -> HTTP request-path model.
+2. Practise distinguishing refused, timeout and application-level failures.
+3. Keep one short Linux diagnostic refresh in each networking session.
+4. Publish the runtime-verified automation only after reviewing its separate diff.

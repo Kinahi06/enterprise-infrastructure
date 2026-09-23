@@ -1,6 +1,6 @@
 # Skill Matrix
 
-Last updated: 2026-08-18
+Last updated: 2026-09-23
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
@@ -9,7 +9,7 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Skill | Level | Target |
 |-------|------:|-------:|
 | Windows Administration | 3/10 | 9/10 |
-| Linux Administration | 4/10 | 9/10 |
+| Linux Administration | 5/10 | 9/10 |
 | Samba File Services | 3/10 | 8/10 |
 | Active Directory | 0/10 | 9/10 |
 | Group Policy | 0/10 | 8/10 |
@@ -57,8 +57,8 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Task Manager | 6/10 | 8/10 |
 | Performance Monitor | 1/10 | 8/10 |
 | Event Viewer | 1/10 | 9/10 |
-| systemd status and journal interpretation | 3/10 | 8/10 |
-| Evidence-based incident diagnosis | 3/10 | 9/10 |
+| systemd status and journal interpretation | 5/10 | 8/10 |
+| Evidence-based incident diagnosis | 5/10 | 9/10 |
 
 ## Linux and SSH Checklist
 
@@ -90,6 +90,16 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Bind exact UFW rules to `tailscale0` | ✅ |
 | Distinguish direct and DERP-relayed paths | ✅ |
 | Validate SSH and SMB over an overlay network | ✅ |
+| Correlate systemd MainPID, process and listening socket | ✅ |
+| Distinguish process, socket and HTTP health | ✅ |
+| Read service runtime configuration from `EnvironmentFile` | ✅ |
+| Test permissions as the configured service account | ✅ |
+| Diagnose directory traversal and write permissions | ✅ |
+| Distinguish `After=` from `Requires=` | ✅ |
+| Create and verify a systemd drop-in | ✅ |
+| Diagnose block and inode exhaustion separately | ✅ |
+| Preview a bounded `find` selection before cleanup | ✅ |
+| Map a conflicting listener PID to its systemd unit | ✅ |
 | Harden SSH with a tested recovery path | ⏳ |
 
 ## Windows Services Checklist
@@ -129,12 +139,12 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 
 ## Current Focus
 
-- Cross-platform bootstrap testing
-- Idempotency and validation-only execution
-- Secure secret handling in automation
+- DNS -> TCP -> HTTP request-path diagnosis
+- Linux incident retention through mixed refresh laboratories
+- Evidence-first validation after every state change
 
 ## Next Focus
 
-- Tailscale direct-path troubleshooting
-- File-server backup and restore
-- Effective SSH server hardening
+- DNS resolution and transport-layer failure modes
+- Packet path, listening addresses and client observation points
+- Docker fundamentals only after the networking foundation
