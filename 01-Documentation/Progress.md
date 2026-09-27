@@ -1,6 +1,6 @@
 # Progress Timeline
 
-Last updated: 2026-09-23
+Last updated: 2026-09-27
 
 ## August 2026
 
@@ -60,6 +60,37 @@ Last updated: 2026-09-23
 - [x] Resolve a port conflict by mapping listener PID to its systemd unit
 - [x] Complete the final Linux diagnostic gate with 11 checks passing
 - [x] Produce an evidence-first Linux troubleshooting cheat sheet
+
+## September 2026 — Networking Diagnostics
+
+### Session 09 — Connection refused versus timeout (guided)
+
+- [x] Reproduce two different TCP connection failures with bounded `curl` requests
+- [x] Identify an inactive service with no listener and restore it with `start`
+- [x] Compare the other service's MainPID, listening address and runtime configuration
+- [x] Read a scoped nftables rule and explain destination address, port, counter and `drop`
+- [x] Remove only the isolated training filter and recover HTTP without restarting the service
+- [x] Report all final checker checks passing during the exercise
+- [x] Recheck both services, listening endpoints, HTTP contracts and current-process logs on 2026-09-27
+- [ ] Complete the oral defence independently
+
+The 2026-09-27 read-only recheck confirmed active services and correct HTTP 200
+responses. It did not rerun the root-only checker because sudo authentication
+was required; socket PID ownership and absence of the training table were not
+independently reverified in that repeat check. The earlier full PASS result is
+learner-reported. This guided exercise does not raise the independence rating.
+
+### Session 10 — Reverse proxy and HTTP 502 (prepared)
+
+- [x] Prepare a separate two-service lab, ticket and short theory notes
+- [x] Validate the prepared application behaviour with five automated tests
+- [x] Deliver the installer to the training VM
+- [ ] Confirm lab installation and reproduce the client-visible symptom
+- [ ] Diagnose and repair the incident
+- [ ] Pass the final checker and oral defence
+
+Preparation and automated testing were performed by the tutor. Session 10 is
+not recorded as a completed learner exercise.
 
 ## Future Modules
 
@@ -127,14 +158,20 @@ Last updated: 2026-09-23
 - Disk-block versus inode-exhaustion diagnosis
 - Safe, preview-first stale-file selection
 - Multi-cause incident diagnosis with full post-fix verification
+- Guided comparison of TCP connection refusal and timeout
+- Scoped packet-filter interpretation without disabling the host firewall
+- Distinguishing listener availability from end-to-end HTTP reachability
 
 ## Current Focus
 
-Begin the networking deep dive while retaining Linux through short mixed incidents.
+Continue networking with the two-hop client -> reverse proxy -> API model,
+while retaining Linux through short mixed incidents. Session 09 recovery is
+verified with the evidence limits above; Session 10 is prepared, not completed.
 
 ## Next Session
 
-1. Build the DNS -> TCP -> HTTP request-path model.
-2. Practise distinguishing refused, timeout and application-level failures.
-3. Keep one short Linux diagnostic refresh in each networking session.
-4. Publish the runtime-verified automation only after reviewing its separate diff.
+1. Install Session 10 and reproduce the original client HTTP request.
+2. Distinguish the client-to-proxy connection from the proxy-to-API connection.
+3. Verify any repair through the original client URL, not only the direct backend URL.
+4. Revisit the pending Session 09 oral defence during a short Linux/network refresh.
+5. Keep unrelated infrastructure automation changes in a separate review and commit.

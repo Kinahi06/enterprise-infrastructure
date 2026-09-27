@@ -1,6 +1,6 @@
 # Skill Matrix
 
-Last updated: 2026-09-23
+Last updated: 2026-09-27
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
@@ -29,6 +29,19 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | NAT and virtual networking | 4/10 | 8/10 |
 | VLAN | 0/10 | 8/10 |
 | VPN and overlay networking | 3/10 | 8/10 |
+
+### Recent networking evidence — 2026-09-27
+
+| Topic | Evidence / status |
+|-------|-------------------|
+| Connection refusal versus timeout | Practised in Session 09 with guidance |
+| Process, listener and HTTP separation | Both endpoints rechecked successfully on 2026-09-27 |
+| nftables tables, chains and matching rules | Introductory guided interpretation; not independent firewall administration |
+| Minimal network repair | Removed only the training filter; HTTP recovered without a service restart |
+| Reverse proxy and upstream diagnosis | Session 10 prepared; learner attempt not yet confirmed |
+
+Existing numeric ratings are unchanged. Session 09 recovery is recorded, but
+the oral defence is pending and the full repeated root-only check was not run.
 
 ## Automation and Source Control
 
@@ -139,12 +152,14 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 
 ## Current Focus
 
-- DNS -> TCP -> HTTP request-path diagnosis
+- Client -> reverse proxy -> API request-path diagnosis (Session 10)
+- Separating TCP connection failures from actual HTTP error responses
 - Linux incident retention through mixed refresh laboratories
 - Evidence-first validation after every state change
 
 ## Next Focus
 
-- DNS resolution and transport-layer failure modes
-- Packet path, listening addresses and client observation points
+- Explain the two separate TCP connections in a proxied HTTP request
+- Localise an upstream failure using journal, socket and configuration evidence
+- Verify recovery through the original client endpoint
 - Docker fundamentals only after the networking foundation

@@ -1494,3 +1494,80 @@ Linux service incidents can now be solved independently, while unfamiliar
 permission edge cases and new systemd inspection methods still need occasional
 syntax prompts. This is sufficient to move into networking and retain Linux with
 spaced mixed incidents. The next model is DNS -> TCP -> HTTP.
+
+---
+
+# Networking Diagnostics — Session 09, 2026-09-24 to 2026-09-27
+
+## Objective
+
+Distinguish an immediate TCP connection failure from a connection timeout and
+avoid assuming that a running service proves client reachability.
+
+## Incident A — No listening service
+
+A request to the first endpoint failed immediately. Socket inspection showed
+no listener on its expected port, and systemd reported the service as
+`inactive (dead)`. Starting the service restored the endpoint.
+
+## Incident B — Listener exists, connection still times out
+
+The second service was active, its MainPID matched the observed listener during
+the exercise, and its configured loopback address and port matched the request.
+Reading the configuration required elevated access, but that permission issue
+was separate from the client's TCP timeout.
+
+After an introduction to nftables, the investigation found an isolated training
+rule matching the endpoint's destination address and TCP port. Its action was
+`drop`, with a non-zero packet counter. Only the owned training table was
+removed; UFW, Docker-related and Tailscale rules were left unchanged.
+
+The same endpoint then returned HTTP 200 and the expected JSON without a service
+restart. This supported the packet-filter explanation rather than the initial
+hypotheses about application code or configuration-file permissions.
+
+## Evidence and Its Limits
+
+- The learner reported all `check-s9` checks passing during the exercise.
+- A fresh tutor-run read-only inspection on 2026-09-27 found both services active.
+- Both expected loopback TCP endpoints were listening.
+- Both `/health` requests returned HTTP 200 with their correct service payloads.
+- The current service PIDs logged those successful requests.
+- The full root-only checker was not rerun in that inspection because sudo
+  required authentication. Socket PID ownership and complete removal of the
+  training table were therefore not independently reverified in the repeat check.
+
+## Lessons and Assessment
+
+1. `active`, `LISTEN` and successful HTTP are different pieces of evidence.
+2. Loopback traffic can still be filtered by the host network stack.
+3. A firewall rule is a set of conditions followed by an action; a counter counts
+   packets, not necessarily distinct HTTP requests.
+4. `policy accept` does not override an earlier matching `drop` verdict.
+5. Filter a large diagnostic output using known evidence such as the affected
+   port, retaining nearby lines for table and chain context.
+6. Changing a live packet filter does not inherently require restarting the
+   already-listening application.
+
+This was guided learning: the new nftables concepts and inspection syntax were
+explained during the investigation. Recovery was achieved, but the oral defence
+remains pending. No increase in independent-practice ratings is claimed.
+
+---
+
+# Next Laboratory — Session 10, prepared 2026-09-27
+
+The next exercise introduces a client-facing reverse proxy and a separate API.
+Its learning objective is to distinguish the client -> proxy connection from
+the proxy -> API connection, then diagnose an HTTP-level gateway failure.
+
+The tutor prepared an isolated two-service installer, an incident ticket and
+short theory notes. Five unprivileged automated tests on the VM verified syntax,
+the API contract, successful proxy forwarding, upstream connection-failure
+handling and upstream timeout handling. These tests used temporary loopback
+ports and did not change existing services or firewall rules.
+
+The installer was delivered to the VM. Learner installation, diagnosis, repair
+and final acceptance have not yet been confirmed. Session 10 is **prepared, not
+passed**. Lab installers and instructor solutions are not included in this
+progress-only commit.
