@@ -1567,7 +1567,65 @@ the API contract, successful proxy forwarding, upstream connection-failure
 handling and upstream timeout handling. These tests used temporary loopback
 ports and did not change existing services or firewall rules.
 
-The installer was delivered to the VM. Learner installation, diagnosis, repair
-and final acceptance have not yet been confirmed. Session 10 is **prepared, not
-passed**. Lab installers and instructor solutions are not included in this
-progress-only commit.
+At the 2026-09-27 preparation checkpoint, the installer had been delivered to
+the VM but the learner attempt was not yet confirmed. The completed attempt is
+recorded below. Lab installers and instructor solution files remain outside
+these progress-only commits.
+
+---
+
+# Networking Diagnostics — Session 10, completed 2026-09-28
+
+## Incident and Investigation
+
+The client-facing reverse proxy returned HTTP 502 with a gateway-error payload.
+An early request had accidentally targeted the previous lab; the client URL was
+then corrected before continuing. Setup and the initial failure were documented
+in learner screenshots.
+
+The learner inspected the proxy environment file, identified its upstream
+destination and checked whether that port had a listener. After reporting no
+listener there, the learner requested help locating the API service. Comparing
+the API's actual listening port with the configured upstream exposed a mismatch.
+The learner then formulated the cause: the proxy was contacting the wrong port,
+not an inactive API.
+
+The proxy configuration screenshot showed the upstream setting. The absent
+upstream listener and actual API port were learner-reported observations.
+The tutor supplied requested socket-filter syntax and the backend service name
+with status/unit/environment-file inspection guidance; this was not an unaided
+assessment.
+
+## Minimal Repair and Acceptance
+
+The learner chose to correct the upstream destination and restart only the proxy.
+The API was already running at its configured address, so restarting it was not
+part of the repair. Changing the environment file did not require daemon-reload;
+restarting the proxy allowed its new process to read the corrected environment.
+
+After being asked to verify the original proxy URL, HTTP status and expected
+body, the learner reported successful recovery and all check-s10 checks passing.
+No final checker screenshot was supplied and the tutor did not independently
+rerun it. The completion record explicitly distinguishes these reported results
+from the initial screenshot evidence and from earlier tutor-run setup tests.
+
+## Oral Defence
+
+- Correctly explained the upstream-port mismatch behind HTTP 502 despite active
+  processes. The wording was refined from a nonexistent port to a port with no
+  listening process.
+- Correctly distinguished an environment-file change from a unit-file change.
+  The tutor clarified that restart rereads the process environment.
+- Initially treated a direct API HTTP 200 as proof of complete service health
+  and a handshake. The tutor explained that it only validates that request and
+  bypasses the proxy; the TCP connection is established before the HTTP response.
+- Correctly answered the follow-up: API 200 plus proxy 502 does not mean the
+  full client path works.
+
+## Outcome and Follow-up
+
+Practical work and oral defence are credited as completed with guidance.
+Numeric skill ratings remain unchanged. A future fresh scenario should revisit
+the two separate connections and acceptance through the original client endpoint.
+Cleanup of older lab services was discussed but explicitly deferred by the learner;
+no service shutdown or lab-file removal is claimed here.

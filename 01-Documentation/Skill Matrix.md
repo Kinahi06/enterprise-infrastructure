@@ -1,6 +1,6 @@
 # Skill Matrix
 
-Last updated: 2026-09-27
+Last updated: 2026-09-28
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
@@ -30,7 +30,7 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | VLAN | 0/10 | 8/10 |
 | VPN and overlay networking | 3/10 | 8/10 |
 
-### Recent networking evidence — 2026-09-27
+### Recent networking evidence — 2026-09-28
 
 | Topic | Evidence / status |
 |-------|-------------------|
@@ -38,10 +38,15 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Process, listener and HTTP separation | Both endpoints rechecked successfully on 2026-09-27 |
 | nftables tables, chains and matching rules | Introductory guided interpretation; not independent firewall administration |
 | Minimal network repair | Removed only the training filter; HTTP recovered without a service restart |
-| Reverse proxy and upstream diagnosis | Session 10 prepared; learner attempt not yet confirmed |
+| Reverse proxy and upstream diagnosis | Session 10 completed with guidance: learner identified the destination/listener mismatch and chose a proxy-only restart |
+| Client-path acceptance | Recovery and all checker PASS results learner-reported; no tutor rerun of the final checker |
+| HTTP response versus end-to-end health | Defence completed after correcting the assumption that direct API HTTP 200 proves the whole path or a TCP handshake |
+| Env-file versus unit changes | Correct distinction in defence; restart rereads process environment, daemon-reload concerns unit definitions |
 
 Existing numeric ratings are unchanged. Session 09 recovery is recorded, but
 the oral defence is pending and the full repeated root-only check was not run.
+Session 10 is credited, but requested diagnostic prompts and the corrected
+defence answer mean it is not treated as an independent mastery assessment.
 
 ## Automation and Source Control
 
@@ -152,7 +157,7 @@ the oral defence is pending and the full repeated root-only check was not run.
 
 ## Current Focus
 
-- Client -> reverse proxy -> API request-path diagnosis (Session 10)
+- Consolidate completed Session 10 client -> reverse proxy -> API diagnosis
 - Separating TCP connection failures from actual HTTP error responses
 - Linux incident retention through mixed refresh laboratories
 - Evidence-first validation after every state change

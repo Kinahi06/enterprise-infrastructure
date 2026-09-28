@@ -1,6 +1,6 @@
 # Progress Timeline
 
-Last updated: 2026-09-27
+Last updated: 2026-09-28
 
 ## August 2026
 
@@ -80,17 +80,25 @@ was required; socket PID ownership and absence of the training table were not
 independently reverified in that repeat check. The earlier full PASS result is
 learner-reported. This guided exercise does not raise the independence rating.
 
-### Session 10 — Reverse proxy and HTTP 502 (prepared)
+### Session 10 — Reverse proxy and HTTP 502 (completed with guidance)
 
-- [x] Prepare a separate two-service lab, ticket and short theory notes
+- [x] Prepare a separate two-service lab, ticket and standalone learning material
 - [x] Validate the prepared application behaviour with five automated tests
 - [x] Deliver the installer to the training VM
-- [ ] Confirm lab installation and reproduce the client-visible symptom
-- [ ] Diagnose and repair the incident
-- [ ] Pass the final checker and oral defence
+- [x] Confirm lab installation and reproduce the client-visible HTTP 502
+- [x] Compare the configured upstream destination with the API's actual listener
+- [x] Correct the upstream port and restart only the proxy
+- [x] Report successful client-path verification and all final checker checks passing
+- [x] Complete the oral defence, including a corrected end-to-end verification misconception
 
-Preparation and automated testing were performed by the tutor. Session 10 is
-not recorded as a completed learner exercise.
+Completed on 2026-09-28. The learner identified the upstream/listener mismatch
+and chose the minimal repair after requesting command syntax and help locating
+the backend service. Setup, initial HTTP 502 and proxy configuration were shown
+in screenshots; final recovery and all checker PASS results were learner-reported,
+not independently rerun by the tutor. During the defence, direct API HTTP 200
+was initially mistaken for proof of the whole path and a handshake. This was
+clarified, and the learner answered the follow-up correctly. Credit is recorded
+without increasing numeric independence ratings.
 
 ## Future Modules
 
@@ -161,17 +169,21 @@ not recorded as a completed learner exercise.
 - Guided comparison of TCP connection refusal and timeout
 - Scoped packet-filter interpretation without disabling the host firewall
 - Distinguishing listener availability from end-to-end HTTP reachability
+- Comparing reverse-proxy upstream configuration with the backend listener
+- Repairing an upstream-port mismatch with a proxy-only restart
+- Distinguishing env-file reload by restart from systemd unit daemon-reload
 
 ## Current Focus
 
-Continue networking with the two-hop client -> reverse proxy -> API model,
-while retaining Linux through short mixed incidents. Session 09 recovery is
-verified with the evidence limits above; Session 10 is prepared, not completed.
+Continue networking while retaining Linux through short mixed incidents.
+Session 10 practical work and oral defence are complete with the evidence limits
+above. Reinforce that direct backend health is not proof of the client-facing
+path, and that HTTP 200 is a response to a particular request, not a TCP handshake.
 
 ## Next Session
 
-1. Install Session 10 and reproduce the original client HTTP request.
-2. Distinguish the client-to-proxy connection from the proxy-to-API connection.
-3. Verify any repair through the original client URL, not only the direct backend URL.
+1. Select the next networking lab with the learner.
+2. Revisit the two separate connections in a proxied request using a fresh scenario.
+3. Verify the original client URL, status and expected payload rather than only backend health.
 4. Revisit the pending Session 09 oral defence during a short Linux/network refresh.
 5. Keep unrelated infrastructure automation changes in a separate review and commit.
