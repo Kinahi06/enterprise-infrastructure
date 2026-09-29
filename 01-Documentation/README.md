@@ -38,8 +38,8 @@ This describes the lab design, not a live availability check.
 ## Documentation
 
 - [Repository overview](../README.md)
-- [Full learning map / Все занятия и модули](./Learning-Map.md)
-- [Skills by topic / Навыки по темам](./Skills-Overview.md)
+- Full learning map: [English](./Learning-Map.md) · [Русский](./Learning-Map.ru.md)
+- Skills by topic: [English](./Skills-Overview.md) · [Русский](./Skills-Overview.ru.md)
 - [Progress Timeline](./Progress.md)
 - [Engineering Journal](./Engeniering%20Journal.md)
 - [Skill Matrix](./Skill%20Matrix.md)

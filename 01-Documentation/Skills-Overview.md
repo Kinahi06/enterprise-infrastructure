@@ -1,94 +1,100 @@
-# Навыки и учебный опыт — обзор по темам
+# Skills and Learning Experience — Topic Overview
 
-[Все занятия, лабораторные сессии и будущие модули курса](Learning-Map.md).
+**English** | [Русский](Skills-Overview.ru.md)
 
-Актуально на **29 сентября 2026 года**. Одна строка на тему; сведения собраны из опубликованных документов GitHub, отчётов курса и выполненных заданий в чате.
+[All lessons, lab sessions and future curriculum modules](Learning-Map.md).
 
-## Область опыта
+Updated **29 September 2026**. One bullet per topic, based on published repository
+documentation, course reports and exercises completed during tutoring sessions.
 
-Личный инфраструктурный homelab и обучение, а не коммерческий production-опыт; часть работ выполнена с наставником/ИИ, самостоятельность отмечена отдельно. Запланированные технологии не считаются освоенными; стаж и профессиональные сертификаты здесь не заявляются.
+## Scope of experience
 
-## Linux и системное администрирование
+Personal infrastructure homelab and training, not commercial production
+experience. Some work was tutor/AI-assisted; independent diagnostic steps are
+identified separately. Planned technologies are not counted as acquired skills.
+No professional tenure or earned certifications are claimed here.
 
-- **Ubuntu Server:** развёртывание Ubuntu Server 24.04 LTS ARM64 в UTM, первичная проверка ОС, ресурсов, сети и состояния служб.
-- **Пакеты и обслуживание:** работа с APT, различение обновления метаданных и установки обновлений, проверка системы после перезагрузки.
-- **systemd:** просмотр status и unit-файлов, запуск/остановка/restart служб, различение active/inactive/failed и enabled/disabled, знакомство с socket activation.
-- **Диагностика процессов:** сопоставление MainPID, процесса, занятого порта и systemd-службы; устранение конфликтов listener.
-- **Журналы:** поиск причины отказа через journalctl и сообщения текущего процесса вместо предположения, что active означает исправность.
-- **Runtime-конфигурация:** поиск EnvironmentFile и параметров приложения, исправление адреса/порта без изменения кода, различение restart и daemon-reload.
-- **Зависимости systemd:** практика After=, Requires= и drop-in; проверка порядка запуска и фактически загруженной конфигурации с пояснениями наставника.
-- **Права доступа:** пользователи/группы, chown/chmod, права чтения/записи/прохода по каталогу, проверка доступа от имени сервисной учётной записи.
-- **Минимальные привилегии:** отделение доступных для записи данных от кода приложения, групповые права и setgid-наследование в файловой лаборатории.
-- **Файловые системы:** различение свободных байтов и inode, диагностика ENOSPC при исчерпании inode, ограниченный поиск и предварительная проверка выборки перед удалением.
-- **Хранилище и LVM:** учебное создание отдельного logical volume, ext4 и постоянного mount через fstab с проверкой после reboot.
+## Linux and system administration
 
-## Сети, удалённый доступ и HTTP
+- **Ubuntu Server:** deployed Ubuntu Server 24.04 LTS ARM64 in UTM and performed initial OS, resource, network and service checks.
+- **Packages and maintenance:** used APT, distinguished package metadata refresh from package upgrades, and verified the system after reboot.
+- **systemd:** inspected status and unit files, started/stopped/restarted services, distinguished active/inactive/failed from enabled/disabled, and explored socket activation.
+- **Process diagnostics:** correlated MainPID, processes, occupied ports and systemd services to resolve listener conflicts.
+- **Logs:** investigated failures using journalctl and current-process messages rather than assuming an active process was healthy.
+- **Runtime configuration:** located EnvironmentFile and application settings, corrected addresses/ports without changing application code, and distinguished restart from daemon-reload.
+- **systemd dependencies:** practised After=, Requires= and drop-ins, checking startup order and effective configuration with explanations from the tutor.
+- **Permissions:** used users/groups, chown/chmod and file/directory read, write and traversal permissions; tested access as the service account.
+- **Least privilege:** separated writable application data from code, using group permissions and setgid inheritance in the file-service lab.
+- **Filesystems:** distinguished free bytes from free inodes, diagnosed ENOSPC caused by inode exhaustion, and previewed scoped file selections before deletion.
+- **Storage and LVM:** created a dedicated logical volume, ext4 filesystem and persistent fstab mount in the lab, with post-reboot verification.
 
-- **IPv4 и виртуальные сети:** практическая проверка IP-адресов, локальных подсетей, loopback, bind-адресов и доступности между виртуальными машинами и Mac.
-- **Разрешение имён:** getent, локальные записи hosts и MagicDNS; диагностика имени, которое разрешается не в адрес нужного сервиса.
-- **TCP и сокеты:** ss с фильтром по порту, чтение LISTEN/address/port/PID; диагностика отсутствующего listener и конфликта порта.
-- **Refused и timeout:** практическое различение быстрого отказа соединения и ожидания ответа; с подсказками найдена фильтрация при работающем listener.
-- **OpenSSH:** доступ с macOS на Linux, ED25519-ключи, проверка host fingerprint, authorized_keys, права файлов и пользовательский SSH-alias.
-- **Tailscale:** развёртывание и проверка overlay-связности Ubuntu/macOS/Windows, MagicDNS, SSH и SMB через tailnet.
-- **Сетевой путь и задержка:** знакомство с прямым соединением и DERP relay, сопоставление задержек с качеством SSH; не заявлять самостоятельную экспертизу по оптимизации VPN.
-- **UFW:** лабораторная настройка ограничений по интерфейсу, точному клиентскому адресу и сервису с сохранением пути восстановления SSH.
-- **nftables:** начальное чтение таблиц, цепочек, условий и drop-счётчиков; удаление только изолированного учебного фильтра после объяснения нового инструмента.
-- **HTTP-диагностика:** curl, HTTP-коды и тело ответа; различение работающего процесса, TCP-доступности и успешного клиентского сценария.
-- **Reverse proxy:** практика пути клиент → proxy → API, сопоставление UPSTREAM с фактическим listener, устранение HTTP 502 перезапуском только нужного компонента.
-- **Маршрутизация к версии API:** самостоятельно найдена отправка запросов к старому backend v1 вместо v2 по журналам трёх служб, исправлен upstream.
-- **Проверка контракта API:** практика проверки ожидаемой версии и данных в JSON через исходный клиентский адрес; необходимость проверять тело, а не только код/порт, закрепляется с подсказками.
+## Networking, remote access and HTTP
 
-## Windows, виртуализация и файловые сервисы
+- **IPv4 and virtual networks:** checked IP addresses, local subnets, loopback, bind addresses and reachability between virtual machines and macOS.
+- **Name resolution:** used getent, local hosts entries and MagicDNS to diagnose a name resolving to the wrong service address.
+- **TCP and sockets:** used port filters in ss, interpreted LISTEN/address/port/PID, and diagnosed missing listeners and port conflicts.
+- **Connection refusal versus timeout:** distinguished immediate connection failure from timeout; identified filtering despite an active listener with guidance.
+- **OpenSSH:** established macOS-to-Linux access using ED25519 keys, host fingerprint checks, authorized_keys, file permissions and a client SSH alias.
+- **Tailscale:** deployed and verified Ubuntu/macOS/Windows overlay connectivity, MagicDNS, SSH and SMB over the tailnet.
+- **Network path and latency:** explored direct connections versus DERP relay and their relationship to SSH latency; independent VPN optimization expertise is not claimed.
+- **UFW:** configured lab restrictions by interface, exact client address and service while preserving an SSH recovery path.
+- **nftables:** gained introductory experience reading tables, chains, conditions and drop counters; removed only an isolated lab filter after a tool walkthrough.
+- **HTTP diagnostics:** used curl, status codes and response bodies to distinguish a running process, TCP reachability and a successful client scenario.
+- **Reverse proxies:** traced client → proxy → API, compared UPSTREAM with the actual listener, and resolved HTTP 502 with a targeted component restart.
+- **API version routing:** independently identified requests reaching an old v1 backend instead of v2 from three service logs and corrected the upstream.
+- **API contract validation:** practised checking the expected JSON version and data through the original client endpoint; body validation beyond status/port remains a guided reinforcement topic.
 
-- **UTM / Apple Silicon:** развёртывание Windows 11 Pro ARM64 и Ubuntu Server ARM64, настройка виртуальных ресурсов и установка VirtIO Guest Tools.
-- **Windows — основы:** знакомство с winver, msinfo32, Device Manager, Disk Management, Task Manager и Resource Monitor.
-- **Windows Services и Registry:** базовый просмотр и управление службами, исследование системных каталогов и знакомство с реестром; не полноценное Windows Server administration.
-- **Диагностика ресурсов Windows:** учебные наблюдения CPU, RAM, диска и сети в Resource Monitor.
-- **Samba / SMB:** развёртывание аутентифицированного файлового сервера на Linux, групповой доступ и проверка чтения/записи с macOS и Windows.
-- **Безопасность файлового сервиса:** отключение ненужного printer/guest-функционала, ограничение сетевого доступа и повторная проверка сервиса после reboot.
+## Windows, virtualization and file services
 
-## Терминал и рабочие инструменты
+- **UTM / Apple Silicon:** deployed Windows 11 Pro ARM64 and Ubuntu Server ARM64, configured virtual resources and installed VirtIO Guest Tools.
+- **Windows fundamentals:** explored winver, msinfo32, Device Manager, Disk Management, Task Manager and Resource Monitor.
+- **Windows Services and Registry:** performed basic service inspection/management and explored system directories and the Registry; full Windows Server administration competence is not claimed.
+- **Windows resource diagnostics:** observed CPU, RAM, disk and network activity through Resource Monitor exercises.
+- **Samba / SMB:** deployed an authenticated Linux file server with group-based access and verified read/write access from macOS and Windows.
+- **File-service security:** disabled unnecessary printer/guest features, restricted network access and rechecked the service after reboot.
 
-- **Shell / Bash / zsh:** повседневная работа с командами, аргументами, путями, pipe, grep/find/head/wc и правами sudo; сложные сценарии ещё требуют опоры.
-- **Vim:** начальные навыки открытия, редактирования, сохранения и выхода; режимы редактора и безопасная работа с нужным конфигом пока закрепляются.
-- **tmux:** использование сохраняемых сессий и панелей, переключение и изменение размера; конфигурация подготовлена с помощью.
-- **Удобство терминала:** использование zsh-autosuggestions, syntax highlighting, completions, fzf и btop; настройка и устранение проблем выполнялись с поддержкой.
+## Terminal and working tools
 
-## Автоматизация, Git и документация
+- **Shell / Bash / zsh:** used commands, arguments, paths, pipes, grep/find/head/wc and sudo in daily exercises; complex scripts still require support.
+- **Vim:** practised opening, editing, saving and exiting; editor modes and safe selection of the intended configuration file are still being reinforced.
+- **tmux:** used persistent sessions and panes, switching and resizing; configuration was prepared with assistance.
+- **Terminal tooling:** used zsh-autosuggestions, syntax highlighting, completions, fzf and btop; setup and troubleshooting were assisted.
 
-- **Bash/PowerShell-автоматизация — проектная практика с поддержкой:** в репозитории есть четыре bootstrap/authorization-скрипта для Tailscale и UFW; самостоятельное написание этих сценариев с нуля не подтверждено.
-- **Безопасный запуск автоматизации:** знакомство с check-only, повторным запуском без дублирования корректных настроек, журналированием и интерактивным подтверждением изменений.
-- **Проверка автоматизации:** в инженерном журнале записаны проверки Ubuntu/macOS/Windows и запуск Windows wizard; полный bootstrap на свежих VM остаётся отдельной непроверенной задачей.
-- **Git/GitHub:** ведение учебного портфолио, знакомство с ветками/коммитами и публикацией; последние commit/push выполнял ИИ-помощник, сложные merge/rebase/recovery не подтверждены.
-- **Работа с секретами:** разделение публичных и приватных ключей, исключение паролей/токенов из репозитория и логов в учебных рабочих процессах.
-- **Инженерная документация:** отчёты по инцидентам, фиксация симптома/гипотезы/причины/изменения/проверки, журнал прогресса и Linux-шпаргалка; оформление ведётся с помощью ИИ.
-- **Метод диагностики:** переход от симптома к данным службы, журнала, процесса, сокета и конфигурации, затем минимальное изменение и повторная клиентская проверка.
+## Automation, Git and documentation
 
-## Что пока не выдавать за освоенные навыки
+- **Assisted Bash/PowerShell project work:** the repository contains four Tailscale/UFW bootstrap and authorization scripts; independent implementation from scratch has not been demonstrated.
+- **Safe automation execution:** explored check-only modes, repeat runs without duplicating correct settings, logging and interactive confirmation of changes.
+- **Automation validation:** the journal records Ubuntu/macOS/Windows checks and Windows wizard execution; full bootstrap on fresh VMs remains unvalidated.
+- **Git/GitHub:** maintained a learning portfolio and gained exposure to branches, commits and publishing; recent commit/push operations were performed by the AI assistant, and advanced merge/rebase/recovery skills are not confirmed.
+- **Secret handling:** separated public and private keys and excluded passwords/tokens from repository content and logs in lab workflows.
+- **Engineering documentation:** recorded incident symptoms, hypotheses, causes, changes and acceptance checks, with a progress journal and Linux cheat sheet; documentation was AI-assisted.
+- **Diagnostic method:** moved from symptoms to service, log, process, socket and configuration evidence, then applied a minimal change and repeated the client check.
 
-- **TLS/HTTPS:** материал и INC-012 подготовлены, но пользователь ещё не подтвердил выполнение; проверка CA, SAN, срока и пары сертификат/ключ — текущая следующая тема.
-- **Docker и CI/CD:** начальное теоретическое знакомство отмечено во входном аудите, самостоятельная законченная практика по текущему маршруту ещё не подтверждена.
-- **Ansible, Terraform, Kubernetes, облака, GitOps:** план дальнейшего обучения, не подтверждённая практическая компетенция.
-- **Active Directory, GPO, DNS/DHCP-серверы, IIS:** присутствуют в плане, но выполненные лабораторные не подтверждены.
-- **Production, HA, SRE, мониторинг-платформы и резервное восстановление:** не заявлять промышленную эксплуатацию, on-call, высокую доступность или успешные backup/restore-проекты без дополнительных доказательств.
-- **Сертификации:** сертификаты в репозитории перечислены как будущие цели, не как полученные квалификации.
-- **Другие гипервизоры и числовые рейтинги:** самооценки VirtualBox/Hyper-V/VMware и баллы из Skill Matrix не считать самостоятельным доказательством практики и не переносить в LinkedIn как аттестацию.
+## Planned or not yet demonstrated
 
-## Конкретные проектные результаты
+- **TLS/HTTPS:** learning material and INC-012 are prepared, but learner completion is not confirmed; CA, SAN, validity and certificate/key checks are the next topic.
+- **Docker and CI/CD:** initial theoretical exposure was recorded in the entry assessment; independent completed practical work on the current track is not yet confirmed.
+- **Ansible, Terraform, Kubernetes, cloud and GitOps:** future learning topics, not demonstrated practical competencies.
+- **Active Directory, GPO, DNS/DHCP servers and IIS:** included in earlier plans; completed labs are not confirmed.
+- **Production, HA, SRE, monitoring platforms and backup recovery:** no claim of production operations, on-call responsibility, high availability or successful backup/restore projects without further evidence.
+- **Certifications:** certifications listed in the repository are future goals, not earned credentials.
+- **Other hypervisors and numeric ratings:** VirtualBox/Hyper-V/VMware self-ratings and Skill Matrix scores are not independent practical evidence or professional assessments.
 
-- **Инфраструктурный homelab:** Windows и Ubuntu на UTM плюс административный Mac, SSH, LVM-backed Samba и межплатформенная проверка доступа.
-- **Overlay-связность:** Tailscale/MagicDNS и ограниченный доступ к SSH/SMB с проверкой после перезагрузки.
-- **Linux-спринт:** выполнены учебные инциденты с правами, runtime-конфигурацией, зависимостями, bind-адресом, inode и конфликтом порта; финальный Linux gate — 11 PASS по сохранённым материалам курса.
-- **INC-009:** восстановлены два endpoint при разных TCP-ошибках; практика guided, устная защита отдельно остаётся незавершённой.
-- **INC-010:** исправлено несовпадение upstream и порта API; практика и защита зачтены с пояснениями, все PASS сообщены учеником.
-- **INC-011:** причина старой версии найдена самостоятельно, новый upstream подтверждён скриншотом; все PASS сообщены учеником, команды приёмки и уточнение проверки тела ответа даны наставником.
-- **Артефакты автоматизации:** четыре Bash/PowerShell-скрипта в проекте, проверочные режимы и документация; это результат учебного проекта с поддержкой, не доказательство самостоятельной разработки всего кода.
+## Concrete project outcomes
 
-## Публикация и источники
+- **Infrastructure homelab:** Windows and Ubuntu on UTM, with macOS administration, SSH, LVM-backed Samba and cross-platform access checks.
+- **Overlay connectivity:** Tailscale/MagicDNS and restricted SSH/SMB access, verified after reboot.
+- **Linux diagnostic sprint:** completed incidents involving permissions, runtime configuration, dependencies, bind addresses, inodes and port conflicts; the final Linux gate recorded 11 PASS results in the course materials.
+- **INC-009:** recovered two endpoints with different TCP failures; guided practical work completed, with oral assessment still pending.
+- **INC-010:** corrected an upstream/API port mismatch; practical work and oral assessment completed with explanations, all PASS results learner-reported.
+- **INC-011:** identified the old-version cause independently and showed the new upstream in a screenshot; PASS results learner-reported, with acceptance commands and response-body clarification supplied by the tutor.
+- **Automation artifacts:** four Bash/PowerShell scripts, validation modes and documentation represent assisted project work, not proof of independent authorship of all code.
 
-- **Репозиторий и основная ветка:** [Kinahi06/enterprise-infrastructure — main](https://github.com/Kinahi06/enterprise-infrastructure/tree/main).
-- **Прогресс:** [Progress.md](Progress.md) — результаты до INC-011 включительно; INC-012 отмечена подготовленной, не пройденной.
-- **Матрица навыков:** [Skill Matrix.md](Skill%20Matrix.md) — учебные самооценки, не профессиональная аттестация.
-- **Инженерный журнал:** [Engeniering Journal.md](Engeniering%20Journal.md) — наблюдения, исправления, проверки и границы подтверждения.
-- **Автоматизация:** [02-Automation](../02-Automation/README.md) — проектные Bash/PowerShell-артефакты с поддержкой, без заявления о самостоятельном авторстве всего кода.
-- **Актуальность:** сводка обновлена 29.09.2026; старые исторические счётчики часов и команд не используются как текущие метрики.
+## Publication and sources
+
+- **Repository and default branch:** [Kinahi06/enterprise-infrastructure — main](https://github.com/Kinahi06/enterprise-infrastructure/tree/main).
+- **Progress:** [Progress.md](Progress.md) records outcomes through INC-011; INC-012 is prepared, not completed.
+- **Skill matrix:** [Skill Matrix.md](Skill%20Matrix.md) contains learning self-assessments, not professional certification.
+- **Engineering journal:** [Engeniering Journal.md](Engeniering%20Journal.md) records observations, repairs, checks and evidence limits.
+- **Automation:** [02-Automation](../02-Automation/README.md) contains assisted Bash/PowerShell project artifacts, without claiming independent authorship of all code.
+- **Currency:** updated 29 September 2026; historical hour and command counts are not used as current metrics.

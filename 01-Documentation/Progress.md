@@ -147,7 +147,7 @@ changes were made while preparing the lab.
 
 The dated lists below preserve an older Windows/homelab plan, not current
 deadlines. The active course sequence and module statuses are in the
-[full learning map](Learning-Map.md#большие-модули-курса--полный-маршрут).
+[full learning map](Learning-Map.md#curriculum-modules--full-roadmap).
 
 ### September
 

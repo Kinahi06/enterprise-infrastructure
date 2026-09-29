@@ -1,62 +1,64 @@
-# Полная карта обучения
+# Learning Map
 
-Обновлено: 29.09.2026. Здесь разделены **большие модули курса**, **лабораторные
-сессии** и **ранние занятия homelab**: у них разная нумерация. Session 11 не
-означает завершение модуля 11. Зачтённая лабораторная также не означает полное
-освоение всей темы без помощи.
+**English** | [Русский](Learning-Map.ru.md)
 
-## Ранние занятия — август 2026
+Updated: 29 September 2026. This page separates **curriculum modules**, **lab
+sessions** and **earlier homelab lessons**, which use different numbering.
+Completing Session 11 does not mean completing Module 11. Passing a lab also
+does not imply independent mastery of the entire subject.
 
-| Занятие | Что делали | Запись |
+## Foundation lessons — August 2026
+
+| Lesson | Practical work | Record |
 |---|---|---|
-| Lesson 1 — Windows infrastructure | Windows 11 ARM в UTM, VirtIO, Resource Monitor, службы, Registry и структура системы | [Журнал](Engeniering%20Journal.md#lesson-1--windows-infrastructure-lab) |
-| Lesson 2 — Закрепление | Рефлексия по первому занятию и вопросы для дальнейшего изучения; не отдельный практический зачёт | [Журнал](Engeniering%20Journal.md#lesson-2) |
-| Lesson 3 — Ubuntu deployment | Установка Ubuntu Server ARM64, базовая сеть и проверка DNS | [Журнал](Engeniering%20Journal.md#lesson-3--ubuntu-server-deployment) |
-| Lesson 4 — Baseline и SSH | Состояние ОС, APT, systemd/socket activation, SSH и ED25519, проверка доступа с Mac | [Журнал](Engeniering%20Journal.md#lesson-4--ubuntu-server-baseline-and-ssh) |
-| Lesson 5 — LVM и Samba | Отдельный том, ext4/fstab, групповые права и setgid, SMB, UFW и проверка после reboot | [Журнал](Engeniering%20Journal.md#lesson-5--lvm-backed-samba-file-server) |
-| Lesson 6 — Tailscale и автоматизация | Ubuntu/Mac/Windows, MagicDNS, правила UFW по клиентам, SMB, DERP, Bash/PowerShell с помощью преподавателя | [Журнал](Engeniering%20Journal.md#lesson-6--cross-platform-tailscale-administration) |
+| Lesson 1 — Windows infrastructure | Windows 11 ARM on UTM, VirtIO, Resource Monitor, services, Registry and system layout | [Journal](Engeniering%20Journal.md#lesson-1--windows-infrastructure-lab) |
+| Lesson 2 — Review | Reflection on the first lesson and questions for further study; not a separate practical assessment | [Journal](Engeniering%20Journal.md#lesson-2) |
+| Lesson 3 — Ubuntu deployment | Ubuntu Server ARM64 installation, basic networking and DNS verification | [Journal](Engeniering%20Journal.md#lesson-3--ubuntu-server-deployment) |
+| Lesson 4 — Baseline and SSH | OS health, APT, systemd/socket activation, SSH and ED25519, access verification from macOS | [Journal](Engeniering%20Journal.md#lesson-4--ubuntu-server-baseline-and-ssh) |
+| Lesson 5 — LVM and Samba | Dedicated volume, ext4/fstab, group permissions and setgid, SMB, UFW and post-reboot verification | [Journal](Engeniering%20Journal.md#lesson-5--lvm-backed-samba-file-server) |
+| Lesson 6 — Tailscale and automation | Ubuntu/macOS/Windows connectivity, MagicDNS, client-scoped UFW rules, SMB, DERP and assisted Bash/PowerShell automation | [Journal](Engeniering%20Journal.md#lesson-6--cross-platform-tailscale-administration) |
 
-## Лабораторные сессии — сентябрь 2026
+## Lab sessions — September 2026
 
-| Сессия | Тема и результат | Статус |
+| Session | Topic and outcome | Status |
 |---|---|---|
-| 01 — Broken Web Stack | Подготовленный Docker Compose стенд | Прохождение не подтверждено; не считать завершённой |
-| 02 — Service permissions | Доступ сервисной учётной записи к коду; подтверждение process/socket/HTTP | Зачтено |
-| 03 — Runtime environment | Поиск неправильного значения PORT через journal и EnvironmentFile | Зачтено с подсказками |
-| 04 — Remote API | Различие локальной и удалённой доступности, bind-address и проверка с Mac | Зачтено с подсказками |
-| 05 — Dependencies | After и Requires, drop-in, эффективные зависимости и здоровье всей цепочки | Зачтено с объяснением зависимостей |
-| 06 — Filesystem resources | Исчерпание inode при свободных байтах, ограниченная выборка старого кэша и восстановление worker | Зачтено; 7 PASS показаны |
-| 07 — Linux gate | Две последовательные причины: права и занятый порт; PID → unit, повторная проверка | Зачтено; 11 PASS зафиксированы |
-| 08 — Name resolution | Несовпадение hosts-записи и listener; getent, ss и исходный URL | Зачтено с подсказками; все PASS сообщены учеником |
-| 09 — TCP errors | Inactive/no listener против packet DROP; восстановление двух endpoint | Практика с помощью завершена; устная защита ещё ожидается |
-| 10 — HTTP 502 | Неверный upstream-порт, минимальная правка и restart только proxy | Практика и защита завершены с подсказками; PASS сообщены учеником |
-| 11 — HTTP contract | HTTP 200 от старой версии; переключение proxy на нужный backend, проверка версии в ответе | Причина найдена самостоятельно; зачтено с уточнением приёмки, PASS сообщены учеником |
-| 12 — TLS | Доверие CA, имя сертификата и проверка HTTPS без отключения защиты | Подготовлено; прохождение учеником не подтверждено |
+| 01 — Broken Web Stack | Prepared Docker Compose environment | Learner completion not confirmed; not counted as completed |
+| 02 — Service permissions | Service-account access to application code; process/socket/HTTP verification | Completed |
+| 03 — Runtime environment | Located an invalid PORT value using the journal and EnvironmentFile | Completed with guidance |
+| 04 — Remote API | Local versus remote reachability, bind address and verification from macOS | Completed with guidance |
+| 05 — Dependencies | After versus Requires, drop-ins, effective dependencies and end-to-end health | Completed with dependency-model explanations |
+| 06 — Filesystem resources | Inode exhaustion despite free bytes; scoped stale-cache cleanup and worker recovery | Completed; seven PASS results shown |
+| 07 — Linux gate | Two successive faults: permissions and an occupied port; PID-to-unit attribution and revalidation | Completed; 11 PASS results recorded |
+| 08 — Name resolution | Hosts entry did not match the listener; getent, ss and the original client URL | Completed with guidance; all PASS results learner-reported |
+| 09 — TCP errors | Inactive service/no listener versus packet DROP; recovered both endpoints | Guided practical work completed; oral assessment pending |
+| 10 — HTTP 502 | Incorrect upstream port; minimal correction and proxy-only restart | Practical work and oral assessment completed with guidance; PASS learner-reported |
+| 11 — HTTP contract | HTTP 200 from an old version; routed the proxy to the required backend and checked the response version | Cause identified independently; completed with acceptance-test clarification, PASS learner-reported |
+| 12 — TLS | CA trust, certificate hostname and HTTPS verification without bypassing security checks | Prepared; learner completion not confirmed |
 
-Подробности: [журнал](Engeniering%20Journal.md), [прогресс](Progress.md),
-[навыки по одной строке на тему](Skills-Overview.md). Подготовка стенда и тесты
-преподавателя не считаются практикой ученика. Для Session 09 повторная проверка
-подтвердила endpoints, но не повторяла весь root-only checker; это не скрывается.
+Details: [journal](Engeniering%20Journal.md), [progress](Progress.md) and
+[skills by topic](Skills-Overview.md). Lab preparation and tutor-run tests do
+not count as learner practice. The Session 09 recheck confirmed the endpoints
+but did not rerun the complete root-only checker.
 
-## Большие модули курса — полный маршрут
+## Curriculum modules — full roadmap
 
-| № | Модуль | Текущее положение |
+| No. | Module | Current status |
 |---|---|---|
-| 0 | Входной аудит и общая модель DevOps-системы | Частичный теоретический аудит; не завершён |
-| 1 | Linux internals: процессы, память, I/O, filesystem, systemd | Практический refresh и Linux gate пройдены; не полное освоение всех internals |
-| 2 | Сети: L2–L7, DNS, TCP, routing/NAT, HTTP, proxy, TLS | В работе: сессии 08–11, далее подготовленная 12; весь модуль не закрыт |
-| 3 | Контейнеры: namespaces, cgroups, образы, storage/network | После сетей; аудит выявил необходимость углубления, практический зачёт не пройден |
-| 4 | CI/CD: pipeline, artifacts, promotion, rollback | В плане; только начальный теоретический аудит |
-| 5 | Ansible и Terraform: идемпотентность, drift, state/locking | В плане; практический зачёт не пройден |
-| 6 | Облако: IAM, VPC, LB, storage, отказоустойчивость и стоимость | В плане; не проверено |
-| 7 | Kubernetes architecture: API, reconciliation, scheduler, kubelet | В плане; не проверено |
-| 8 | Kubernetes operations: сеть, storage, probes, rollout, RBAC | В плане; не проверено |
-| 9 | Databases и queues: PostgreSQL, restore, Redis, семантика очередей | В плане; не проверено |
-| 10 | Observability и reliability: metrics/logs/traces, SLI/SLO, alerts | В плане; не проверено |
-| 11 | Security: identity, least privilege, secrets, TLS, supply chain | Отдельные основы применялись в homelab; модуль целиком не пройден |
-| 12 | GitOps и финальный сквозной инцидент | В плане; не проверено |
+| 0 | Entry assessment and the overall DevOps system model | Partial theory assessment; not completed |
+| 1 | Linux internals: processes, memory, I/O, filesystems, systemd | Practical refresh and Linux gate completed; not a claim of mastery of all internals |
+| 2 | Networking: L2–L7, DNS, TCP, routing/NAT, HTTP, proxies, TLS | In progress: Sessions 08–11, with Session 12 prepared next; module not yet completed |
+| 3 | Containers: namespaces, cgroups, images, storage and networking | After networking; entry assessment identified learning needs, practical assessment not passed |
+| 4 | CI/CD: pipelines, artifacts, promotion and rollback | Planned; initial theory assessment only |
+| 5 | Ansible and Terraform: idempotence, drift, state and locking | Planned; practical assessment not passed |
+| 6 | Cloud: IAM, VPC, load balancing, storage, resilience and cost | Planned; not assessed |
+| 7 | Kubernetes architecture: API, reconciliation, scheduler and kubelet | Planned; not assessed |
+| 8 | Kubernetes operations: networking, storage, probes, rollout and RBAC | Planned; not assessed |
+| 9 | Databases and queues: PostgreSQL, restore, Redis and queue semantics | Planned; not assessed |
+| 10 | Observability and reliability: metrics/logs/traces, SLI/SLO and alerts | Planned; not assessed |
+| 11 | Security: identity, least privilege, secrets, TLS and supply chain | Selected fundamentals used in the homelab; full module not completed |
+| 12 | GitOps and a final end-to-end incident | Planned; not assessed |
 
-Это маршрут, а не список полученных квалификаций. Старый календарный план
-Windows/AD/GPO остаётся дополнительным направлением, не текущим порядком курса.
-Для LinkedIn использовать подтверждённые практические темы, а не выдавать весь
-маршрут за освоенные технологии или коммерческий опыт.
+This is a learning roadmap, not a list of qualifications. The older calendar-based
+Windows/AD/GPO plan remains an optional direction rather than the current course
+sequence. Professional profiles should describe demonstrated homelab work, not
+present planned topics as mastered technologies or commercial experience.

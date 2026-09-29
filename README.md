@@ -7,8 +7,8 @@ networking, service troubleshooting and introductory automation on Apple Silicon
 
 ## Start here
 
-- [Skills by topic / Навыки по темам](01-Documentation/Skills-Overview.md)
-- [Full learning map / Все занятия и модули](01-Documentation/Learning-Map.md)
+- Skills by topic: [English](01-Documentation/Skills-Overview.md) · [Русский](01-Documentation/Skills-Overview.ru.md)
+- Full learning map: [English](01-Documentation/Learning-Map.md) · [Русский](01-Documentation/Learning-Map.ru.md)
 - [Learning progress](01-Documentation/Progress.md)
 - [Engineering journal and incident write-ups](01-Documentation/Engeniering%20Journal.md)
 - [Skill matrix and assessment limits](01-Documentation/Skill%20Matrix.md)
