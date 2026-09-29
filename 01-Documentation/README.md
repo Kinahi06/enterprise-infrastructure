@@ -7,6 +7,7 @@ Last updated: 2026-09-29
 ## Current Progress
 
 - Linux service-diagnostics sprint completed, including permissions, systemd dependencies, inode exhaustion and port conflicts.
+- Session 08: local name-to-IP mapping corrected with guidance; all checker PASS learner-reported.
 - Session 09: TCP recovery completed with guidance; oral defence remains pending.
 - Session 10: reverse-proxy HTTP 502 incident and oral defence completed with guidance.
 - Session 11: old-backend routing identified independently; repair credited, with acceptance-test and payload-validation support.
@@ -37,6 +38,7 @@ This describes the lab design, not a live availability check.
 ## Documentation
 
 - [Repository overview](../README.md)
+- [Full learning map / Все занятия и модули](./Learning-Map.md)
 - [Skills by topic / Навыки по темам](./Skills-Overview.md)
 - [Progress Timeline](./Progress.md)
 - [Engineering Journal](./Engeniering%20Journal.md)

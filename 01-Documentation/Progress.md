@@ -2,6 +2,9 @@
 
 Last updated: 2026-09-29
 
+[Full learning map: every lesson, session and curriculum module](Learning-Map.md).
+Session numbers and curriculum module numbers are separate sequences.
+
 ## August 2026
 
 - [x] Build first Windows infrastructure laboratory
@@ -62,6 +65,19 @@ Last updated: 2026-09-29
 - [x] Produce an evidence-first Linux troubleshooting cheat sheet
 
 ## September 2026 — Networking Diagnostics
+
+### Session 08 — Local name resolution (completed with guidance)
+
+- [x] Compare the destination returned by `getent` with the actual TCP listener
+- [x] Locate the lab name mapping in `/etc/hosts`
+- [x] Correct `api.s8.test` from `127.0.0.2` to the listener address `127.0.0.1`
+- [x] Report all final checker checks passing on 2026-09-23
+
+The exercise used guidance for resolver commands and locating the hosts file.
+The learner initially proposed restarting the service; the explanation clarified
+that a client-side name mapping change does not require restarting a healthy API.
+Completion was recorded in the local course but omitted from this published log;
+this entry restores it. The final full PASS is learner-reported, not newly rerun.
 
 ### Session 09 — Connection refused versus timeout (guided)
 
@@ -128,6 +144,10 @@ Preparation is not learner completion. No system trust-store, DNS or firewall
 changes were made while preparing the lab.
 
 ## Future Modules
+
+The dated lists below preserve an older Windows/homelab plan, not current
+deadlines. The active course sequence and module statuses are in the
+[full learning map](Learning-Map.md#большие-модули-курса--полный-маршрут).
 
 ### September
 

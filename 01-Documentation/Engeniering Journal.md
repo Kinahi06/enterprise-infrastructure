@@ -1497,6 +1497,21 @@ spaced mixed incidents. The next model is DNS -> TCP -> HTTP.
 
 ---
 
+# Networking Diagnostics — Session 08, completed 2026-09-23
+
+The API listened on `127.0.0.1:8118`, while the local hosts entry resolved
+`api.s8.test` to `127.0.0.2`. Comparing `getent ahostsv4` with the listener
+distinguished a wrong client destination from a failed service.
+
+The learner corrected the lab hosts mapping to `127.0.0.1` and reported all
+checker checks passing. Resolver command syntax and the hosts-file location
+were explained. A proposed service restart was corrected: changing this
+client-side mapping did not require restarting the healthy API.
+
+The lesson was credited in the local course record but previously missing from
+this public journal. This is a retrospective documentation repair, not a new
+execution or independent rerun of the final checker.
+
 # Networking Diagnostics — Session 09, 2026-09-24 to 2026-09-27
 
 ## Objective
