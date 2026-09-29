@@ -1629,3 +1629,57 @@ Numeric skill ratings remain unchanged. A future fresh scenario should revisit
 the two separate connections and acceptance through the original client endpoint.
 Cleanup of older lab services was discussed but explicitly deferred by the learner;
 no service shutdown or lab-file removal is claimed here.
+
+---
+
+# Networking Diagnostics — Session 11, completed 2026-09-29
+
+## Investigation and Repair
+
+The client-facing proxy returned successful HTTP responses from an old API
+version. The learner independently compared the three service status outputs:
+the proxy log identified its upstream, the old API identified v1, and the current
+API identified v2 at a different endpoint. This connected the wrong application
+result to routing rather than to a stopped process or absent listener.
+
+The learner proposed correcting the proxy configuration and retiring the old
+service only if no longer needed. For this exercise the old service was retained
+through acceptance so that the test verified routing, not merely its removal.
+The proxy environment was corrected and only the proxy was restarted. A screenshot
+confirmed a new MainPID and the expected current-API upstream.
+
+During editing, the learner accidentally opened an earlier lab configuration.
+Whether that accidental edit was saved is unconfirmed; no claim is made that
+the previous lab was automatically restored. This reinforced checking the file
+name before saving. Old-lab cleanup remains deferred.
+
+## Acceptance and Defence
+
+On request, the tutor supplied client-side curl checks for both required routes
+and the final checker command. The learner reported all checks passing; no final
+checker screenshot or independent tutor rerun was provided.
+
+The learner correctly explained that HTTP success did not guarantee the required
+v2 result. When asked what monitoring should additionally check, the initial
+answer focused on ports and retiring old services. The tutor clarified that the
+actual response body, including version and required data, must be validated
+through the client endpoint. The defence was completed with that clarification.
+
+The exercise is credited: cause and repair were identified independently within
+a familiar mechanism, while acceptance and contract-validation concepts included
+support. Numeric ratings are unchanged.
+
+---
+
+# Next Laboratory — Session 12, prepared 2026-09-29
+
+The next topic is HTTPS certificate verification before moving to Docker.
+The tutor prepared one isolated loopback HTTPS service, separate learning material,
+a ticket and a checker. Eight unprivileged smoke tests on the VM covered syntax,
+certificate trust and identity checks, verified HTTP behavior and invalid key-pair
+handling. Test processes and temporary keys were cleaned up.
+
+The installer was delivered, but learner installation and completion have not
+been confirmed. Prepared materials and automated tests are not recorded as a
+completed learner exercise. No private keys or instructor solution files are
+included in this publication.

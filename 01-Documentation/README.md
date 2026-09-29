@@ -1,75 +1,56 @@
-# Infrastructure Engineering Lab
+# Infrastructure Engineering Lab — Documentation
 
-Personal laboratory for learning infrastructure engineering through deployment, inspection, troubleshooting and documentation.
+Personal learning laboratory for infrastructure deployment, troubleshooting and documentation.
 
-Last updated: 2026-08-18
-
-## Goals
-
-- Learn Windows and Linux administration
-- Understand networking and virtualization
-- Build reproducible infrastructure
-- Diagnose systems using evidence instead of assumptions
-- Develop PowerShell, Bash, Git and automation skills
-- Maintain portfolio-quality engineering documentation
+Last updated: 2026-09-29
 
 ## Current Progress
 
-| Metric | Value |
-|--------|------:|
-| Lessons completed | 6 |
-| Incidents documented | 11 |
-| Scripts written | 4 |
-| Commands practised | 90+ |
-| Time invested | ~20+ hours |
+- Linux service-diagnostics sprint completed, including permissions, systemd dependencies, inode exhaustion and port conflicts.
+- Session 09: TCP recovery completed with guidance; oral defence remains pending.
+- Session 10: reverse-proxy HTTP 502 incident and oral defence completed with guidance.
+- Session 11: old-backend routing identified independently; repair credited, with acceptance-test and payload-validation support.
+- Session 12: HTTPS/TLS lab prepared; learner completion is not confirmed.
 
-## Current Systems
+The progress timeline records evidence limits. Prepared materials, assisted work
+and independent diagnosis are distinguished rather than counted as equivalent.
 
-| System | Platform | Status | Current purpose |
-|--------|----------|--------|-----------------|
-| `nova-ws01` | Windows 11 Pro ARM64, UTM | Running | Windows client and administration laboratory |
-| `linux01-server` | Ubuntu Server 24.04.4 LTS ARM64 | Running | Authenticated Samba file server |
-| `macbook-admin` | macOS | Running | Administrative workstation |
+## Lab Platforms
 
-## Current Module
+| Platform | Role in the laboratory |
+|---|---|
+| Windows 11 Pro ARM64 / UTM | Windows administration and SMB client practice |
+| Ubuntu Server 24.04 LTS ARM64 / UTM | Linux services, Samba, storage and network incidents |
+| macOS | Administrative workstation and SSH/SMB client |
 
-Cross-platform remote administration and file services over a Tailscale overlay network.
+This describes the lab design, not a live availability check.
 
-Completed in the current module:
+## Project Areas
 
-- Reusable macOS SSH alias `linux01-lab`
-- Dedicated 10 GiB LVM logical volume for service data
-- Persistent ext4 mount at `/srv/samba`
-- Group-based Linux permissions with setgid inheritance
-- Samba 4.19 standalone file server
-- Authenticated `company` share
-- Successful macOS SMB read/write test
-- Tailscale installed on Ubuntu, macOS and Windows
-- MagicDNS names `linux01-server`, `macbook-admin` and `nova-ws01`
-- SSH administration over the encrypted tailnet
-- Authenticated SMB read/write tests from macOS and Windows
-- UFW default-deny policy with exact client, interface and service rules
-- Unused Samba printing services disabled
-- Successful post-reboot verification of Tailscale, SSH, Samba and LVM storage
-- Idempotent Bash and PowerShell bootstrap automation
-
-Next:
-
-- Test automation against fresh VM snapshots
-- Design and perform a backup-and-restore exercise
-- Investigate direct versus DERP-relayed Tailscale paths
+- ED25519 SSH access and reusable client configuration.
+- LVM-backed ext4 storage, persistent mounts and group-controlled Samba access.
+- Tailscale/MagicDNS networking and client-scoped UFW policies.
+- Cross-platform Bash/PowerShell bootstrap automation with check-only modes.
+- Process, socket, HTTP and configuration evidence in incident diagnosis.
+- Current focus: HTTPS verification, followed by Docker.
 
 ## Documentation
 
-- [Engineering Journal](./Engeniering%20Journal.md)
+- [Repository overview](../README.md)
+- [Skills by topic / Навыки по темам](./Skills-Overview.md)
 - [Progress Timeline](./Progress.md)
+- [Engineering Journal](./Engeniering%20Journal.md)
 - [Skill Matrix](./Skill%20Matrix.md)
 - [Infrastructure Plan](./Infrastructure-Plan.md)
+- [Linux Troubleshooting Cheat Sheet](./Linux-Troubleshooting-Cheatsheet.md)
+- [Linux Troubleshooting PDF](./Linux-Troubleshooting-Cheatsheet.pdf)
 - [Linux Administration Cheat Sheet](./Linux-Cheatsheet.md)
 - [Windows Administration Cheat Sheet](./Windows-Cheatsheet.md)
-- [Changelog](./CHAGELOG.MD)
+- [Historical Changelog](./CHAGELOG.MD)
 - [Tailscale Automation](../02-Automation/README.md)
 
-## Security Rule
+## Scope and Security
 
-The repository may contain public-key fingerprints and public keys when needed for documentation. Passwords, passphrases, private keys, tokens and recovery secrets must never be committed.
+This is educational homelab experience, not commercial production experience.
+Documentation and automation include assisted work. Passwords, private keys,
+tokens and recovery secrets must never be committed.

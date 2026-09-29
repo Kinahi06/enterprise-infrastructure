@@ -1,6 +1,6 @@
 # Skill Matrix
 
-Last updated: 2026-09-28
+Last updated: 2026-09-29
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
@@ -30,7 +30,7 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | VLAN | 0/10 | 8/10 |
 | VPN and overlay networking | 3/10 | 8/10 |
 
-### Recent networking evidence — 2026-09-28
+### Recent networking evidence — 2026-09-29
 
 | Topic | Evidence / status |
 |-------|-------------------|
@@ -42,11 +42,16 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Client-path acceptance | Recovery and all checker PASS results learner-reported; no tutor rerun of the final checker |
 | HTTP response versus end-to-end health | Defence completed after correcting the assumption that direct API HTTP 200 proves the whole path or a TCP handshake |
 | Env-file versus unit changes | Correct distinction in defence; restart rereads process environment, daemon-reload concerns unit definitions |
+| HTTP 200 with the wrong backend version | Session 11: learner independently identified the old backend from service logs and chose an upstream correction |
+| HTTP payload acceptance | Session 11 checker PASS learner-reported; verification commands and response-body clarification supplied by tutor |
+| HTTPS / TLS | Session 12 prepared; learner completion not confirmed |
 
 Existing numeric ratings are unchanged. Session 09 recovery is recorded, but
 the oral defence is pending and the full repeated root-only check was not run.
 Session 10 is credited, but requested diagnostic prompts and the corrected
 defence answer mean it is not treated as an independent mastery assessment.
+Session 11 demonstrates transfer to a related incident; its acceptance and
+defence still included support, so numeric ratings are not automatically raised.
 
 ## Automation and Source Control
 
@@ -157,14 +162,14 @@ defence answer mean it is not treated as an independent mastery assessment.
 
 ## Current Focus
 
-- Consolidate completed Session 10 client -> reverse proxy -> API diagnosis
+- Consolidate completed Sessions 10–11 client -> reverse proxy -> API diagnosis
+- Begin Session 12 HTTPS certificate verification
 - Separating TCP connection failures from actual HTTP error responses
 - Linux incident retention through mixed refresh laboratories
 - Evidence-first validation after every state change
 
 ## Next Focus
 
-- Explain the two separate TCP connections in a proxied HTTP request
-- Localise an upstream failure using journal, socket and configuration evidence
-- Verify recovery through the original client endpoint
+- Distinguish TLS trust, hostname checks and application-level HTTP success
+- Reinforce expected payload verification through the original client endpoint
 - Docker fundamentals only after the networking foundation

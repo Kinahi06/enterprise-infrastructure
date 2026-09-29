@@ -1,6 +1,6 @@
 # Progress Timeline
 
-Last updated: 2026-09-28
+Last updated: 2026-09-29
 
 ## August 2026
 
@@ -100,6 +100,33 @@ was initially mistaken for proof of the whole path and a handshake. This was
 clarified, and the learner answered the follow-up correctly. Credit is recorded
 without increasing numeric independence ratings.
 
+### Session 11 — Successful HTTP, wrong backend version (completed)
+
+- [x] Independently compare the proxy, current API and old API service logs
+- [x] Identify routing to v1 instead of the required v2 despite HTTP 200
+- [x] Correct the upstream and restart only the proxy
+- [x] Confirm the new upstream in the current process startup log
+- [x] Report all final checker checks passing after client-route test commands were supplied
+- [x] Complete the short defence with clarification of response-body validation
+
+Completed on 2026-09-29. Screenshots show the initial service relationships and
+the restarted proxy using the current API. Final PASS results are learner-reported,
+not independently rerun. The cause and repair were identified independently in a
+scenario related to Session 10; acceptance-test commands were provided on request.
+During defence, checking the listener was distinguished from checking the actual
+JSON version and data. Numeric skill ratings are unchanged.
+
+### Session 12 — HTTPS certificate verification (prepared)
+
+- [x] Prepare isolated HTTPS learning material, ticket, installer and checker
+- [x] Pass eight tutor-run unprivileged TLS smoke tests using temporary keys and ports
+- [x] Deliver the installer to the training VM
+- [ ] Confirm learner setup, diagnosis and repair
+- [ ] Pass the final checker and oral defence
+
+Preparation is not learner completion. No system trust-store, DNS or firewall
+changes were made while preparing the lab.
+
 ## Future Modules
 
 ### September
@@ -172,18 +199,21 @@ without increasing numeric independence ratings.
 - Comparing reverse-proxy upstream configuration with the backend listener
 - Repairing an upstream-port mismatch with a proxy-only restart
 - Distinguishing env-file reload by restart from systemd unit daemon-reload
+- Identifying an old backend version even when the proxy returns HTTP 200
+- Practising expected JSON-version and data checks through the client endpoint
 
 ## Current Focus
 
 Continue networking while retaining Linux through short mixed incidents.
-Session 10 practical work and oral defence are complete with the evidence limits
-above. Reinforce that direct backend health is not proof of the client-facing
-path, and that HTTP 200 is a response to a particular request, not a TCP handshake.
+Sessions 10 and 11 practical work and oral defence are complete with the evidence
+limits above. Session 12 introduces HTTPS/TLS before Docker. Response-body checks
+remain a reinforcement topic: a listening port and HTTP 200 are not sufficient
+proof of the required application result.
 
 ## Next Session
 
-1. Select the next networking lab with the learner.
-2. Revisit the two separate connections in a proxied request using a fresh scenario.
-3. Verify the original client URL, status and expected payload rather than only backend health.
+1. Run the prepared Session 12 HTTPS lab and distinguish TCP, TLS and HTTP failures.
+2. Learn certificate trust and server-name validation without bypassing verification.
+3. Verify the original URL, TLS checks, HTTP status and expected payload.
 4. Revisit the pending Session 09 oral defence during a short Linux/network refresh.
 5. Keep unrelated infrastructure automation changes in a separate review and commit.
