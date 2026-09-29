@@ -1402,3 +1402,230 @@ net use \\linux01-server\company /user:linux01 * /persistent:no
 3. Test a real bootstrap using a fresh VM snapshot.
 4. Commit and publish the verified automation.
 5. Begin file-server backup and restore design.
+
+---
+
+# Linux Service Diagnostics Sprint — 2026-09-14 to 2026-09-23
+
+## Objective
+
+Build a repeatable incident workflow for Linux services before moving into
+containers. The sprint used small broken services to practise diagnosis rather
+than memorising isolated commands.
+
+The working path became:
+
+```text
+symptom -> systemd -> journal -> process/identity -> socket/PID -> HTTP
+        -> config/permissions/filesystem -> minimal fix -> verification
+```
+
+## Completed Laboratories
+
+### Session 02 — Service account cannot read application code
+
+The service failed because its configured user could not read the Python file.
+The repair used `root` ownership, the service group and a read-only group mode
+instead of making the code world-writable. Recovery was proven with service
+state, listener state and an HTTP health request.
+
+### Session 03 — Invalid runtime environment value
+
+The application received a port value containing a protocol suffix. The source
+was traced from the unit's `EnvironmentFile` to the environment file itself.
+The application code did not need to change. A restart loaded the corrected
+runtime value.
+
+### Session 04 — Local health works, remote client fails
+
+The process was active and local HTTP worked, but the socket was bound only to
+loopback. Changing the bind address and testing from the original client proved
+the complete path. This reinforced that local `curl` does not prove remote
+reachability.
+
+### Session 05 — Gateway dependency is not started
+
+The gateway stayed active but returned HTTP 503 because its inventory dependency
+was inactive. `After=` provided order but did not pull the dependency into the
+transaction. A systemd drop-in added the required relationship, and both units,
+sockets and HTTP contracts were verified.
+
+### Session 06 — Free bytes, no free inodes
+
+An upload worker reported `Errno 28` even though disk blocks were available.
+`df -i` exposed complete inode exhaustion caused by many stale empty files. The
+selection was bounded and printed before deletion. The worker then created its
+readiness file and the checker passed seven checks.
+
+### Session 07 — Final multi-cause Linux gate
+
+The first failure was an unwritable state directory. Permissions were corrected
+only on the data path, keeping application code non-writable. The next start
+exposed `Address already in use`. The listener PID was mapped to an obsolete
+systemd unit, the unit was stopped through systemd, and the main API became the
+owner of the expected socket.
+
+Final evidence:
+
+- the main service was active and the obsolete service inactive;
+- the listening socket belonged to the main service MainPID;
+- the state artifact existed with least-privilege directory access;
+- HTTP returned the expected status and payload;
+- the current process journal recorded a successful request;
+- the final checker reported 11 passing checks.
+
+## Engineering Lessons
+
+1. `active`, `LISTEN` and `HTTP 200` prove different layers.
+2. Restart is an action, not evidence of recovery.
+3. A service must be tested as its configured `User=`, not as root.
+4. Directory write requires the correct traversal and write permissions.
+5. `chown` changes ownership; `chmod` changes mode bits.
+6. `After=` orders units, while `Requires=` creates a required dependency.
+7. A listener PID should be attributed to a unit before stopping it.
+8. `No space left` requires checking both blocks and inodes.
+9. After each fix, diagnosis restarts because another fault may have been hidden.
+10. The strongest closeout uses independent evidence from every affected layer.
+
+## Assessment and Next Step
+
+The sprint ended at theory 3/5 and practice 3/5 on the course scale: familiar
+Linux service incidents can now be solved independently, while unfamiliar
+permission edge cases and new systemd inspection methods still need occasional
+syntax prompts. This is sufficient to move into networking and retain Linux with
+spaced mixed incidents. The next model is DNS -> TCP -> HTTP.
+
+---
+
+# Networking Diagnostics — Session 09, 2026-09-24 to 2026-09-27
+
+## Objective
+
+Distinguish an immediate TCP connection failure from a connection timeout and
+avoid assuming that a running service proves client reachability.
+
+## Incident A — No listening service
+
+A request to the first endpoint failed immediately. Socket inspection showed
+no listener on its expected port, and systemd reported the service as
+`inactive (dead)`. Starting the service restored the endpoint.
+
+## Incident B — Listener exists, connection still times out
+
+The second service was active, its MainPID matched the observed listener during
+the exercise, and its configured loopback address and port matched the request.
+Reading the configuration required elevated access, but that permission issue
+was separate from the client's TCP timeout.
+
+After an introduction to nftables, the investigation found an isolated training
+rule matching the endpoint's destination address and TCP port. Its action was
+`drop`, with a non-zero packet counter. Only the owned training table was
+removed; UFW, Docker-related and Tailscale rules were left unchanged.
+
+The same endpoint then returned HTTP 200 and the expected JSON without a service
+restart. This supported the packet-filter explanation rather than the initial
+hypotheses about application code or configuration-file permissions.
+
+## Evidence and Its Limits
+
+- The learner reported all `check-s9` checks passing during the exercise.
+- A fresh tutor-run read-only inspection on 2026-09-27 found both services active.
+- Both expected loopback TCP endpoints were listening.
+- Both `/health` requests returned HTTP 200 with their correct service payloads.
+- The current service PIDs logged those successful requests.
+- The full root-only checker was not rerun in that inspection because sudo
+  required authentication. Socket PID ownership and complete removal of the
+  training table were therefore not independently reverified in the repeat check.
+
+## Lessons and Assessment
+
+1. `active`, `LISTEN` and successful HTTP are different pieces of evidence.
+2. Loopback traffic can still be filtered by the host network stack.
+3. A firewall rule is a set of conditions followed by an action; a counter counts
+   packets, not necessarily distinct HTTP requests.
+4. `policy accept` does not override an earlier matching `drop` verdict.
+5. Filter a large diagnostic output using known evidence such as the affected
+   port, retaining nearby lines for table and chain context.
+6. Changing a live packet filter does not inherently require restarting the
+   already-listening application.
+
+This was guided learning: the new nftables concepts and inspection syntax were
+explained during the investigation. Recovery was achieved, but the oral defence
+remains pending. No increase in independent-practice ratings is claimed.
+
+---
+
+# Next Laboratory — Session 10, prepared 2026-09-27
+
+The next exercise introduces a client-facing reverse proxy and a separate API.
+Its learning objective is to distinguish the client -> proxy connection from
+the proxy -> API connection, then diagnose an HTTP-level gateway failure.
+
+The tutor prepared an isolated two-service installer, an incident ticket and
+short theory notes. Five unprivileged automated tests on the VM verified syntax,
+the API contract, successful proxy forwarding, upstream connection-failure
+handling and upstream timeout handling. These tests used temporary loopback
+ports and did not change existing services or firewall rules.
+
+At the 2026-09-27 preparation checkpoint, the installer had been delivered to
+the VM but the learner attempt was not yet confirmed. The completed attempt is
+recorded below. Lab installers and instructor solution files remain outside
+these progress-only commits.
+
+---
+
+# Networking Diagnostics — Session 10, completed 2026-09-28
+
+## Incident and Investigation
+
+The client-facing reverse proxy returned HTTP 502 with a gateway-error payload.
+An early request had accidentally targeted the previous lab; the client URL was
+then corrected before continuing. Setup and the initial failure were documented
+in learner screenshots.
+
+The learner inspected the proxy environment file, identified its upstream
+destination and checked whether that port had a listener. After reporting no
+listener there, the learner requested help locating the API service. Comparing
+the API's actual listening port with the configured upstream exposed a mismatch.
+The learner then formulated the cause: the proxy was contacting the wrong port,
+not an inactive API.
+
+The proxy configuration screenshot showed the upstream setting. The absent
+upstream listener and actual API port were learner-reported observations.
+The tutor supplied requested socket-filter syntax and the backend service name
+with status/unit/environment-file inspection guidance; this was not an unaided
+assessment.
+
+## Minimal Repair and Acceptance
+
+The learner chose to correct the upstream destination and restart only the proxy.
+The API was already running at its configured address, so restarting it was not
+part of the repair. Changing the environment file did not require daemon-reload;
+restarting the proxy allowed its new process to read the corrected environment.
+
+After being asked to verify the original proxy URL, HTTP status and expected
+body, the learner reported successful recovery and all check-s10 checks passing.
+No final checker screenshot was supplied and the tutor did not independently
+rerun it. The completion record explicitly distinguishes these reported results
+from the initial screenshot evidence and from earlier tutor-run setup tests.
+
+## Oral Defence
+
+- Correctly explained the upstream-port mismatch behind HTTP 502 despite active
+  processes. The wording was refined from a nonexistent port to a port with no
+  listening process.
+- Correctly distinguished an environment-file change from a unit-file change.
+  The tutor clarified that restart rereads the process environment.
+- Initially treated a direct API HTTP 200 as proof of complete service health
+  and a handshake. The tutor explained that it only validates that request and
+  bypasses the proxy; the TCP connection is established before the HTTP response.
+- Correctly answered the follow-up: API 200 plus proxy 502 does not mean the
+  full client path works.
+
+## Outcome and Follow-up
+
+Practical work and oral defence are credited as completed with guidance.
+Numeric skill ratings remain unchanged. A future fresh scenario should revisit
+the two separate connections and acceptance through the original client endpoint.
+Cleanup of older lab services was discussed but explicitly deferred by the learner;
+no service shutdown or lab-file removal is claimed here.

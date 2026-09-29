@@ -1,6 +1,6 @@
 # Skill Matrix
 
-Last updated: 2026-08-18
+Last updated: 2026-09-28
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
@@ -9,7 +9,7 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Skill | Level | Target |
 |-------|------:|-------:|
 | Windows Administration | 3/10 | 9/10 |
-| Linux Administration | 4/10 | 9/10 |
+| Linux Administration | 5/10 | 9/10 |
 | Samba File Services | 3/10 | 8/10 |
 | Active Directory | 0/10 | 9/10 |
 | Group Policy | 0/10 | 8/10 |
@@ -29,6 +29,24 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | NAT and virtual networking | 4/10 | 8/10 |
 | VLAN | 0/10 | 8/10 |
 | VPN and overlay networking | 3/10 | 8/10 |
+
+### Recent networking evidence — 2026-09-28
+
+| Topic | Evidence / status |
+|-------|-------------------|
+| Connection refusal versus timeout | Practised in Session 09 with guidance |
+| Process, listener and HTTP separation | Both endpoints rechecked successfully on 2026-09-27 |
+| nftables tables, chains and matching rules | Introductory guided interpretation; not independent firewall administration |
+| Minimal network repair | Removed only the training filter; HTTP recovered without a service restart |
+| Reverse proxy and upstream diagnosis | Session 10 completed with guidance: learner identified the destination/listener mismatch and chose a proxy-only restart |
+| Client-path acceptance | Recovery and all checker PASS results learner-reported; no tutor rerun of the final checker |
+| HTTP response versus end-to-end health | Defence completed after correcting the assumption that direct API HTTP 200 proves the whole path or a TCP handshake |
+| Env-file versus unit changes | Correct distinction in defence; restart rereads process environment, daemon-reload concerns unit definitions |
+
+Existing numeric ratings are unchanged. Session 09 recovery is recorded, but
+the oral defence is pending and the full repeated root-only check was not run.
+Session 10 is credited, but requested diagnostic prompts and the corrected
+defence answer mean it is not treated as an independent mastery assessment.
 
 ## Automation and Source Control
 
@@ -57,8 +75,8 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Task Manager | 6/10 | 8/10 |
 | Performance Monitor | 1/10 | 8/10 |
 | Event Viewer | 1/10 | 9/10 |
-| systemd status and journal interpretation | 3/10 | 8/10 |
-| Evidence-based incident diagnosis | 3/10 | 9/10 |
+| systemd status and journal interpretation | 5/10 | 8/10 |
+| Evidence-based incident diagnosis | 5/10 | 9/10 |
 
 ## Linux and SSH Checklist
 
@@ -90,6 +108,16 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Bind exact UFW rules to `tailscale0` | ✅ |
 | Distinguish direct and DERP-relayed paths | ✅ |
 | Validate SSH and SMB over an overlay network | ✅ |
+| Correlate systemd MainPID, process and listening socket | ✅ |
+| Distinguish process, socket and HTTP health | ✅ |
+| Read service runtime configuration from `EnvironmentFile` | ✅ |
+| Test permissions as the configured service account | ✅ |
+| Diagnose directory traversal and write permissions | ✅ |
+| Distinguish `After=` from `Requires=` | ✅ |
+| Create and verify a systemd drop-in | ✅ |
+| Diagnose block and inode exhaustion separately | ✅ |
+| Preview a bounded `find` selection before cleanup | ✅ |
+| Map a conflicting listener PID to its systemd unit | ✅ |
 | Harden SSH with a tested recovery path | ⏳ |
 
 ## Windows Services Checklist
@@ -129,12 +157,14 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 
 ## Current Focus
 
-- Cross-platform bootstrap testing
-- Idempotency and validation-only execution
-- Secure secret handling in automation
+- Consolidate completed Session 10 client -> reverse proxy -> API diagnosis
+- Separating TCP connection failures from actual HTTP error responses
+- Linux incident retention through mixed refresh laboratories
+- Evidence-first validation after every state change
 
 ## Next Focus
 
-- Tailscale direct-path troubleshooting
-- File-server backup and restore
-- Effective SSH server hardening
+- Explain the two separate TCP connections in a proxied HTTP request
+- Localise an upstream failure using journal, socket and configuration evidence
+- Verify recovery through the original client endpoint
+- Docker fundamentals only after the networking foundation
