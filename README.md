@@ -3,9 +3,12 @@
 Personal homelab and learning portfolio: Linux and Windows administration,
 networking, service troubleshooting and introductory automation on Apple Silicon.
 
-**Last updated: 2026-09-29 · Latest completed exercise: INC-011**
+**Last updated: 2026-10-01 · Latest completed exercise: TASK-013 (guided)**
 
 ## Start here
+
+- [Study notes, tickets and current access practice](01-Documentation/Study-Notes/README.md)
+- [Engineering work templates](03-Templates/README.md)
 
 - Skills by topic: [English](01-Documentation/Skills-Overview.md) · [Русский](01-Documentation/Skills-Overview.ru.md)
 - Full learning map: [English](01-Documentation/Learning-Map.md) · [Русский](01-Documentation/Learning-Map.ru.md)
@@ -34,7 +37,9 @@ the [full learning map](01-Documentation/Learning-Map.md).
 | INC-009: TCP failures | Recovered refused/timeout scenarios with guidance; oral defence remains pending |
 | INC-010: HTTP 502 | Corrected a reverse-proxy upstream mismatch; practical work and oral defence completed with guidance |
 | INC-011: HTTP contract | Independently identified routing to an old backend version; corrected the route, reported all checker checks passing, completed defence with a payload-validation clarification |
-| INC-012: TLS | Lab and learning material prepared; learner completion is not yet confirmed |
+| INC-012: TLS | I restored verified HTTPS with guidance; screenshot shows HTTP 200 and expected JSON without -k; checker PASS reported by me |
+| TASK-013: Docker | I launched Nginx, checked HTTP/logs, stopped and restarted the same container; completed with guidance |
+| Users and access | In progress: I created dev/view/ops, verified /srv/team permissions; ops policy and separate SSH logins are not configured in the recorded evidence |
 
 See the [engineering journal](01-Documentation/Engeniering%20Journal.md) for
 incident details and the [progress log](01-Documentation/Progress.md) for evidence
@@ -57,5 +62,5 @@ and automation were developed with assistance. Each report distinguishes observe
 evidence from learner-reported results. Prepared labs and tutor-run tests are not
 counted as completed learner exercises.
 
-Next: HTTPS/TLS fundamentals, then Docker. Secrets and private keys are not part
+Current: users, groups and scoped operator access. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
 of this repository. [Documentation index](01-Documentation/README.md).

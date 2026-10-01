@@ -1,6 +1,30 @@
 # Infrastructure Plan
 
-Last updated: 2026-08-18
+Last updated: 2026-10-01. The original inventory below is an August baseline, not a fresh availability/resource audit.
+
+## Recorded changes since the baseline
+I extended the Ubuntu learning host with systemd/network/TLS exercises, then Docker.
+These are lab workloads on the same VM, not separate production servers.
+
+| Component | Last recorded result | Evidence boundary |
+|---|---|---|
+| s10 proxy/API | I corrected proxy :8122 upstream to API :8123 | September exercise; not a current health check |
+| s11 proxy/API | I changed proxy :8130 from old/v1 :8132 to api/v2 :8131 | Restart log shown; old-service retirement not confirmed |
+| s12-api | I restored verified HTTPS on 127.0.0.1:8443 with api.s12.test certificate | 30 September screenshot; CA passed per request, not a demonstrated global trust-store change |
+| Docker / s18-web | I ran nginx:1.30.5-alpine, 127.0.0.1:8133 → container :80 | Same ID after stop/start; last screenshot Up, final stop unknown |
+| Project access | I created /srv/team dev:lab 2750; dev succeeds, view denied | 1 October screenshots |
+| Operator identity | I created ops; shown groups ops/users | No configured sudo policy or separate SSH login confirmed |
+
+I have not selected the ops service allowlist. Critical service exceptions remain a design question.
+Backups and monitoring are planned study topics only. No retention schedule, RPO/RTO,
+backup device, backup job, restore test or monitoring deployment has been agreed or demonstrated.
+I currently have no separate backup hardware. A second VM on the same Mac is not evidence
+of an independent off-host copy. No extra VM or hardware purchase has been approved.
+
+Older services may remain present; I deferred cleanup. The accidental earlier s10
+configuration edit and its recovery are unverified. The inventory, storage sizes and
+firewall rules below retain their original dates and have not been freshly checked.
+
 
 ## 1. Project Overview
 

@@ -1503,7 +1503,7 @@ The API listened on `127.0.0.1:8118`, while the local hosts entry resolved
 `api.s8.test` to `127.0.0.2`. Comparing `getent ahostsv4` with the listener
 distinguished a wrong client destination from a failed service.
 
-The learner corrected the lab hosts mapping to `127.0.0.1` and reported all
+I corrected the lab hosts mapping to `127.0.0.1` and reported all
 checker checks passing. Resolver command syntax and the hosts-file location
 were explained. A proposed service restart was corrected: changing this
 client-side mapping did not require restarting the healthy API.
@@ -1543,7 +1543,7 @@ hypotheses about application code or configuration-file permissions.
 
 ## Evidence and Its Limits
 
-- The learner reported all `check-s9` checks passing during the exercise.
+- I reported all `check-s9` checks passing during the exercise.
 - A fresh tutor-run read-only inspection on 2026-09-27 found both services active.
 - Both expected loopback TCP endpoints were listening.
 - Both `/health` requests returned HTTP 200 with their correct service payloads.
@@ -1583,7 +1583,7 @@ handling and upstream timeout handling. These tests used temporary loopback
 ports and did not change existing services or firewall rules.
 
 At the 2026-09-27 preparation checkpoint, the installer had been delivered to
-the VM but the learner attempt was not yet confirmed. The completed attempt is
+the VM but my attempt was not yet confirmed. The completed attempt is
 recorded below. Lab installers and instructor solution files remain outside
 these progress-only commits.
 
@@ -1596,30 +1596,30 @@ these progress-only commits.
 The client-facing reverse proxy returned HTTP 502 with a gateway-error payload.
 An early request had accidentally targeted the previous lab; the client URL was
 then corrected before continuing. Setup and the initial failure were documented
-in learner screenshots.
+in my screenshots.
 
-The learner inspected the proxy environment file, identified its upstream
+I inspected the proxy environment file, identified its upstream
 destination and checked whether that port had a listener. After reporting no
-listener there, the learner requested help locating the API service. Comparing
+listener there, I requested help locating the API service. Comparing
 the API's actual listening port with the configured upstream exposed a mismatch.
-The learner then formulated the cause: the proxy was contacting the wrong port,
+I then formulated the cause: the proxy was contacting the wrong port,
 not an inactive API.
 
 The proxy configuration screenshot showed the upstream setting. The absent
-upstream listener and actual API port were learner-reported observations.
+upstream listener and actual API port were observations I reported in chat.
 The tutor supplied requested socket-filter syntax and the backend service name
 with status/unit/environment-file inspection guidance; this was not an unaided
 assessment.
 
 ## Minimal Repair and Acceptance
 
-The learner chose to correct the upstream destination and restart only the proxy.
+I chose to correct the upstream destination and restart only the proxy.
 The API was already running at its configured address, so restarting it was not
 part of the repair. Changing the environment file did not require daemon-reload;
 restarting the proxy allowed its new process to read the corrected environment.
 
 After being asked to verify the original proxy URL, HTTP status and expected
-body, the learner reported successful recovery and all check-s10 checks passing.
+body, I reported successful recovery and all check-s10 checks passing.
 No final checker screenshot was supplied and the tutor did not independently
 rerun it. The completion record explicitly distinguishes these reported results
 from the initial screenshot evidence and from earlier tutor-run setup tests.
@@ -1642,7 +1642,7 @@ from the initial screenshot evidence and from earlier tutor-run setup tests.
 Practical work and oral defence are credited as completed with guidance.
 Numeric skill ratings remain unchanged. A future fresh scenario should revisit
 the two separate connections and acceptance through the original client endpoint.
-Cleanup of older lab services was discussed but explicitly deferred by the learner;
+Cleanup of older lab services was discussed but explicitly deferred by me;
 no service shutdown or lab-file removal is claimed here.
 
 ---
@@ -1652,18 +1652,18 @@ no service shutdown or lab-file removal is claimed here.
 ## Investigation and Repair
 
 The client-facing proxy returned successful HTTP responses from an old API
-version. The learner independently compared the three service status outputs:
+version. I independently compared the three service status outputs:
 the proxy log identified its upstream, the old API identified v1, and the current
 API identified v2 at a different endpoint. This connected the wrong application
 result to routing rather than to a stopped process or absent listener.
 
-The learner proposed correcting the proxy configuration and retiring the old
+I proposed correcting the proxy configuration and retiring the old
 service only if no longer needed. For this exercise the old service was retained
 through acceptance so that the test verified routing, not merely its removal.
 The proxy environment was corrected and only the proxy was restarted. A screenshot
 confirmed a new MainPID and the expected current-API upstream.
 
-During editing, the learner accidentally opened an earlier lab configuration.
+During editing, I accidentally opened an earlier lab configuration.
 Whether that accidental edit was saved is unconfirmed; no claim is made that
 the previous lab was automatically restored. This reinforced checking the file
 name before saving. Old-lab cleanup remains deferred.
@@ -1671,10 +1671,10 @@ name before saving. Old-lab cleanup remains deferred.
 ## Acceptance and Defence
 
 On request, the tutor supplied client-side curl checks for both required routes
-and the final checker command. The learner reported all checks passing; no final
+and the final checker command. I reported all checks passing; no final
 checker screenshot or independent tutor rerun was provided.
 
-The learner correctly explained that HTTP success did not guarantee the required
+I correctly explained that HTTP success did not guarantee the required
 v2 result. When asked what monitoring should additionally check, the initial
 answer focused on ports and retiring old services. The tutor clarified that the
 actual response body, including version and required data, must be validated
@@ -1686,15 +1686,54 @@ support. Numeric ratings are unchanged.
 
 ---
 
-# Next Laboratory — Session 12, prepared 2026-09-29
+# Historical preparation — Session 12, 2026-09-29
 
-The next topic is HTTPS certificate verification before moving to Docker.
+This dated preparation is superseded by my completed attempt below.
+
+At preparation time, the next topic was HTTPS certificate verification before Docker.
 The tutor prepared one isolated loopback HTTPS service, separate learning material,
 a ticket and a checker. Eight unprivileged smoke tests on the VM covered syntax,
 certificate trust and identity checks, verified HTTP behavior and invalid key-pair
 handling. Test processes and temporary keys were cleaned up.
 
-The installer was delivered, but learner installation and completion have not
+At that time the installer was delivered, but my installation and completion had not
 been confirmed. Prepared materials and automated tests are not recorded as a
 completed learner exercise. No private keys or instructor solution files are
 included in this publication.
+
+## 30 September 2026 — TLS and Docker
+I completed INC-012 with guidance. I first suspected an expired certificate,
+but old.crt was valid for 29 September–29 October and named old.s12.test.
+With supplied openssl commands I checked api.crt, then used the suggested
+api.crt/api.key pair. My screenshot shows verified HTTPS to api.s12.test:8443,
+the supplied CA, no -k, HTTP 200 and {"status":"ok","service":"s12-api"}.
+I reported all checker PASS results; the tutor did not independently rerun it.
+I needed clarification that -k disables authentication checks, not encryption.
+
+I then completed TASK-013 with guidance. Docker Client/Server 29.1.3 was accessible
+with sudo; without sudo the socket access was denied. I chose a specific tag,
+nginx:1.30.5-alpine, instead of stable-alpine. I used the name s18-web rather than
+the planned s13-web; this is Session 13, not Session 18.
+My screenshots show ID 0e4c538a2d84, 127.0.0.1:8133 → 80, HTTP 200 and
+Welcome to nginx!, and a matching GET 200 in container logs.
+After stop I showed Exited (0) and curl (7); after start I showed the same ID and HTTP 200.
+The last shown state is Up. A final stop was suggested, not confirmed.
+I did not demonstrate deletion, Compose, Dockerfile, volumes, registry or Docker-group changes.
+There is no check-s13; acceptance used these observations and a short defence.
+I needed an image/container explanation, then correctly explained the port mapping
+and independence of different container instances. Numeric skill ratings remain unchanged.
+
+## 1 October 2026 — Users and access (in progress)
+I created lab (gid 1003), dev (uid 1004), view (uid 1005) and ops (uid 1006).
+I added dev to lab, assigned /srv/team to dev:lab and set mode 2750.
+I created probe as dev. As view I got expected permission denials from ls and touch.
+view is deliberately outside lab: an ordinary employee without project access.
+The directory mode is shown; a separate ownership/mode listing of probe is not.
+ops currently has ops/users membership in my screenshot; no sudoers configuration is confirmed.
+I want a scoped set of non-critical services, but the exact allowlist/actions are not agreed.
+Separate SSH logins for these users are not yet configured in the recorded work.
+
+Backups and monitoring are learning requests, not deployments. I have no separate
+backup disk, Raspberry Pi or spare laptop for this work. Scope, retention, RPO/RTO
+and tooling have not been selected. Earlier draft suggestions are not requirements.
+I execute server changes myself; my tutor prepares theory, tickets and references.

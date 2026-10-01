@@ -1,6 +1,6 @@
 # Progress Timeline
 
-Last updated: 2026-09-29
+Last updated: 2026-10-01
 
 [Full learning map: every lesson, session and curriculum module](Learning-Map.md).
 Session numbers and curriculum module numbers are separate sequences.
@@ -74,10 +74,10 @@ Session numbers and curriculum module numbers are separate sequences.
 - [x] Report all final checker checks passing on 2026-09-23
 
 The exercise used guidance for resolver commands and locating the hosts file.
-The learner initially proposed restarting the service; the explanation clarified
+I initially proposed restarting the service; the explanation clarified
 that a client-side name mapping change does not require restarting a healthy API.
 Completion was recorded in the local course but omitted from this published log;
-this entry restores it. The final full PASS is learner-reported, not newly rerun.
+this entry restores it. The final full PASS is reported by me, not newly rerun.
 
 ### Session 09 — Connection refused versus timeout (guided)
 
@@ -87,33 +87,33 @@ this entry restores it. The final full PASS is learner-reported, not newly rerun
 - [x] Read a scoped nftables rule and explain destination address, port, counter and `drop`
 - [x] Remove only the isolated training filter and recover HTTP without restarting the service
 - [x] Report all final checker checks passing during the exercise
-- [x] Recheck both services, listening endpoints, HTTP contracts and current-process logs on 2026-09-27
+- [x] Tutor rechecked both services, listening endpoints, HTTP contracts and current-process logs on 2026-09-27
 - [ ] Complete the oral defence independently
 
 The 2026-09-27 read-only recheck confirmed active services and correct HTTP 200
 responses. It did not rerun the root-only checker because sudo authentication
 was required; socket PID ownership and absence of the training table were not
 independently reverified in that repeat check. The earlier full PASS result is
-learner-reported. This guided exercise does not raise the independence rating.
+reported by me. This guided exercise does not raise the independence rating.
 
 ### Session 10 — Reverse proxy and HTTP 502 (completed with guidance)
 
-- [x] Prepare a separate two-service lab, ticket and standalone learning material
-- [x] Validate the prepared application behaviour with five automated tests
-- [x] Deliver the installer to the training VM
+- [x] Tutor prepared a separate two-service lab, ticket and standalone learning material
+- [x] Tutor validated the prepared application behaviour with five automated tests
+- [x] Tutor delivered the installer to the training VM
 - [x] Confirm lab installation and reproduce the client-visible HTTP 502
 - [x] Compare the configured upstream destination with the API's actual listener
 - [x] Correct the upstream port and restart only the proxy
 - [x] Report successful client-path verification and all final checker checks passing
 - [x] Complete the oral defence, including a corrected end-to-end verification misconception
 
-Completed on 2026-09-28. The learner identified the upstream/listener mismatch
+Completed on 2026-09-28. I identified the upstream/listener mismatch
 and chose the minimal repair after requesting command syntax and help locating
 the backend service. Setup, initial HTTP 502 and proxy configuration were shown
-in screenshots; final recovery and all checker PASS results were learner-reported,
+in screenshots; final recovery and all checker PASS results were reported by me,
 not independently rerun by the tutor. During the defence, direct API HTTP 200
 was initially mistaken for proof of the whole path and a handshake. This was
-clarified, and the learner answered the follow-up correctly. Credit is recorded
+clarified, and I answered the follow-up correctly. Credit is recorded
 without increasing numeric independence ratings.
 
 ### Session 11 — Successful HTTP, wrong backend version (completed)
@@ -126,22 +126,48 @@ without increasing numeric independence ratings.
 - [x] Complete the short defence with clarification of response-body validation
 
 Completed on 2026-09-29. Screenshots show the initial service relationships and
-the restarted proxy using the current API. Final PASS results are learner-reported,
+the restarted proxy using the current API. Final PASS results are reported by me,
 not independently rerun. The cause and repair were identified independently in a
 scenario related to Session 10; acceptance-test commands were provided on request.
 During defence, checking the listener was distinguished from checking the actual
 JSON version and data. Numeric skill ratings are unchanged.
 
-### Session 12 — HTTPS certificate verification (prepared)
+## 30 September 2026 — TLS and Docker
+I completed INC-012 with guidance. I first suspected an expired certificate,
+but old.crt was valid for 29 September–29 October and named old.s12.test.
+With supplied openssl commands I checked api.crt, then used the suggested
+api.crt/api.key pair. My screenshot shows verified HTTPS to api.s12.test:8443,
+the supplied CA, no -k, HTTP 200 and {"status":"ok","service":"s12-api"}.
+I reported all checker PASS results; the tutor did not independently rerun it.
+I needed clarification that -k disables authentication checks, not encryption.
 
-- [x] Prepare isolated HTTPS learning material, ticket, installer and checker
-- [x] Pass eight tutor-run unprivileged TLS smoke tests using temporary keys and ports
-- [x] Deliver the installer to the training VM
-- [ ] Confirm learner setup, diagnosis and repair
-- [ ] Pass the final checker and oral defence
+I then completed TASK-013 with guidance. Docker Client/Server 29.1.3 was accessible
+with sudo; without sudo the socket access was denied. I chose a specific tag,
+nginx:1.30.5-alpine, instead of stable-alpine. I used the name s18-web rather than
+the planned s13-web; this is Session 13, not Session 18.
+My screenshots show ID 0e4c538a2d84, 127.0.0.1:8133 → 80, HTTP 200 and
+Welcome to nginx!, and a matching GET 200 in container logs.
+After stop I showed Exited (0) and curl (7); after start I showed the same ID and HTTP 200.
+The last shown state is Up. A final stop was suggested, not confirmed.
+I did not demonstrate deletion, Compose, Dockerfile, volumes, registry or Docker-group changes.
+There is no check-s13; acceptance used these observations and a short defence.
+I needed an image/container explanation, then correctly explained the port mapping
+and independence of different container instances. Numeric skill ratings remain unchanged.
 
-Preparation is not learner completion. No system trust-store, DNS or firewall
-changes were made while preparing the lab.
+## 1 October 2026 — Users and access (in progress)
+I created lab (gid 1003), dev (uid 1004), view (uid 1005) and ops (uid 1006).
+I added dev to lab, assigned /srv/team to dev:lab and set mode 2750.
+I created probe as dev. As view I got expected permission denials from ls and touch.
+view is deliberately outside lab: an ordinary employee without project access.
+The directory mode is shown; a separate ownership/mode listing of probe is not.
+ops currently has ops/users membership in my screenshot; no sudoers configuration is confirmed.
+I want a scoped set of non-critical services, but the exact allowlist/actions are not agreed.
+Separate SSH logins for these users are not yet configured in the recorded work.
+
+Backups and monitoring are learning requests, not deployments. I have no separate
+backup disk, Raspberry Pi or spare laptop for this work. Scope, retention, RPO/RTO
+and tooling have not been selected. Earlier draft suggestions are not requirements.
+I execute server changes myself; my tutor prepares theory, tickets and references.
 
 ## Future Modules
 
@@ -162,9 +188,9 @@ deadlines. The active course sequence and module statuses are in the
 - [ ] PowerShell automation
 - [ ] IIS
 
-### November
+### November (historical schedule; Docker basics completed earlier on 30 September)
 
-- [ ] Docker
+- [x] Docker basics (guided TASK-013, 30 September; not the full containers module)
 - [ ] Linux service deployment
 
 ### December
@@ -224,16 +250,6 @@ deadlines. The active course sequence and module statuses are in the
 
 ## Current Focus
 
-Continue networking while retaining Linux through short mixed incidents.
-Sessions 10 and 11 practical work and oral defence are complete with the evidence
-limits above. Session 12 introduces HTTPS/TLS before Docker. Response-body checks
-remain a reinforcement topic: a listening port and HTTP 200 are not sufficient
-proof of the required application result.
-
-## Next Session
-
-1. Run the prepared Session 12 HTTPS lab and distinguish TCP, TLS and HTTP failures.
-2. Learn certificate trust and server-name validation without bypassing verification.
-3. Verify the original URL, TLS checks, HTTP status and expected payload.
-4. Revisit the pending Session 09 oral defence during a short Linux/network refresh.
-5. Keep unrelated infrastructure automation changes in a separate review and commit.
+I am practising users, groups and restricted operator access. [Current ticket and study notes](Study-Notes/README.md).
+Session 09 oral defence remains open. Backups and monitoring will be separate learning tasks.
+I keep unverified work unchecked and do not raise independence scores after guided exercises.

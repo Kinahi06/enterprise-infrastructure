@@ -2,7 +2,7 @@
 
 Personal learning laboratory for infrastructure deployment, troubleshooting and documentation.
 
-Last updated: 2026-09-29
+Last updated: 2026-10-01
 
 ## Current Progress
 
@@ -11,7 +11,9 @@ Last updated: 2026-09-29
 - Session 09: TCP recovery completed with guidance; oral defence remains pending.
 - Session 10: reverse-proxy HTTP 502 incident and oral defence completed with guidance.
 - Session 11: old-backend routing identified independently; repair credited, with acceptance-test and payload-validation support.
-- Session 12: HTTPS/TLS lab prepared; learner completion is not confirmed.
+- Session 12: I completed TLS with guidance; verified HTTPS screenshot, checker PASS reported by me.
+- Session 13: I completed the first Docker deployment and stop/start exercise with guidance.
+- Current: I am practising user/group separation; ops permissions remain undecided.
 
 The progress timeline records evidence limits. Prepared materials, assisted work
 and independent diagnosis are distinguished rather than counted as equivalent.
@@ -33,9 +35,12 @@ This describes the lab design, not a live availability check.
 - Tailscale/MagicDNS networking and client-scoped UFW policies.
 - Cross-platform Bash/PowerShell bootstrap automation with check-only modes.
 - Process, socket, HTTP and configuration evidence in incident diagnosis.
-- Current focus: HTTPS verification, followed by Docker.
+- Current focus: users/groups and scoped service access; backup and monitoring study is planned, not implemented.
 
 ## Documentation
+
+- [Study notes and current ticket](./Study-Notes/README.md)
+- [Engineering Work Templates](../03-Templates/README.md)
 
 - [Repository overview](../README.md)
 - Full learning map: [English](./Learning-Map.md) · [Русский](./Learning-Map.ru.md)

@@ -1,6 +1,6 @@
 # Skill Matrix
 
-Last updated: 2026-09-29
+Last updated: 2026-10-01
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
@@ -38,13 +38,13 @@ Levels are self-assessments used to select the next laboratory exercise, not cer
 | Process, listener and HTTP separation | Both endpoints rechecked successfully on 2026-09-27 |
 | nftables tables, chains and matching rules | Introductory guided interpretation; not independent firewall administration |
 | Minimal network repair | Removed only the training filter; HTTP recovered without a service restart |
-| Reverse proxy and upstream diagnosis | Session 10 completed with guidance: learner identified the destination/listener mismatch and chose a proxy-only restart |
-| Client-path acceptance | Recovery and all checker PASS results learner-reported; no tutor rerun of the final checker |
+| Reverse proxy and upstream diagnosis | Session 10 completed with guidance: I identified the destination/listener mismatch and chose a proxy-only restart |
+| Client-path acceptance | Recovery and all checker PASS results reported by me; no tutor rerun of the final checker |
 | HTTP response versus end-to-end health | Defence completed after correcting the assumption that direct API HTTP 200 proves the whole path or a TCP handshake |
 | Env-file versus unit changes | Correct distinction in defence; restart rereads process environment, daemon-reload concerns unit definitions |
-| HTTP 200 with the wrong backend version | Session 11: learner independently identified the old backend from service logs and chose an upstream correction |
-| HTTP payload acceptance | Session 11 checker PASS learner-reported; verification commands and response-body clarification supplied by tutor |
-| HTTPS / TLS | Session 12 prepared; learner completion not confirmed |
+| HTTP 200 with the wrong backend version | Session 11: I independently identified the old backend from service logs and chose an upstream correction |
+| HTTP payload acceptance | Session 11 checker PASS reported by me; verification commands and response-body clarification supplied by tutor |
+| HTTPS / TLS | I completed Session 12 with guidance; verified HTTPS screenshot, PASS reported by me |
 
 Existing numeric ratings are unchanged. Session 09 recovery is recorded, but
 the oral defence is pending and the full repeated root-only check was not run.
@@ -160,10 +160,18 @@ defence still included support, so numeric ratings are not automatically raised.
 - [ ] RHCSA
 - [ ] CCNA
 
+## New evidence — no numeric reassessment
+
+I completed TASK-013 with guidance on 30 September. My screenshots cover local publication,
+HTTP/logs and stop/start of the same container. Final stop is unconfirmed.
+On 1 October I created dev/view/ops and verified dev:lab 2750 directory access;
+ops sudoers and separate SSH access remain unconfigured in the record.
+Guided completion does not raise the numeric ratings below or imply production expertise.
+
 ## Current Focus
 
 - Consolidate completed Sessions 10–11 client -> reverse proxy -> API diagnosis
-- Begin Session 12 HTTPS certificate verification
+- Consolidate my completed guided TLS and Docker exercises
 - Separating TCP connection failures from actual HTTP error responses
 - Linux incident retention through mixed refresh laboratories
 - Evidence-first validation after every state change
@@ -172,4 +180,4 @@ defence still included support, so numeric ratings are not automatically raised.
 
 - Distinguish TLS trust, hostname checks and application-level HTTP success
 - Reinforce expected payload verification through the original client endpoint
-- Docker fundamentals only after the networking foundation
+- Continue from my first Docker run/HTTP/logs/stop/start exercise; full module remains open

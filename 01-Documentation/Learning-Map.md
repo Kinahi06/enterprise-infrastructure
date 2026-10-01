@@ -2,7 +2,7 @@
 
 **English** | [Русский](Learning-Map.ru.md)
 
-Updated: 29 September 2026. This page separates **curriculum modules**, **lab
+Updated: 1 October 2026. This page separates **curriculum modules**, **lab
 sessions** and **earlier homelab lessons**, which use different numbering.
 Completing Session 11 does not mean completing Module 11. Passing a lab also
 does not imply independent mastery of the entire subject.
@@ -29,11 +29,13 @@ does not imply independent mastery of the entire subject.
 | 05 — Dependencies | After versus Requires, drop-ins, effective dependencies and end-to-end health | Completed with dependency-model explanations |
 | 06 — Filesystem resources | Inode exhaustion despite free bytes; scoped stale-cache cleanup and worker recovery | Completed; seven PASS results shown |
 | 07 — Linux gate | Two successive faults: permissions and an occupied port; PID-to-unit attribution and revalidation | Completed; 11 PASS results recorded |
-| 08 — Name resolution | Hosts entry did not match the listener; getent, ss and the original client URL | Completed with guidance; all PASS results learner-reported |
+| 08 — Name resolution | Hosts entry did not match the listener; getent, ss and the original client URL | Completed with guidance; all PASS results reported by me |
 | 09 — TCP errors | Inactive service/no listener versus packet DROP; recovered both endpoints | Guided practical work completed; oral assessment pending |
-| 10 — HTTP 502 | Incorrect upstream port; minimal correction and proxy-only restart | Practical work and oral assessment completed with guidance; PASS learner-reported |
-| 11 — HTTP contract | HTTP 200 from an old version; routed the proxy to the required backend and checked the response version | Cause identified independently; completed with acceptance-test clarification, PASS learner-reported |
-| 12 — TLS | CA trust, certificate hostname and HTTPS verification without bypassing security checks | Prepared; learner completion not confirmed |
+| 10 — HTTP 502 | Incorrect upstream port; minimal correction and proxy-only restart | Practical work and oral assessment completed with guidance; PASS reported by me |
+| 11 — HTTP contract | HTTP 200 from an old version; routed the proxy to the required backend and checked the response version | Cause identified independently; completed with acceptance-test clarification, PASS reported by me |
+| 12 — TLS | CA trust, certificate hostname and HTTPS verification without bypassing security checks | I completed it with guidance; HTTPS shown, checker PASS reported by me |
+| 13 — Docker | I launched Nginx, checked HTTP/logs and stopped/started the same ID | Completed with guidance on 30 September; final stop not confirmed |
+| Users and access | I created roles and tested /srv/team permissions | In progress on 1 October; ops sudoers and separate SSH logins not confirmed |
 
 Details: [journal](Engeniering%20Journal.md), [progress](Progress.md) and
 [skills by topic](Skills-Overview.md). Lab preparation and tutor-run tests do
@@ -46,8 +48,8 @@ but did not rerun the complete root-only checker.
 |---|---|---|
 | 0 | Entry assessment and the overall DevOps system model | Partial theory assessment; not completed |
 | 1 | Linux internals: processes, memory, I/O, filesystems, systemd | Practical refresh and Linux gate completed; not a claim of mastery of all internals |
-| 2 | Networking: L2–L7, DNS, TCP, routing/NAT, HTTP, proxies, TLS | In progress: Sessions 08–11, with Session 12 prepared next; module not yet completed |
-| 3 | Containers: namespaces, cgroups, images, storage and networking | After networking; entry assessment identified learning needs, practical assessment not passed |
+| 2 | Networking: L2–L7, DNS, TCP, routing/NAT, HTTP, proxies, TLS | In progress: Sessions 08–12; module not yet completed |
+| 3 | Containers: namespaces, cgroups, images, storage and networking | First container (Session 13) completed with guidance; full module not completed |
 | 4 | CI/CD: pipelines, artifacts, promotion and rollback | Planned; initial theory assessment only |
 | 5 | Ansible and Terraform: idempotence, drift, state and locking | Planned; practical assessment not passed |
 | 6 | Cloud: IAM, VPC, load balancing, storage, resilience and cost | Planned; not assessed |

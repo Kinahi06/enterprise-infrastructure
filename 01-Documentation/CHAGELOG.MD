@@ -151,3 +151,10 @@
 - Diagnosed missing VirtIO network drivers
 - Practised elevated PowerShell and Windows diagnostic tools
 - Investigated `LanmanServer` and unnecessary Xbox services
+
+## 2026-10-01 — documentation reconciliation
+
+I recorded my guided TLS and first Docker results, the in-progress dev/view/ops exercise,
+and the limits of the evidence. I updated the architecture record, bilingual progress summaries,
+study notes and templates with AI assistance. Backup/monitoring and ops policy remain plans.
+This change updates documentation only, not the lab server or automation.
