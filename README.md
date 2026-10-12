@@ -3,7 +3,7 @@
 Personal homelab and learning portfolio: Linux and Windows administration,
 networking, service troubleshooting and introductory automation on Apple Silicon.
 
-**Last updated: 2026-10-01 · Latest completed exercise: TASK-013 (guided)**
+**Last updated: 2026-10-12 · Latest completed block: Bash HTTPS API check (guided)**
 
 ## Start here
 
@@ -39,7 +39,8 @@ the [full learning map](01-Documentation/Learning-Map.md).
 | INC-011: HTTP contract | Independently identified routing to an old backend version; corrected the route, reported all checker checks passing, completed defence with a payload-validation clarification |
 | INC-012: TLS | I restored verified HTTPS with guidance; screenshot shows HTTP 200 and expected JSON without -k; checker PASS reported by me |
 | TASK-013: Docker | I launched Nginx, checked HTTP/logs, stopped and restarted the same container; completed with guidance |
-| Users and access | In progress: I created dev/view/ops, verified /srv/team permissions; ops policy and separate SSH logins are not configured in the recorded evidence |
+| Users and access | Completed with guidance: scoped start/restart and journal access for five services; separate SSH logins not confirmed |
+| Bash API check | Completed with guidance: active service, exact HTTP 200, expected JSON and exit 0 shown; negative tests recorded in study notes |
 
 See the [engineering journal](01-Documentation/Engeniering%20Journal.md) for
 incident details and the [progress log](01-Documentation/Progress.md) for evidence
@@ -62,5 +63,5 @@ and automation were developed with assistance. Each report distinguishes observe
 evidence from learner-reported results. Prepared labs and tutor-run tests are not
 counted as completed learner exercises.
 
-Current: users, groups and scoped operator access. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
+Current: returning to the DevOps roadmap after the guided Bash block; the next ticket is not selected. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
 of this repository. [Documentation index](01-Documentation/README.md).

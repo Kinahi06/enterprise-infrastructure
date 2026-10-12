@@ -1,6 +1,6 @@
 # Infrastructure Plan
 
-Last updated: 2026-10-01. The original inventory below is an August baseline, not a fresh availability/resource audit.
+Last updated: 2026-10-12. The original inventory below is an August baseline, not a fresh availability/resource audit.
 
 ## Recorded changes since the baseline
 I extended the Ubuntu learning host with systemd/network/TLS exercises, then Docker.
@@ -13,9 +13,10 @@ These are lab workloads on the same VM, not separate production servers.
 | s12-api | I restored verified HTTPS on 127.0.0.1:8443 with api.s12.test certificate | 30 September screenshot; CA passed per request, not a demonstrated global trust-store change |
 | Docker / s18-web | I ran nginx:1.30.5-alpine, 127.0.0.1:8133 → container :80 | Same ID after stop/start; last screenshot Up, final stop unknown |
 | Project access | I created /srv/team dev:lab 2750; dev succeeds, view denied | 1 October screenshots |
-| Operator identity | I created ops; shown groups ops/users | No configured sudo policy or separate SSH login confirmed |
+| Operator identity | ops belongs to ops/users/lab-ops; exact service start/restart and journal reads configured | Screenshots 1-10 October; separate SSH login not confirmed |
 
-I have not selected the ops service allowlist. Critical service exceptions remain a design question.
+The ops allowlist covers s10-proxy, s10-api, s11-proxy, s11-api and s12-api only: exact start/restart and journalctl -u UNIT -n 30 --no-pager. No broad root or global journal access was added in this exercise.
+On 12 October I observed SSH TCP timeout while ssh listened locally and Tailscale reported offline. Basic IPv4/DNS checks succeeded; I later reported restored SSH. Root cause remains undetermined. This is not a fresh full infrastructure audit.
 Backups and monitoring are planned study topics only. No retention schedule, RPO/RTO,
 backup device, backup job, restore test or monitoring deployment has been agreed or demonstrated.
 I currently have no separate backup hardware. A second VM on the same Mac is not evidence

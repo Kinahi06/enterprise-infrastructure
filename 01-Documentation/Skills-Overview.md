@@ -4,7 +4,7 @@
 
 [All lessons, lab sessions and future curriculum modules](Learning-Map.md).
 
-Updated **1 October 2026**. One bullet per topic, based on published repository
+Updated **12 October 2026**. One bullet per topic, based on published repository
 documentation, course reports and exercises completed during tutoring sessions.
 
 ## Scope of experience
@@ -46,7 +46,8 @@ No professional tenure or earned certifications are claimed here.
 
 - **TLS/HTTPS:** I completed a guided certificate-name repair, inspected validity/SAN, used the correct certificate/key pair and showed verified HTTPS without -k; checker PASS reported by me.
 - **Docker basics:** I launched nginx:1.30.5-alpine as s18-web, checked loopback publication, HTTP/logs and stop/start of the same ID; final stop is unconfirmed.
-- **User separation:** I created dev/view/ops and lab, tested /srv/team dev:lab 2750, allowed dev and denied view; ops privileges and individual SSH access remain pending.
+- **User separation:** I tested dev/view project boundaries and configured exact ops service start/restart and journal permissions with guidance; individual SSH access remains unconfirmed.
+- **Bash learning:** I built a guided service/HTTPS/HTTP-200/JSON check, practised argument defaults, exit status, streams and pipelines, and showed positive and negative outcomes; independent development is not certified.
 
 ## Windows, virtualization and file services
 
@@ -97,8 +98,8 @@ No professional tenure or earned certifications are claimed here.
 ## Publication and sources
 
 - **Repository and default branch:** [Kinahi06/enterprise-infrastructure — main](https://github.com/Kinahi06/enterprise-infrastructure/tree/main).
-- **Progress:** [Progress.md](Progress.md) records outcomes through guided TASK-013 and the in-progress access exercise.
+- **Progress:** [Progress.md](Progress.md) records guided access and Bash practice through 12 October and the return to the roadmap.
 - **Skill matrix:** [Skill Matrix.md](Skill%20Matrix.md) contains learning self-assessments, not professional certification.
 - **Engineering journal:** [Engeniering Journal.md](Engeniering%20Journal.md) records observations, repairs, checks and evidence limits.
 - **Automation:** [02-Automation](../02-Automation/README.md) contains assisted Bash/PowerShell project artifacts, without claiming independent authorship of all code.
-- **Currency:** updated 1 October 2026; historical hour and command counts are not used as current metrics.
+- **Currency:** updated 12 October 2026; historical hour and command counts are not used as current metrics.

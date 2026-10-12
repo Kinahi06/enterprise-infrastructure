@@ -2,7 +2,7 @@
 
 **English** | [Русский](Learning-Map.ru.md)
 
-Updated: 1 October 2026. This page separates **curriculum modules**, **lab
+Updated: 12 October 2026. This page separates **curriculum modules**, **lab
 sessions** and **earlier homelab lessons**, which use different numbering.
 Completing Session 11 does not mean completing Module 11. Passing a lab also
 does not imply independent mastery of the entire subject.
@@ -35,7 +35,9 @@ does not imply independent mastery of the entire subject.
 | 11 — HTTP contract | HTTP 200 from an old version; routed the proxy to the required backend and checked the response version | Cause identified independently; completed with acceptance-test clarification, PASS reported by me |
 | 12 — TLS | CA trust, certificate hostname and HTTPS verification without bypassing security checks | I completed it with guidance; HTTPS shown, checker PASS reported by me |
 | 13 — Docker | I launched Nginx, checked HTTP/logs and stopped/started the same ID | Completed with guidance on 30 September; final stop not confirmed |
-| Users and access | I created roles and tested /srv/team permissions | In progress on 1 October; ops sudoers and separate SSH logins not confirmed |
+| Users and access | Scoped start/restart and journal reads for five services; positive and denied policy checks | Completed with guidance; separate SSH logins not confirmed |
+| Bash API check, 10-12 October | Service state, HTTPS, exact HTTP 200 and JSON contract; final exit 0 shown | Guided learning block complete; not independent certification |
+| SSH incident and Vim recovery, 12 October | TCP timeout, Tailscale offline, basic networking worked; recovery reported | Root cause undetermined; swap recovery/diff outcome reported by me |
 
 Details: [journal](Engeniering%20Journal.md), [progress](Progress.md) and
 [skills by topic](Skills-Overview.md). Lab preparation and tutor-run tests do

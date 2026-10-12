@@ -1,6 +1,12 @@
 # Progress Timeline
 
-Last updated: 2026-10-01
+Last updated: 2026-10-12
+
+## 12 October 2026 - current checkpoint
+
+I completed the guided Bash API-check block: the final screenshot shows an active service, exact HTTP 200, expected JSON fields and exit 0. Earlier tests covered a missing service, HTTP 404 and mismatched JSON fields. Full regression after the final edit and separate 201/3xx, timeout, TLS-error and malformed-JSON tests are not demonstrated. I do not increase independent skill ratings.
+I completed scoped ops permissions and log reading with guidance by 10 October. Separate SSH logins are not confirmed. I also practised zsh/terminfo and safe Vim swap recovery. During the 12 October SSH incident, basic networking worked while Tailscale reported offline; I later reported restored access, but the root cause was not established.
+I am returning to the roadmap; a new ticket is not yet selected. [Reports and evidence limits](Study-Notes/README.md).
 
 [Full learning map: every lesson, session and curriculum module](Learning-Map.md).
 Session numbers and curriculum module numbers are separate sequences.
@@ -160,7 +166,7 @@ I added dev to lab, assigned /srv/team to dev:lab and set mode 2750.
 I created probe as dev. As view I got expected permission denials from ls and touch.
 view is deliberately outside lab: an ordinary employee without project access.
 The directory mode is shown; a separate ownership/mode listing of probe is not.
-ops currently has ops/users membership in my screenshot; no sudoers configuration is confirmed.
+At this historical 1 October checkpoint, the shown ops membership was ops/users and sudoers was not yet confirmed. This was superseded by the 1-10 October results recorded above.
 I want a scoped set of non-critical services, but the exact allowlist/actions are not agreed.
 Separate SSH logins for these users are not yet configured in the recorded work.
 
@@ -250,6 +256,6 @@ deadlines. The active course sequence and module statuses are in the
 
 ## Current Focus
 
-I am practising users, groups and restricted operator access. [Current ticket and study notes](Study-Notes/README.md).
+I completed guided access and Bash practice and am returning to the roadmap. [Current ticket and study notes](Study-Notes/README.md).
 Session 09 oral defence remains open. Backups and monitoring will be separate learning tasks.
 I keep unverified work unchecked and do not raise independence scores after guided exercises.

@@ -1,5 +1,15 @@
 # Engineering Journal
 
+## 1-12 October 2026 - access, Bash and SSH incident
+
+I configured ops/lab-ops with exact start/restart and journal reads for five lab services. I showed permitted log reading and restart, and denied policy checks for stop and ssh.service logs. HTTPS health without -k succeeded. Separate direct ops SSH login remains unconfirmed.
+
+I completed a guided Bash check on 12 October: active service, HTTP 200, expected JSON and exit 0. Negative tests previously showed rejection of an unknown service, HTTP 404 and mismatched expected JSON fields. I corrected variable-name, quoting/spacing and case mistakes with help; unclear block-edit instructions also required restoring curl's else branch. No independent rating increase is claimed. The final server source has not been exported into this repository; reports are not represented as the original script.
+
+During an SSH disconnect I observed TCP timeout, local ssh active/listening, Tailscale offline and coordination warnings, with working basic IP/DNS. I later reported restored SSH; no proven root cause or corrective restart is recorded. Vim E325 was investigated through the missing PID, recovery to a separate file and diff; I reported no differences and successful exact swap deletion.
+
+I am returning to the roadmap, with no further Bash feature expansion planned now. [Bash report](Study-Notes/bash-api-2026-10-12.md) and [access/terminal/incident report](Study-Notes/access-terminal-2026-10-12.md) contain evidence boundaries. Previously taught commands are not re-explained in new reports.
+
 ---
 
 # Lesson 1 — Windows Infrastructure Lab

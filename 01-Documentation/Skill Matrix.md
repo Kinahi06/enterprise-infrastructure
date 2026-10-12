@@ -1,6 +1,10 @@
 # Skill Matrix
 
-Last updated: 2026-10-01
+Last updated: 2026-10-12
+
+## Evidence update, 12 October
+
+I completed guided scoped-sudo/log-access practice and a Bash HTTPS check (service state, exact HTTP 200, JSON contract, exit status). I also practised stdout/stderr, argument defaults, conditionals and Vim recovery. These exercises used supplied examples and corrections; numeric independence ratings remain unchanged. SSH/Tailscale connectivity recovered, but the incident root cause is not established. [Reports](Study-Notes/README.md).
 
 Levels are self-assessments used to select the next laboratory exercise, not certifications of mastery.
 
