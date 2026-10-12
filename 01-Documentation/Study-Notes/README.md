@@ -4,10 +4,12 @@ My public [learning map](../Learning-Map.md) and [skills overview](../Skills-Ove
 are available in English and Russian. The detailed study notes below are in Russian.
 
 ## Completed with guidance
-- Bash HTTPS API check: [editable report](bash-api-2026-10-12.md) · [PDF](bash-api-2026-10-12.pdf).
-- Scoped access, terminal and SSH incident: [editable report](access-terminal-2026-10-12.md) · [PDF](access-terminal-2026-10-12.pdf).
-- Networking Sessions 09–12: [editable notes](network-09-12.md) · [PDF](network-09-12.pdf).
-- Docker Session 13: [editable notes](docker-13.md) · [PDF](docker-13.pdf).
+
+Reports are organized by topic, not date: [Linux, Networks and Docker](Рефераты/README.md). PDF and editable Markdown share the same descriptive filename. Lesson dates stay inside the documents.
+- Bash HTTPS API check: [editable report](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Linux/Bash%20-%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0%20HTTPS%20API.md) · [PDF](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Linux/Bash%20-%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0%20HTTPS%20API.pdf).
+- Scoped access, terminal and SSH incident: [editable report](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Linux/%D0%9F%D1%80%D0%B0%D0%B2%D0%B0%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0%20%D1%82%D0%B5%D1%80%D0%BC%D0%B8%D0%BD%D0%B0%D0%BB%20%D0%B8%20%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0%20SSH.md) · [PDF](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Linux/%D0%9F%D1%80%D0%B0%D0%B2%D0%B0%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0%20%D1%82%D0%B5%D1%80%D0%BC%D0%B8%D0%BD%D0%B0%D0%BB%20%D0%B8%20%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0%20SSH.pdf).
+- Networking Sessions 09–12: [editable notes](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/%D0%A1%D0%B5%D1%82%D0%B8/TCP%20HTTP%20proxy%20%D0%B8%20TLS.md) · [PDF](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/%D0%A1%D0%B5%D1%82%D0%B8/TCP%20HTTP%20proxy%20%D0%B8%20TLS.pdf).
+- Docker Session 13: [editable notes](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Docker/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D1%8B%20Docker%20-%20%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA%20%D0%B8%20%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0%20%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D0%B0.md) · [PDF](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Docker/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D1%8B%20Docker%20-%20%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA%20%D0%B8%20%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0%20%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D0%B0.pdf).
 - Docker: [theory](Docker-Theory.md) · [ticket](Docker-Ticket.md) · [my report](Docker-Report.md).
 - TLS: [my report](TLS-Report.md).
 

@@ -8,7 +8,7 @@ I completed a guided Bash check on 12 October: active service, HTTP 200, expecte
 
 During an SSH disconnect I observed TCP timeout, local ssh active/listening, Tailscale offline and coordination warnings, with working basic IP/DNS. I later reported restored SSH; no proven root cause or corrective restart is recorded. Vim E325 was investigated through the missing PID, recovery to a separate file and diff; I reported no differences and successful exact swap deletion.
 
-I am returning to the roadmap, with no further Bash feature expansion planned now. [Bash report](Study-Notes/bash-api-2026-10-12.md) and [access/terminal/incident report](Study-Notes/access-terminal-2026-10-12.md) contain evidence boundaries. Previously taught commands are not re-explained in new reports.
+I am returning to the roadmap, with no further Bash feature expansion planned now. [Bash report](Study-Notes/%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Linux/Bash%20-%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0%20HTTPS%20API.md) and [access/terminal/incident report](Study-Notes/%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Linux/%D0%9F%D1%80%D0%B0%D0%B2%D0%B0%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0%20%D1%82%D0%B5%D1%80%D0%BC%D0%B8%D0%BD%D0%B0%D0%BB%20%D0%B8%20%D0%B4%D0%B8%D0%B0%D0%B3%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BA%D0%B0%20SSH.md) contain evidence boundaries. Previously taught commands are not re-explained in new reports.
 
 ---
 
