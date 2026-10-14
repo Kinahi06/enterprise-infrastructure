@@ -1,8 +1,15 @@
 # Progress Timeline
 
-Last updated: 2026-10-12
+Last updated: 2026-10-14
 
-## 12 October 2026 - current checkpoint
+## 14 October 2026 - Docker storage completed with guidance
+
+I showed docker diff marking my layer-test file as added, a new container from the same image reporting the file absent, and a second container reading volume-test from training-volume-01. I reported persistence across stop/start and a successful readonly denial after correcting paths.
+For bind-web I reported HTTP 200, v2 after a host edit without restart, Mounts Type=bind/RW=false, denied writes and finally stopping the container. These bind-mount results are my messages, not new screenshots or an independent VM audit. I initially confused bind storage with the container layer; after explanation I correctly predicted v2 in a new container using the same host directory.
+Dockerfile with FROM/COPY and v1/v2 images is assigned, not yet demonstrated. Compose remains ahead; numeric independence ratings do not change. On 13 October I reported that reboot restored SSH after another timeout; root cause is unknown.
+[Report and PDF](Study-Notes/Рефераты/README.md). Obsidian notes are maintained additionally at completed-block checkpoints, not by background automation.
+
+## 12 October 2026 - historical checkpoint
 
 I completed the guided Bash API-check block: the final screenshot shows an active service, exact HTTP 200, expected JSON fields and exit 0. Earlier tests covered a missing service, HTTP 404 and mismatched JSON fields. Full regression after the final edit and separate 201/3xx, timeout, TLS-error and malformed-JSON tests are not demonstrated. I do not increase independent skill ratings.
 I completed scoped ops permissions and log reading with guidance by 10 October. Separate SSH logins are not confirmed. I also practised zsh/terminfo and safe Vim swap recovery. During the 12 October SSH incident, basic networking worked while Tailscale reported offline; I later reported restored access, but the root cause was not established.
@@ -256,6 +263,6 @@ deadlines. The active course sequence and module statuses are in the
 
 ## Current Focus
 
-I completed guided access and Bash practice and am returning to the roadmap. [Current ticket and study notes](Study-Notes/README.md).
+I completed guided Docker storage practice; the Dockerfile assignment is next and not yet demonstrated. [Current ticket and study notes](Study-Notes/README.md).
 Session 09 oral defence remains open. Backups and monitoring will be separate learning tasks.
 I keep unverified work unchecked and do not raise independence scores after guided exercises.

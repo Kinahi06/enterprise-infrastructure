@@ -1,6 +1,10 @@
 # Skill Matrix
 
-Last updated: 2026-10-12
+Last updated: 2026-10-14
+
+## Evidence update, 14 October
+
+Guided Docker storage is complete: writable layer, named volume persistence and readonly bind mount. Some results are screenshots, others learner-reported; see the report index. Dockerfile is assigned but not demonstrated. Numeric levels remain unchanged.
 
 ## Evidence update, 12 October
 

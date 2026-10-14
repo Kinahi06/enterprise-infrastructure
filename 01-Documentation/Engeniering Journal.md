@@ -1,5 +1,12 @@
 # Engineering Journal
 
+## 12-14 October 2026 - Docker storage, guided
+
+I practised container-layer persistence, named volumes and read-only bind mounts. Screenshots show layer diff, absence in a new container from the same image and volume-test read through /date. Stop/start persistence, readonly and bind-web HTTP 200 / host-edit v2 without restart / Mounts / final stop are reported by me. The first bind readonly code 0 was not captured, so its cause is not known.
+I corrected command-line continuation, missing --network, and /date versus /data mistakes with help. I initially thought deleting a bind-mounted container would delete the host file; after explanation I correctly predicted the new container would see v2. This is guided learning, not independent certification.
+Dockerfile is assigned but not performed in the confirmed record. I requested full-topic lessons, short commands and grouped acceptance rather than one response per command. I also requested Obsidian notes in the existing topic-based style. The new report is in [the report index](Study-Notes/Рефераты/README.md).
+Another SSH timeout on 13 October cleared after reboot according to my message; no proven root cause is recorded.
+
 ## 1-12 October 2026 - access, Bash and SSH incident
 
 I configured ops/lab-ops with exact start/restart and journal reads for five lab services. I showed permitted log reading and restart, and denied policy checks for stop and ssh.service logs. HTTPS health without -k succeeded. Separate direct ops SSH login remains unconfirmed.

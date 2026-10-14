@@ -1,9 +1,11 @@
 # Study notes and current practice
-Updated 12 October 2026. These are my learning records, prepared with AI assistance.
+Updated 14 October 2026. These are my learning records, prepared with AI assistance.
 My public [learning map](../Learning-Map.md) and [skills overview](../Skills-Overview.md)
 are available in English and Russian. The detailed study notes below are in Russian.
 
 ## Completed with guidance
+
+- Docker storage, 12-14 October: [editable report](Рефераты/Docker/Хранение%20данных%20-%20слои%20volumes%20и%20bind%20mount.md) · [PDF](Рефераты/Docker/Хранение%20данных%20-%20слои%20volumes%20и%20bind%20mount.pdf).
 
 Reports are organized by topic, not date: [Linux, Networks and Docker](Рефераты/README.md). PDF and editable Markdown share the same descriptive filename. Lesson dates stay inside the documents.
 - Bash HTTPS API check: [editable report](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Linux/Bash%20-%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0%20HTTPS%20API.md) · [PDF](%D0%A0%D0%B5%D1%84%D0%B5%D1%80%D0%B0%D1%82%D1%8B/Linux/Bash%20-%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0%20HTTPS%20API.pdf).
@@ -14,12 +16,13 @@ Reports are organized by topic, not date: [Linux, Networks and Docker](Рефе�
 - TLS: [my report](TLS-Report.md).
 
 I still owe the Session 09 oral defence. Reported checker PASS is distinguished
-from shown output. Docker final stop is unconfirmed; last shown state was Up.
+from shown output. The 12 October screenshot showed s18-web Exited (0), then it was started for storage practice. Its state after reboot is not checked. Stopping bind-web was reported by me on 14 October.
 
 ## Current state and remaining work
 - Users/access: [theory](Users-Access-Theory.md) · [ticket and recorded steps](Users-Access-Ticket.md).
 - I configured exact start/restart and journal reads for five lab services. Separate SSH logins remain unconfirmed; the agreed access exercise is complete with guidance.
-- The guided Bash block is complete; I am returning to the roadmap. The next ticket has not been selected. No new independent skill rating is claimed.
+- Guided Bash and Docker storage blocks are complete. Dockerfile v1/v2 is assigned, not yet demonstrated. No new independent skill rating is claimed.
+- I also maintain Obsidian theory links, command notes and practice reports; PDF and Git remain available. No background synchronization is configured.
 - Reports explain new syntax and new uses only; previously taught commands are not explained again.
 - Backups and monitoring are future study requests, not implemented systems.
 

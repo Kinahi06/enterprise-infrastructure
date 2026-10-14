@@ -3,7 +3,7 @@
 Personal homelab and learning portfolio: Linux and Windows administration,
 networking, service troubleshooting and introductory automation on Apple Silicon.
 
-**Last updated: 2026-10-12 · Latest completed block: Bash HTTPS API check (guided)**
+**Last updated: 2026-10-14 · Latest completed block: Docker storage (guided)**
 
 ## Start here
 
@@ -63,5 +63,5 @@ and automation were developed with assistance. Each report distinguishes observe
 evidence from learner-reported results. Prepared labs and tutor-run tests are not
 counted as completed learner exercises.
 
-Current: returning to the DevOps roadmap after the guided Bash block; the next ticket is not selected. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
+Current: Docker storage (writable layer, named volume, bind mount) completed with guidance. Dockerfile v1/v2 exercise assigned, results not yet confirmed. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
 of this repository. [Documentation index](01-Documentation/README.md).
