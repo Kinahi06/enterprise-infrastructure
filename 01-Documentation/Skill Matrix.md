@@ -2,9 +2,9 @@
 
 Last updated: 2026-10-14
 
-## Evidence update, 14 October
+## Evidence update, 15 October
 
-Guided Docker storage is complete: writable layer, named volume persistence and readonly bind mount. Some results are screenshots, others learner-reported; see the report index. Dockerfile is assigned but not demonstrated. Numeric levels remain unchanged.
+Guided Docker storage is complete: writable layer, named volume persistence and readonly bind mount. Some results are screenshots, others learner-reported; see the report index. Dockerfile v1/v2 and first Compose practice are now completed by my reports; Compose 2.40.3 installation is shown. YAML and down/stop oral questions remain. Numeric levels remain unchanged.
 
 ## Evidence update, 12 October
 

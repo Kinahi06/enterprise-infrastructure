@@ -3,7 +3,7 @@
 Personal homelab and learning portfolio: Linux and Windows administration,
 networking, service troubleshooting and introductory automation on Apple Silicon.
 
-**Last updated: 2026-10-14 · Latest completed block: Docker storage (guided)**
+**Last updated: 2026-10-15 · Latest completed practice: Dockerfile and first Compose project (guided)**
 
 ## Start here
 
@@ -63,5 +63,5 @@ and automation were developed with assistance. Each report distinguishes observe
 evidence from learner-reported results. Prepared labs and tutor-run tests are not
 counted as completed learner exercises.
 
-Current: Docker storage (writable layer, named volume, bind mount) completed with guidance. Dockerfile v1/v2 exercise assigned, results not yet confirmed. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
+Current: Dockerfile v1/v2 and first Compose project completed with guidance according to my reports. Compose installation is shown; YAML and down/stop oral questions remain. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
 of this repository. [Documentation index](01-Documentation/README.md).

@@ -1,5 +1,9 @@
 # Engineering Journal
 
+## 14-15 October 2026 - Dockerfile and first Compose project, guided
+
+I reported v1/v2 image behavior and stopped image containers. apt-cache identified Ubuntu docker.io, so I installed docker-compose-v2 rather than adding Docker's repository. The screenshot shows Compose 2.40.3. My report confirms HTTP 200/v2, unchanged old port after saving YAML, new port and ID after up, unchanged ID on repeated up and an empty list after down. Oral answers on YAML and down/stop are still open; independence scores do not change. [Report index](Study-Notes/Рефераты/README.md).
+
 ## 12-14 October 2026 - Docker storage, guided
 
 I practised container-layer persistence, named volumes and read-only bind mounts. Screenshots show layer diff, absence in a new container from the same image and volume-test read through /date. Stop/start persistence, readonly and bind-web HTTP 200 / host-edit v2 without restart / Mounts / final stop are reported by me. The first bind readonly code 0 was not captured, so its cause is not known.
