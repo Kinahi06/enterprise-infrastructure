@@ -4,7 +4,7 @@
 
 [All lessons, lab sessions and future curriculum modules](Learning-Map.md).
 
-Updated **15 October 2026**. One bullet per topic, based on published repository
+Updated **16 October 2026**. One bullet per topic, based on published repository
 documentation, course reports and exercises completed during tutoring sessions.
 
 ## Scope of experience
@@ -47,7 +47,7 @@ No professional tenure or earned certifications are claimed here.
 - **TLS/HTTPS:** I completed a guided certificate-name repair, inspected validity/SAN, used the correct certificate/key pair and showed verified HTTPS without -k; checker PASS reported by me.
 - **Docker basics:** I launched nginx:1.30.5-alpine as s18-web, checked loopback publication, HTTP/logs and stop/start of the same ID; final stop is unconfirmed.
 - **Docker storage:** I practised writable layers, named volumes and readonly bind mounts with guidance; some results are learner-reported.
-- **Dockerfile and Compose:** I reported v1/v2 image behavior and a first Compose project's port/ID lifecycle. Installation is shown; the guided practical block is complete, oral answers remain.
+- **Dockerfile and Compose:** I reported v1/v2 image behavior and a first Compose project's port/ID lifecycle. Installation is shown; the guided practical block and short oral check are complete with terminology clarification.
 - **User separation:** I tested dev/view project boundaries and configured exact ops service start/restart and journal permissions with guidance; individual SSH access remains unconfirmed.
 - **Bash learning:** I built a guided service/HTTPS/HTTP-200/JSON check, practised argument defaults, exit status, streams and pipelines, and showed positive and negative outcomes; independent development is not certified.
 
@@ -80,7 +80,8 @@ No professional tenure or earned certifications are claimed here.
 ## Planned or not yet demonstrated
 
 - **CI/CD:** initial theory exposure only; completed pipeline practice is not confirmed.
-- **Advanced containers:** multiple-service Compose networking and registry work remain ahead; the first Compose oral check is still open.
+- **Compose networking:** guided web/proxy practice is complete; internal HTTP, backend outage with client timeout, recovery and removal are shown. DNS/localhost required explanation.
+- **Advanced containers:** healthcheck is assigned but not performed; registry work remains ahead.
 - **Ansible, Terraform, Kubernetes, cloud and GitOps:** future learning topics, not demonstrated practical competencies.
 - **Active Directory, GPO, DNS/DHCP servers and IIS:** included in earlier plans; completed labs are not confirmed.
 - **Production, HA, SRE, monitoring platforms and backup recovery:** no claim of production operations, on-call responsibility, high availability or successful backup/restore projects without further evidence.
@@ -100,8 +101,8 @@ No professional tenure or earned certifications are claimed here.
 ## Publication and sources
 
 - **Repository and default branch:** [Kinahi06/enterprise-infrastructure — main](https://github.com/Kinahi06/enterprise-infrastructure/tree/main).
-- **Progress:** [Progress.md](Progress.md) records guided access, Bash and Docker storage practice through 15 October; first Compose oral answers remain.
+- **Progress:** [Progress.md](Progress.md) records guided access, Bash and Docker storage practice through 15 October; first Compose oral check is closed, networking practice complete with guidance and healthcheck assigned.
 - **Skill matrix:** [Skill Matrix.md](Skill%20Matrix.md) contains learning self-assessments, not professional certification.
 - **Engineering journal:** [Engeniering Journal.md](Engeniering%20Journal.md) records observations, repairs, checks and evidence limits.
 - **Automation:** [02-Automation](../02-Automation/README.md) contains assisted Bash/PowerShell project artifacts, without claiming independent authorship of all code.
-- **Currency:** updated 15 October 2026; historical hour and command counts are not used as current metrics.
+- **Currency:** updated 16 October 2026; historical hour and command counts are not used as current metrics.

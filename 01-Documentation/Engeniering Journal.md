@@ -1,5 +1,9 @@
 # Engineering Journal
 
+## 15-16 October 2026 - Compose networking, guided
+
+I completed lab-compose-pair with web and proxy. Internal DNS/HTTP returned 200/v2; the tutor found proxy_pass http://80 instead of web:80. I reported 200 after correction. The final screenshot shows proxy Up/web Exited with curl (28), recovery to 200/v2 after start web and removal of both containers plus their network. HTTP 502 was not observed and was an overly specific expected result. DNS/localhost needed explanation. The first Compose oral check is now closed; healthcheck is assigned but not performed. Numeric independence levels do not change. [New report](Study-Notes/Рефераты/Docker/Сеть%20Compose%20-%20DNS%20прокси%20и%20диагностика%20отказов.md).
+
 ## 14-15 October 2026 - Dockerfile and first Compose project, guided
 
 I reported v1/v2 image behavior and stopped image containers. apt-cache identified Ubuntu docker.io, so I installed docker-compose-v2 rather than adding Docker's repository. The screenshot shows Compose 2.40.3. My report confirms HTTP 200/v2, unchanged old port after saving YAML, new port and ID after up, unchanged ID on repeated up and an empty list after down. Oral answers on YAML and down/stop are still open; independence scores do not change. [Report index](Study-Notes/Рефераты/README.md).

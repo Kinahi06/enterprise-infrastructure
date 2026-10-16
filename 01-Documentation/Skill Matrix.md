@@ -2,9 +2,9 @@
 
 Last updated: 2026-10-14
 
-## Evidence update, 15 October
+## Evidence update, 16 October
 
-Guided Docker storage is complete: writable layer, named volume persistence and readonly bind mount. Some results are screenshots, others learner-reported; see the report index. Dockerfile v1/v2 and first Compose practice are now completed by my reports; Compose 2.40.3 installation is shown. YAML and down/stop oral questions remain. Numeric levels remain unchanged.
+Guided Docker storage is complete: writable layer, named volume persistence and readonly bind mount. Some results are screenshots, others learner-reported; see the report index. Dockerfile v1/v2 and first Compose practice are now completed by my reports; Compose 2.40.3 installation is shown. The first Compose oral check is closed with terminology clarification. Two-service networking was completed with guidance; screenshots show internal HTTP, backend outage with curl (28), recovery and project removal. DNS/localhost needed tutor explanation. Healthcheck is assigned, not yet performed. Numeric levels remain unchanged.
 
 ## Evidence update, 12 October
 

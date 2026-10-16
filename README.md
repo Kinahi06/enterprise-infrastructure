@@ -3,7 +3,7 @@
 Personal homelab and learning portfolio: Linux and Windows administration,
 networking, service troubleshooting and introductory automation on Apple Silicon.
 
-**Last updated: 2026-10-15 · Latest completed practice: Dockerfile and first Compose project (guided)**
+**Last updated: 2026-10-16 · Latest completed practice: two Compose services and networking (guided)**
 
 ## Start here
 
@@ -63,5 +63,5 @@ and automation were developed with assistance. Each report distinguishes observe
 evidence from learner-reported results. Prepared labs and tutor-run tests are not
 counted as completed learner exercises.
 
-Current: Dockerfile v1/v2 and first Compose project completed with guidance according to my reports. Compose installation is shown; YAML and down/stop oral questions remain. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
+Current: two Compose services and networking completed with guidance. Screenshots show internal HTTP 200/v2, timeout during backend outage, recovery and project removal. Healthcheck is assigned, not yet performed; service-name DNS/localhost need reinforcement. Backups and monitoring are future learning topics, not deployed systems. Secrets and private keys are not part
 of this repository. [Documentation index](01-Documentation/README.md).

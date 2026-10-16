@@ -2,7 +2,7 @@
 
 **English** | [Русский](Learning-Map.ru.md)
 
-Updated: 15 October 2026. This page separates **curriculum modules**, **lab
+Updated: 16 October 2026. This page separates **curriculum modules**, **lab
 sessions** and **earlier homelab lessons**, which use different numbering.
 Completing Session 11 does not mean completing Module 11. Passing a lab also
 does not imply independent mastery of the entire subject.
@@ -36,7 +36,8 @@ does not imply independent mastery of the entire subject.
 | 12 — TLS | CA trust, certificate hostname and HTTPS verification without bypassing security checks | I completed it with guidance; HTTPS shown, checker PASS reported by me |
 | 13 — Docker | I launched Nginx, checked HTTP/logs and stopped/started the same ID | Completed with guidance on 30 September; final stop not confirmed |
 | Docker storage, 12-14 October | Layer diff, named-volume read in a different container; bind-mount results reported | Completed with guidance; followed by Dockerfile and first Compose practice |
-| Dockerfile and first Compose, 14-15 October | v1/v2 behavior and Compose port/ID lifecycle reported; installation shown | Guided practical work complete; oral questions remain |
+| Dockerfile and first Compose, 14-15 October | v1/v2 behavior and Compose port/ID lifecycle reported; installation shown | Guided practical work and short oral check complete, with terminology clarification |
+| Two Compose services and DNS, 15-16 October | Internal HTTP 200/v2, proxy configuration diagnosis, backend outage, recovery and removal | Guided practice complete; DNS/localhost explained by tutor; healthcheck assigned |
 | Users and access | Scoped start/restart and journal reads for five services; positive and denied policy checks | Completed with guidance; separate SSH logins not confirmed |
 | Bash API check, 10-12 October | Service state, HTTPS, exact HTTP 200 and JSON contract; final exit 0 shown | Guided learning block complete; not independent certification |
 | SSH incident and Vim recovery, 12 October | TCP timeout, Tailscale offline, basic networking worked; recovery reported | Root cause undetermined; swap recovery/diff outcome reported by me |

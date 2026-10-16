@@ -2,6 +2,10 @@
 
 Last updated: 2026-10-14
 
+## 16 October 2026 - Compose networking and backend outage
+
+I completed the guided lab-compose-pair practice. Screenshots show proxy/web Up, internal resolution of web and HTTP 200/v2, the mistyped proxy_pass http://80 and its diagnosis by the tutor. I reported HTTP 200 through proxy after correction to web:80. The final screenshot shows proxy Up with web Exited, curl (28) after five seconds, HTTP 200/v2 after start web, and both containers plus the network removed by down. HTTP 502 was not observed; the tutor corrected that overly specific expectation. The exact waiting stage during outage was not separately diagnosed. I needed an explanation of service-name DNS and container-local localhost; independent mastery is not claimed. The first Compose YAML/down/stop oral check is now closed with terminology clarification. Healthcheck is assigned, not yet performed. [New report](Study-Notes/Рефераты/Docker/Сеть%20Compose%20-%20DNS%20прокси%20и%20диагностика%20отказов.md).
+
 ## 15 October 2026 - Dockerfile and first Compose project
 
 I reported successful v1 build, unchanged old container after source edit and v2 build, new content in image-web-v2 and both image containers stopped. The first Dockerfile HTTP status was not specified. I installed Ubuntu docker-compose-v2 for docker.io; the screenshot shows Compose 2.40.3. My Compose report confirms HTTP 200/v2, the old port working after saving YAML, a new port and new container ID after up, stable ID on repeated up without changes and an empty project list after down. These runtime results are learner-reported, not an independent VM audit. Old-port rejection after up and GET log entries were not separately reported. Practical steps were guided; YAML and down/stop questions remain unanswered. Numeric independence ratings are unchanged. Next: oral check, then multiple services and Compose DNS. See the [report index](Study-Notes/Рефераты/README.md).
@@ -267,6 +271,6 @@ deadlines. The active course sequence and module statuses are in the
 
 ## Current Focus
 
-I completed guided Dockerfile and first Compose practice according to my reports. YAML and down/stop oral questions remain; multiple services and Compose DNS follow. [Current ticket and study notes](Study-Notes/README.md).
+I completed guided Dockerfile, first Compose and two-service networking practice. The first Compose oral check is closed; DNS/localhost need reinforcement. Healthcheck is assigned, not yet performed. [Current ticket and study notes](Study-Notes/README.md).
 Session 09 oral defence remains open. Backups and monitoring will be separate learning tasks.
 I keep unverified work unchecked and do not raise independence scores after guided exercises.
