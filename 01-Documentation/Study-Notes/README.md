@@ -23,10 +23,12 @@ I still owe the Session 09 oral defence. Reported checker PASS is distinguished
 from shown output. The 12 October screenshot showed s18-web Exited (0), then it was started for storage practice. Its state after reboot is not checked. Stopping bind-web was reported by me on 14 October.
 
 ## Current state and remaining work
+New: [16 self-contained module teaching prompts](Промпты/README.md), with progress snapshots, explain-before-practice rules, Obsidian, PDF reports and documentation publication. These are teaching templates, not completed labs. The immediate Docker step is a simple HTTP healthcheck after explaining wget; the artificial marker exercise is deferred.
+
 - Users/access: [theory](Users-Access-Theory.md) · [ticket and recorded steps](Users-Access-Ticket.md).
 - I configured exact start/restart and journal reads for five lab services. Separate SSH logins remain unconfirmed; the agreed access exercise is complete with guidance.
 - Guided Bash, Docker storage, Dockerfile v1/v2, first Compose and two-service networking practice are complete. The first Compose oral check is closed; service-name DNS/localhost need reinforcement. Healthcheck is assigned, not yet performed. No new independent skill rating is claimed.
-- I also maintain Obsidian theory links, command notes and practice reports; PDF and Git remain available. No background synchronization is configured.
+- I also maintain Obsidian theory links, command notes and practice reports; PDF and Git remain available. The active Obsidian vault now uses iCloud file synchronization; teaching records are updated at block completion.
 - Reports explain new syntax and new uses only; previously taught commands are not explained again.
 - Backups and monitoring are future study requests, not implemented systems.
 
