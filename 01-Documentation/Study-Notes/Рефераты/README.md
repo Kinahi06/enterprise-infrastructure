@@ -19,6 +19,8 @@ PDF - версия для чтения, Markdown с тем же именем - �
 
 ## Docker
 
+- [HTTP healthcheck: Markdown](Docker/HTTP%20healthcheck%20-%20wget%20%D0%B8%20%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8.md) · [PDF](Docker/HTTP%20healthcheck%20-%20wget%20%D0%B8%20%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8.pdf). Ручной wget показан, healthy сообщён учеником; практика с помощью. Далее depends_on/service_healthy.
+
 - [Хранение данных - слои, volumes и bind mount: PDF](Docker/Хранение%20данных%20-%20слои%20volumes%20и%20bind%20mount.pdf) · [Markdown](Docker/Хранение%20данных%20-%20слои%20volumes%20и%20bind%20mount.md).
 
 - [Основы Docker - запуск и диагностика контейнера: PDF](Docker/Основы%20Docker%20-%20запуск%20и%20диагностика%20контейнера.pdf) · [Markdown](Docker/Основы%20Docker%20-%20запуск%20и%20диагностика%20контейнера.md).

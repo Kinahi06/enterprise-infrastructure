@@ -81,7 +81,7 @@ No professional tenure or earned certifications are claimed here.
 
 - **CI/CD:** initial theory exposure only; completed pipeline practice is not confirmed.
 - **Compose networking:** guided web/proxy practice is complete; internal HTTP, backend outage with client timeout, recovery and removal are shown. DNS/localhost required explanation.
-- **Advanced containers:** healthcheck is assigned but not performed; registry work remains ahead.
+- **HTTP healthcheck:** manual wget inside web returned exit 0 on screen; healthy was learner-reported after a guided example. Loopback scope required clarification. Waiting with service_healthy and registry work remain ahead.
 - **Ansible, Terraform, Kubernetes, cloud and GitOps:** future learning topics, not demonstrated practical competencies.
 - **Active Directory, GPO, DNS/DHCP servers and IIS:** included in earlier plans; completed labs are not confirmed.
 - **Production, HA, SRE, monitoring platforms and backup recovery:** no claim of production operations, on-call responsibility, high availability or successful backup/restore projects without further evidence.
@@ -101,7 +101,7 @@ No professional tenure or earned certifications are claimed here.
 ## Publication and sources
 
 - **Repository and default branch:** [Kinahi06/enterprise-infrastructure — main](https://github.com/Kinahi06/enterprise-infrastructure/tree/main).
-- **Progress:** [Progress.md](Progress.md) records guided access, Bash and Docker storage practice through 15 October; first Compose oral check is closed, networking practice complete with guidance and healthcheck assigned.
+- **Progress:** [Progress.md](Progress.md) records guided access, Bash and Docker storage practice through 15 October; first Compose oral check is closed, networking practice complete with guidance and simple healthcheck complete as learner-reported; manual probe shown.
 - **Skill matrix:** [Skill Matrix.md](Skill%20Matrix.md) contains learning self-assessments, not professional certification.
 - **Engineering journal:** [Engeniering Journal.md](Engeniering%20Journal.md) records observations, repairs, checks and evidence limits.
 - **Automation:** [02-Automation](../02-Automation/README.md) contains assisted Bash/PowerShell project artifacts, without claiming independent authorship of all code.

@@ -1,5 +1,9 @@
 # Engineering Journal
 
+## 16 October 2026 - wget and HTTP healthcheck
+
+I completed a simple HTTP healthcheck with guidance. The screenshot shows both containers Up and wget inside web returning exit 0; healthy was reported by me after the example, without a new ps output. I correctly changed -T 2 to -T 1. The tutor clarified that loopback HTTP does not verify the Compose-network address, DNS or proxy path. No independent rating increase is claimed. Next: service_started versus service_healthy; that exercise is not performed yet. Initial direct wget on the VM returned exit 4; executing it in web succeeded after the tutor explained the execution context. [Report](Study-Notes/Рефераты/Docker/HTTP%20healthcheck%20-%20wget%20%D0%B8%20%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8.md)
+
 ## 15-16 October 2026 - Compose networking, guided
 
 I completed lab-compose-pair with web and proxy. Internal DNS/HTTP returned 200/v2; the tutor found proxy_pass http://80 instead of web:80. I reported 200 after correction. The final screenshot shows proxy Up/web Exited with curl (28), recovery to 200/v2 after start web and removal of both containers plus their network. HTTP 502 was not observed and was an overly specific expected result. DNS/localhost needed explanation. The first Compose oral check is now closed; healthcheck is assigned but not performed. Numeric independence levels do not change. [New report](Study-Notes/Рефераты/Docker/Сеть%20Compose%20-%20DNS%20прокси%20и%20диагностика%20отказов.md).

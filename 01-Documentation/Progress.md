@@ -1,6 +1,10 @@
 # Progress Timeline
 
-Last updated: 2026-10-14
+## 16 October 2026 - simple HTTP healthcheck, guided
+
+I completed a simple HTTP healthcheck with guidance. The screenshot shows both containers Up and wget inside web returning exit 0; healthy was reported by me after the example, without a new ps output. I correctly changed -T 2 to -T 1. The tutor clarified that loopback HTTP does not verify the Compose-network address, DNS or proxy path. No independent rating increase is claimed. Next: service_started versus service_healthy; that exercise is not performed yet. [Report](Study-Notes/Рефераты/Docker/HTTP%20healthcheck%20-%20wget%20%D0%B8%20%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8.md)
+
+Last updated: 2026-10-16
 
 ## 16 October 2026 - Compose networking and backend outage
 
