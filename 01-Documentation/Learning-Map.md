@@ -2,7 +2,7 @@
 
 **English** | [Русский](Learning-Map.ru.md)
 
-Updated: 16 October 2026. This page separates **curriculum modules**, **lab
+Updated: 17 October 2026. This page separates **curriculum modules**, **lab
 sessions** and **earlier homelab lessons**, which use different numbering.
 Completing Session 11 does not mean completing Module 11. Passing a lab also
 does not imply independent mastery of the entire subject.
@@ -39,6 +39,7 @@ does not imply independent mastery of the entire subject.
 | Dockerfile and first Compose, 14-15 October | v1/v2 behavior and Compose port/ID lifecycle reported; installation shown | Guided practical work and short oral check complete, with terminology clarification |
 | Two Compose services and DNS, 15-16 October | Internal HTTP 200/v2, proxy configuration diagnosis, backend outage, recovery and removal | Guided practice complete; DNS/localhost explained by tutor; healthcheck assigned |
 | Simple HTTP healthcheck, 16 October | Manual wget inside web: exit 0 shown; healthy learner-reported; timeout argument changed correctly | Guided block complete; loopback scope clarified; service_healthy next |
+| Depends_on and readiness, 17 October | Web Healthy 5.7 s, proxy Started 0.2 s, healthy ps and HTTP 200/v2 shown | Guided; -T/service_healty and startup/runtime clarified by tutor; DNS/localhost and diagnostics next |
 | Users and access | Scoped start/restart and journal reads for five services; positive and denied policy checks | Completed with guidance; separate SSH logins not confirmed |
 | Bash API check, 10-12 October | Service state, HTTPS, exact HTTP 200 and JSON contract; final exit 0 shown | Guided learning block complete; not independent certification |
 | SSH incident and Vim recovery, 12 October | TCP timeout, Tailscale offline, basic networking worked; recovery reported | Root cause undetermined; swap recovery/diff outcome reported by me |
