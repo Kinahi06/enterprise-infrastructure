@@ -46,6 +46,7 @@ No professional tenure or earned certifications are claimed here.
 
 - **TLS/HTTPS:** I completed a guided certificate-name repair, inspected validity/SAN, used the correct certificate/key pair and showed verified HTTPS without -k; checker PASS reported by me.
 - **Docker basics:** I launched nginx:1.30.5-alpine as s18-web, checked loopback publication, HTTP/logs and stop/start of the same ID; final stop is unconfirmed.
+- **One Docker application:** the 17 October evening screenshot shows lab-info:v1 built, python app.py running, 8145→8000, HTTP 200/JSON 1.0 and a GET log entry. I manually enter code in Vim; Python was explained for notes. Lifecycle, versions and data on this app come next; further Compose is deferred, with no independent assessment.
 - **Docker storage:** I practised writable layers, named volumes and readonly bind mounts with guidance; some results are learner-reported.
 - **Dockerfile and Compose:** I reported v1/v2 image behavior and a first Compose project's port/ID lifecycle. Installation is shown; the guided practical block and short oral check are complete with terminology clarification.
 - **User separation:** I tested dev/view project boundaries and configured exact ops service start/restart and journal permissions with guidance; individual SSH access remains unconfirmed.
@@ -101,7 +102,7 @@ No professional tenure or earned certifications are claimed here.
 ## Publication and sources
 
 - **Repository and default branch:** [Kinahi06/enterprise-infrastructure — main](https://github.com/Kinahi06/enterprise-infrastructure/tree/main).
-- **Progress:** [Progress.md](Progress.md) records guided access, Bash and Docker storage practice through 15 October; first Compose oral check is closed, networking, simple healthcheck and service_healthy startup waiting completed with guidance; healthy and HTTP 200/v2 shown on 17 October. DNS/localhost and independent diagnosis need reinforcement.
+- **Progress:** [Progress.md](Progress.md) records guided access, Bash and Docker storage practice through 15 October; first Compose oral check is closed, networking, simple healthcheck and service_healthy startup waiting completed with guidance; healthy and HTTP 200/v2 shown on 17 October. DNS/localhost and independent diagnosis need reinforcement. The current priority is one lab-info app, its lifecycle, versions and data; further Compose is deferred.
 - **Skill matrix:** [Skill Matrix.md](Skill%20Matrix.md) contains learning self-assessments, not professional certification.
 - **Engineering journal:** [Engeniering Journal.md](Engeniering%20Journal.md) records observations, repairs, checks and evidence limits.
 - **Automation:** [02-Automation](../02-Automation/README.md) contains assisted Bash/PowerShell project artifacts, without claiming independent authorship of all code.
